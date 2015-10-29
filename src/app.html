@@ -1,38 +1,41 @@
 <template>
+  <require from="./app.css"></require>
   <require from="resources/loading-indicator"></require>
+  <require from="resources/au-dropdown"></require>
 
   <loading-indicator loading.bind="router.isNavigating"></loading-indicator>
 
   <nav class="au-navbar">
-    <div class="au-navbar-logo">
-      <a href="#/">
-        <img src="images/aurelia-logo.png">
-        <span>Docs</span>
+
+    <au-nav logo>
+      <a href="#/" >
+        <span logo><img src="images/aurelia-logo.png"></span>
+        <span title>Docs</span>
       </a>
-    </div>
+    </au-nav logo>
 
-    <div class="pull-right">
-      <select class="au-select" value.bind="culture.current">
-        <option repeat.for="culture of culture.options" value.bind="culture">${culture}</option>
-      </select>
-      <select class="au-select" value.bind="language.current">
-        <option repeat.for="language of language.options" value.bind="language">${language}</option>
-      </select>
+    <!-- <au-nav left></au-nav left> -->
+
+    <au-nav left tabs>
+      <a au-tab href="#/" class="${router.currentInstruction.config.moduleId === 'article/index' ? 'au-active' : ''}">Step-by-Step</a>
+      <a au-tab href="#/api/home" class="au-tab ${router.currentInstruction.config.moduleId === 'api/index' ? 'au-active' : ''}">
+        Libraries
+        <span class="au-tag">API</span>
+      </a>
+    </au-nav>
+
+    <au-nav right>
+      <au-dropdown options.bind="culture.options" value.bind="culture.current"></au-dropdown>
+      <au-dropdown options.bind="language.options" value.bind="language.current"></au-dropdown>
+    </au-nav right>
+
+    <au-nav search>
       <a class="au-icon-button" href="#"><i class="fa fa-search"></i></a>
-    </div>
+    </au-nav>
 
-    <div class="align-center">
-      <div class="au-tabs">
-        <a href="#/" class="au-tab ${router.currentInstruction.config.moduleId === 'article/index' ? 'au-active' : ''}">Step-by-Step</a>
-        <a href="#/api/home" class="au-tab ${router.currentInstruction.config.moduleId === 'api/index' ? 'au-active' : ''}">
-          Libraries
-          <span class="au-tag">API</span>
-        </a>
-      </div>
-    </div>
   </nav>
 
-  <div class="page-host">
-    <router-view class="body"></router-view>
-  </div>
+  <au-main class="page-host">
+    <router-view class="page-view-port"></router-view>
+  </au-main>
 </template>

@@ -1,0 +1,631 @@
+@import 'resources/_variables';
+@import 'resources/_function';
+@import 'resources/_mixin';
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+///                                                                                               ///
+///                                           AU LAYOUT                                           ///
+/// ********************************************************************************************* ///
+///                                                                                               ///
+/// @NOTE:  - ALL %PLACEHOLDERS are only for Readablity, The Real implementations are Below       ///
+///         - Each Place holder Above will have it's own section.                                 ///
+///         - Please Make sure that if you create a new section, That the comments stay in line.  ///
+///         - Currently the `body {` +` /// title //...` takes up 60 columns                      ///
+///                                                                                               ///
+/// @STYLE-GUIDE :                                                                                ///
+///         - Every selector's opening first opening line must be empty.                          ///
+///         - If the selector does css properties the first line does not have to be empty        ///
+///         - Every Selector should have an empty line before and after                           ///
+///         - Every selector that starts at column 1 must have two empty lines before and after   ///
+///                                                                                               ///
+/// @USAGE:                                                                                       ///
+///         0|                                                                                    ///
+///         1|                                                                                    ///
+///         2| body { /// TITLE ///////////////////////////////////////////                       ///
+///         3|   .selector {                                                                      ///
+///         4|                                                                                    ///
+///         5|     property:value                                                                 ///
+///         6|   }                                                                                ///
+///         7| }                                                                                  ///
+///         8|                                                                                    ///
+///         9|                                                                                    ///
+///        10| body { /// NEXT TITLE //////////////////////////////////////                       ///
+///        11|                                                                                    ///
+///        13|   .selector {                                                                      ///
+///        14|                                                                                    ///
+///        15|     property:value                                                                 ///
+///        16|   }                                                                                ///
+///        17|                                                                                    ///
+///        18|   .selector {                                                                      ///
+///        19|                                                                                    ///
+///        20|     property:value                                                                 ///
+///        21|                                                                                    ///
+///        22|     .selector {                                                                    ///
+///        23|       .selector {                                                                  ///
+///        24|                                                                                    ///
+///        25|         property:value;                                                            ///
+///        26|       }                                                                            ///
+///        27|     }                                                                              ///
+///        28|   }                                                                                ///
+///        29| }                                                                                  ///
+///        30|                                                                                    ///
+///        31|                                                                                    ///
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/// ELEMENT SELECCTION HELPERS /////////////////////////////
+
+/**
+ * @variable: view-port-selectors
+ * @description: unescaped selectors for shorthand viewport selection
+ * @usedby: Mixin(): view-port;
+ */
+$view-port-selectors: (
+  page: 'body > au-main.page-host > router-view.page-view-port',
+  api: 'body > au-main.page-host > router-view.page-view-port > main.api-host > router-view-port.api-view-port',
+);
+
+/**
+ * @variable: view-host-selectors
+ * @description: unescaped selectors for shorthand host selection
+ * @usedby: Mixin(): view-host;
+ */
+$view-host-selectors: (
+  page: 'body > au-main.page-host',
+  api: 'body > au-main.page-host > router-view.page-view-port > main.api-host',
+);
+
+
+/**
+ * @Mixin(): select-navbar
+ * @description: Helper for properly selecting the nested navbar
+ */
+@mixin select-navbar {
+  body > nav.au-navbar {@content;}
+}
+
+/**
+ * @Mixin(): select-aside
+ * @description: Helper for properly selecting the nested au-menu
+ */
+@mixin select-aside {
+  body > au-main.page-host > router-view.page-view-port > aside.au-menu {@content;}
+}
+
+/**
+ * @Mixin(): view-port
+ *
+ * @description: helper for selecting the proper view port
+ * @param  {String} $name:page
+ * @values: (page|api);
+ * @default: page;
+ */
+@mixin view-port($name: page) {
+  $view-port: map-get($view-port-selectors, $name);
+  @if type_of($view-port) == string { #{$view-port} {@content;} }
+}
+
+/**
+ * @Mixin(): view-host
+ *
+ * @description: helper for selecting the proper view host
+ * @param  {String} $name:page
+ * @values: (page|api);
+ * @default: page;
+ */
+@mixin view-host($name: page) {
+  $view-host: map-get($view-host-selectors, $name);
+  @if type_of($view-host) == string { #{$view-host} {@content;} }
+}
+
+
+
+/// DOM TREE STRUCTURE /////////////////////////////////////
+%LAYOUT-DOM-TREE-STRUCTURE {
+
+    > nav.au-navbar {}
+
+    > au-main.page-host { // &:before {}
+
+        > router-view.page-view-port {
+
+            > aside.au-menu { // &:after {}
+
+                > ul.au-menu-items {> li {}}
+            }
+
+            > main.api-host { // &:after {}
+
+                > router-view.api-view-port {
+
+                    > au-view.content {> section{}}
+                }
+            }
+        }
+    }
+}
+
+
+/// SCROLL CONTAINERS //////////////////////////////////////
+%LAYOUT-SCROLL-CONTAINERS {
+
+  > au-main.page-host {
+
+    &:before {@include compensate-navbar;}
+
+    > router-view.page-view-port {
+
+      > aside.au-menu {
+
+        &:after {@include compensate-navbar;}
+
+        > ul.au-menu-items {
+          overflow: auto
+        }
+      }
+
+      > main.api-host {
+
+        &:after {@include compensate-navbar;}
+
+        > router-view.api-view-port > au-view.content {
+          overflow: auto;
+        }
+      }
+    }
+  }
+}
+
+
+/// CONTAINER POSITIONING //////////////////////////////////
+%LAYOUT-CONTAINER-POSITIONING {
+
+  %ALL-DOM-TREE-STRUCTURE-ELEMENTS {
+    @extend %flexbox;
+    position: relative;
+  }
+
+  nav.au-navbar {
+    position: absolute;
+    top: 0; left:0;
+  }
+}
+
+
+/// MEDIA GUTTERS //////////////////////////////////////////
+%LAYOUT-MEDIA-GUTTERS {
+
+  aside.au-aside {
+    ul.au-menu-items > li > a {
+
+      padding-left: $gutter-xs;
+
+      @include media-md {
+
+        padding-left: $gutter-md
+      }
+    }
+  }
+
+  main.api-host > router-view.api-view-port {
+    au-view.content {
+
+      padding: $gutter-xs;
+
+      @include media-md {
+
+        padding: $gutter-md
+      }
+    }
+  }
+}
+
+
+/// CONTAINER SIZING ///////////////////////////////////////
+%LAYOUT-CONTAINER-SIZING {
+  /*/
+   *
+   * NOTE This is a placeholder for Readablity
+   * The Real implementation is Below
+   *
+   * @size === #{width} ${height}
+   * @example
+   *  .test {
+   *    size: 100px
+   *    max-size 30px 40px;
+   *  }
+   * @renders
+   *  .test {
+   *    width: 100px
+   *    height: 100px
+   *    max-width: 30px;
+   *    max-height: 40px;
+   *  }
+  /*/
+  min-size: 100vw 100vh;
+  max-size: 100vw 100vh;
+  size: 100vw 100vh;
+
+  nav.au-navbar {
+    min-size: 100vw $navbar-height;
+    max-size: 100vw $navbar-height;
+    size: 100vw $navbar-height;
+  }
+
+  > au-main.page-host {
+
+    width: 100%;
+
+    > router-view.page-view-port {
+
+      width: 100%;
+
+      > aside.au-menu {
+
+        max-size: $aside-width 100vh;
+        size: $aside-width 100vh;
+
+        > ul.au-menu-items {
+
+          size: 100%;
+        }
+      }
+
+      > main.api-host {
+
+        min-height: 100%;
+        height: 100vh;
+
+        > router-view.api-view-port {
+          > au-view.content {
+
+            height: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+/// FLEX CONTAINERS ////////////////////////////////////////
+%LAYOUT-FLEX-CONTAINERS {
+
+  flex-direction: column;
+
+  > nav.au-navbar {
+
+    flex: 1;
+    flex-direction: row;
+  }
+
+  > au-main.page-host {
+
+    flex: 1;
+    flex-direction: column;
+
+    > router-view.page-view-port {
+
+      flex: 1;
+      flex-direction: row;
+
+      > aside.au-menu {
+
+        flex: 0 0 $aside-width;
+        flex-direction: column;
+
+        > ul.au-menu-items {
+
+          flex-direction: column;
+        }
+      }
+
+      > main.api-host {
+
+        flex: 1;
+        flex-direction: column;
+
+        > router-view.api-view-port {
+
+          flex: 1;
+          flex-direction: column;
+
+          > au-view.content {
+
+            flex: 1;
+            flex-direction: column;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+///                                                                                               ///
+///                                     ACTUAL IMPLEMENTATION                                     ///
+/// ********************************************************************************************* ///
+///                                                                                               ///
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+body { /// SCROLL CONTAINERS ///////////////////////////////
+
+  overflow: hidden;
+  @extend %LAYOUT-SCROLL-CONTAINERS;
+}
+
+
+body { /// CONTAINER POSITIONING ///////////////////////////
+
+  @extend %flexbox;
+  position: relative;
+
+  > nav.au-navbar,
+  > au-main.page-host,
+  > au-main.page-host > router-view.page-view-port,
+  > au-main.page-host > router-view.page-view-port > aside.au-menu,
+  > au-main.page-host > router-view.page-view-port > aside.au-menu > ul.au-menu-items,
+  > au-main.page-host > router-view.page-view-port > main.api-host,
+  > au-main.page-host > router-view.page-view-port > main.api-host > router-view.api-view-port,
+  > au-main.page-host > router-view.page-view-port > main.api-host > router-view.api-view-port > au-view.content {
+
+    @extend %flexbox;
+  }
+
+  > au-main.page-host,
+  > au-main.page-host > router-view.page-view-port,
+  > au-main.page-host > router-view.page-view-port > aside.au-menu,
+  > au-main.page-host > router-view.page-view-port > aside.au-menu > ul.au-menu-items,
+  > au-main.page-host > router-view.page-view-port > main.api-host,
+  > au-main.page-host > router-view.page-view-port > main.api-host > router-view.api-view-port,
+  > au-main.page-host > router-view.page-view-port > main.api-host > router-view.api-view-port au-view.content {
+
+    position: relative;
+  }
+
+  nav.au-navbar {
+
+    position: absolute;
+    top: 0; left:0;
+  }
+}
+
+
+body { /// MEDIA GUTTERS ///////////////////////////////////
+  > au-main.page-host {
+    > router-view.page-view-port {
+      > aside.au-aside {
+        ul.au-menu-items {
+          > li > a {
+
+            padding-left: $gutter-xs;
+            @include media-md { padding-left: $gutter-md; }
+          }
+        }
+      }
+      > main.api-host {
+        > router-view.api-view-port {
+          > au-view.content {
+
+            padding: $gutter-xs;
+            @include media-md { padding: $gutter-md; }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+body { /// CONTAINER SIZING ////////////////////////////////
+  @include min-size(100vw, 100vh);
+  @include max-size(100vw, 100vh);
+  @include size(100vw, 100vh);
+
+  > nav.au-navbar {
+    @include min-size(100vw, $navbar-height);
+    @include max-size(100vw, $navbar-height);
+    @include size(100vw, $navbar-height);
+    line-height: $navbar-height;
+  }
+
+  > au-main.page-host,
+  > au-main.page-host > router-view.page-view-port,
+  > au-main.page-host > router-view.page-view-port > aside.au-menu > ul.au-menu-items {
+    width: 100%;
+  }
+
+  > au-main.page-host > router-view.page-view-port > aside.au-menu,
+  > au-main.page-host > router-view.page-view-port > main.api-host {
+    height: 100vh;
+    max-height: 100vh;
+    min-height: 100vh;
+  }
+
+  > au-main.page-host > router-view.page-view-port > aside.au-menu > ul.au-menu-items,
+  > au-main.page-host > router-view.page-view-port > main.api-host >outer-view.api-view-port >  au-view.content {
+
+    height: 100%;
+  }
+
+  aside.au-menu {
+
+    max-width: $aside-width;
+  }
+}
+
+
+body { /// FLEX CONTAINERS /////////////////////////////////
+  @include flex-direction(column);
+
+  > nav.au-navbar,
+  > au-main.page-host,
+  > au-main.page-host > router-view.page-view-port,
+  > au-main.page-host > router-view.page-view-port > aside.au-menu > ul.au-menu-items,
+  > au-main.page-host > router-view.page-view-port > main.api-host,
+  > au-main.page-host > router-view.page-view-port > main.api-host > router-view.api-view-port,
+  > au-main.page-host > router-view.page-view-port > main.api-host > router-view.api-view-port au-view.content {
+
+    @include flex(1);
+  }
+
+  > au-main.page-host > router-view.page-view-port > aside.au-menu {
+
+    @include flex(0 0 $aside-width);
+  }
+
+
+  > nav.au-navbar,
+  > au-main.page-host > router-view.page-view-port {
+    @include flex-direction(row);
+  }
+  > au-main.page-host,
+  > au-main.page-host > router-view.page-view-port > aside.au-menu,
+  > au-main.page-host > router-view.page-view-port > aside.au-menu > ul.au-menu-items,
+  > au-main.page-host > router-view.page-view-port > main.api-host,
+  > au-main.page-host > router-view.page-view-port > main.api-host > router-view.api-view-port,
+  > au-main.page-host > router-view.page-view-port > main.api-host > router-view.api-view-port > au-view.content {
+    @include flex-direction(column);
+  }
+}
+
+
+
+@include select-navbar {
+
+  > au-nav{
+    @extend %flexbox;
+    position: relative;
+    height: inherit;
+  }
+
+  > au-nav[left],
+  > au-nav[tabs],
+  > au-nav[center],
+  > au-nav[search],
+  > au-nav[right] {
+    @include flex(1);
+  }
+
+  > au-nav[logo] {
+    padding-left: $gutter-xs;
+    @include flex(0 1 auto);
+    @include flex-items(center);
+    a {
+      position: relative;
+      height: 100%;
+      display: flex;
+      @include flex(0 1 auto);
+      @include flex-items(center);
+    }
+
+    span {
+      @include flex-items(flex-end);
+      line-height: 32px;
+    }
+
+    span[logo] {
+      display: flex;
+      position: relative;
+      line-height: 1.5rem;
+    }
+
+    span[title] {
+      display: flex;
+      padding-top: 5px;
+      font-size: 28px;
+      font-weight: 300;
+      color: #92278f;
+      position: relative;
+      margin-left: ($gutter-xs-px / 2);
+      padding-left: $gutter-xs-px;
+
+      &:after {
+        @include border-left(#ccc);
+      }
+    }
+
+    img {
+      display: inline-block;
+    }
+  }
+
+  au-nav[left] {
+    @include justify-content(center);
+  }
+
+  au-nav[tabs] {
+    line-height: inherit;
+    @include flex(1);
+
+    > a[au-tab] {
+      display: flex;
+      padding: 0 28px;
+      font-size: 13px;
+      line-height: inherit;
+      color: $nav-tabs--color;
+      background-color: $nav-tabs--bg;
+      @include flex-items(center);
+
+      > .au-tag {
+        font-weight: bold;
+        font-size: 10px;
+        color: $nav-tabs-tag--color;
+        background-color: $nav-tabs-tag--bg;
+        border-radius: $nav-tabs-tag--radius;
+        padding: 1px 7px;
+        margin-left: 4px;
+        line-height: 1;
+      }
+
+      &.au-active {
+        color: $nav-tabs-active--color;
+        background-color: $nav-tabs-active--bg;
+        @include box-shadow($nav-tabs-active--boxShadow);
+
+        > .au-tag {
+          color: $nav-tabs-active-tag--color;
+          background-color: $nav-tabs-active-tag--bg;
+        }
+      }
+    }
+  }
+  au-nav[left] {}
+  au-nav[center] {}
+  au-nav[right] {
+    @include flex(0 1 auto);
+    @include flex-items(center);
+    @include justify-content(flex-end);
+  }
+
+  au-nav[search] {
+    @include flex(0 1 auto);
+    padding: 0 $gutter-xs-px;
+    a.au-icon-button {
+      color: #70519e;
+      font-size: 28px;
+      font-weight: 300;
+    }
+  }
+}
+@include media-md {
+  @include select-navbar {
+    au-nav[search] {
+      padding: 0 $gutter-md-px;
+    }
+  }
+}
+
+
+// .au-tag {
+//       background: rgb(239,103,168);
+//       color: rgb(255,255,255);
+//       border-radius: 2px;
+//       padding: 1px 7px;
+//       margin-left: 4px;
+//       vertical-align: 1px;
+//     }
