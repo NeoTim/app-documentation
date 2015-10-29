@@ -1,0 +1,13 @@
+<template>
+  <require from="./au-dropdown.css"></require>
+
+  <select ref="selectElement" show.bind="isMobile" class="au-select" value.two-way="value">
+    <option repeat.for="item of options" value.bind="item">${item}</option>
+  </select>
+
+  <button ref="button">${value}</button>
+
+  <dropdown-container>
+    <div dropdown-item click.trigger="$parent.selectItem($event, item)" repeat.for="item of options"> ${item} </div>
+  </dropdown-container>
+</template>
