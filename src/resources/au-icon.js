@@ -42,9 +42,8 @@ export class IconElement {
   };
 
   attached() {
-    if (!this.icon) {
-      this.fetchIcon();
-    }
+    if (!this.icon) {this.fetchIcon();}
+
     this.iel.setAttribute('data-text', this.textValue);
     this.iel.innerText = '';
   }

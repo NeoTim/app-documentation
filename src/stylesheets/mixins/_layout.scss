@@ -42,9 +42,6 @@ body {// --------------------------------------------------- DOM-TREE--STRUCTURE
   }
 
   main.main-host {
-
-    aside.au-aside {/* aside content Here */}
-
     router-view.main-view-port {
       main.page-host {
         router-view.page-view-port {
@@ -86,9 +83,8 @@ body {// --------------------------------------------------- DOM-TREE--STRUCTURE
     router-view.main-view-port {
       @include has-scroll-containers();
 
-      au-menu {
-        display: none;
-      }
+      // Hide menu before it get placed in the au-aside
+      au-menu {display: none;}
 
       main.page-host {
         @extend %column-container;

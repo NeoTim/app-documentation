@@ -1,6 +1,13 @@
 
+
 au-icon.au-icon.au-navicon {
   i:before {
     @include use-auicon(navicon);
+  }
+}
+
+au-icon.au-icon.au-ios-arrow-right {
+  i:before {
+    @include use-auicon(ios-arrow-right);
   }
 }

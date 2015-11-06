@@ -120,6 +120,59 @@ ul.inline-list {// -----------------------------------------  ul.inline-list
 }
 
 
+au-icon.au-icon i:before,
+au-icon i:before {
+  @extend %icon-style;
+}
+
+au-icon,
+au-icon.au-icon i,
+au-icon.au-icon i:before {
+  font-family: $aucons-font-family;
+}
+
+
+au-icon.au-icon {
+  display: flex;
+  font-size: 1.5em;
+  font-weight: normal;
+  height: 2em;
+  width: 2em;
+  position: relative;
+  @include align-items(center);
+
+
+  &[icon-auto] {@include size(auto)}
+  &[icon-2x] {@include size(2em)}
+  &[icon-3x] {@include size(3em)}
+  &[icon-4x] {@include size(4em)}
+
+  &[size-2x] {font-size: 2em}
+  &[size-3x] {font-size: 3em}
+  &[size-4x] {font-size: 4em}
+
+  &[fit] {@include size(100%)}
+  &[fit-x] {width:100%}
+  &[fit-y] {height:100%}
+
+  &[align-left] {@include justify-content(flex-start)}
+  &[align-right] {@include justify-content(flex-end)}
+  &[align-center] {@include justify-content(center)}
+  &[align-top] {@include align-items(flex-start)}
+  &[align-middle] {@include align-items(center)}
+  &[align-bottom] {@include align-items(flex-end)}
+}
+
+[color="accent"] {color: $accent-color;}
+[color="primary"] {color: $primary-color;}
+[color="primary-dark"] {color: color-primary(dark);}
+[font="code"] {@extend %source-code;}
+[font="sans"] {@extend %source-sans;}
+[comment] {@extend %source-code;}
+[trans="3"] {opacity: 0.3}
+[trans="6"] {opacity: 0.6}
+[trans="9"] {opacity: 0.9}
+
 [gutter] {
   padding: 0 $gutter-xs-px !important;
 }

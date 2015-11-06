@@ -110,18 +110,18 @@
   }
 }
 
-ai-select-list {
+au-select-list {
   @include AUSelectListElement;
 }
 
 @include media-xs {
-  ai-select-list {
+  au-select-list {
     @include AUSelectListElement-xs;
   }
 }
 
 @include media-md {
-  ai-select-list {
+  au-select-list {
     @include AUSelectListElement-md;
   }
 }
