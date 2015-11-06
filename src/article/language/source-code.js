@@ -1,4 +1,4 @@
-import {inject, bindable, processContent, noView, TargetInstruction, Aurelia} from 'aurelia-framework';
+import {inject, bindable, processContent, noView, TargetInstruction, Aurelia, Container} from 'aurelia-framework';
 import {join} from 'aurelia-path';
 import {Loader} from 'aurelia-loader';
 
@@ -32,7 +32,7 @@ export class SourceCode {
   }
 
   createApp(host) {
-    this.app = new Aurelia(this.loader);
+    this.app = new Aurelia(this.loader, new Container());
     this.app.use.standardConfiguration();
     this.app.start().then(a => a.setRoot(this.path, host));
   }

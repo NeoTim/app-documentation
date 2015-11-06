@@ -37,7 +37,7 @@ export let database = {
     },
     {
       userName: 'aurelia',
-      productName: 'http-client',
+      productName: 'fetch-client',
       tutorials: []
     },
     {
@@ -89,11 +89,6 @@ export let database = {
     {
       userName: 'aurelia',
       productName: 'router',
-      tutorials: []
-    },
-    {
-      userName: 'aurelia',
-      productName: 'route-recognizer',
       tutorials: []
     },
     {
