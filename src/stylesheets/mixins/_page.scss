@@ -1,0 +1,189 @@
+%page-title {
+  color: $primary-color;
+  position: relative;
+  text-align: center;
+  font-weight: 300;
+  font-size: 2rem;
+  line-height: 4rem;
+  margin: 0;
+}
+
+%section-title {
+  font-size: 1.5rem;
+  line-height: 2;
+  font-weight: 300;
+  margin: 0;
+  position: relative;
+}
+
+%card-heading {
+  font-size: 1rem;
+  line-height: 2;
+  font-weight: 500;
+  margin: 0;
+  position: relative;
+}
+
+
+//---------------------------------------------------------- CARD TREE STRUCTURE
+
+section.au-card {
+  header.card-title {
+    h1 {} // card-title
+    h3 {} // card-heading
+    span[version-select] {} //card-version
+  }
+
+  article.card-body {
+    h3 {} // card-sub-heading
+    div.card-text {} // card-description
+    h4 {} // card-list-heading
+    ul.card-list {// card-list
+      li { // list-item
+        span[item-title] {} // item-title
+        span[item-body] {} // item-title
+      }
+    }
+  }
+}
+
+section.au-card {
+  @extend %flexbox;
+  @include flex(1 0 auto);
+  @include flex-column;
+  background: transparent;
+  position: relative;
+  border: $card-border;
+  overflow: hidden;
+  max-height: 100%;
+
+  margin-bottom: $gutter-xs;
+
+  > header {
+    @extend %flexbox;
+    @include flex(0 0 $card-header-height);
+    position: relative;
+
+    &:after {
+      @include border-bottom;
+    }
+
+    h1 {
+      @extend %section-title;
+      @include flex(1 0 auto);
+      padding-left: $half-gutter-xs;
+    }
+
+    span.card-control {
+      @extend %flexbox;
+      @include flex-items(center);
+      right: 0;
+      top: 0;
+      position: absolute;
+      min-height: 100%;
+      padding: 0 $gutter-xs;
+    }
+  }
+
+  > blockquote {
+    @extend %flexbox;
+    @include flex-column;
+    background-color: $card-background;
+    padding: $gutter-xs $gutter-xs 0;
+    position: relative;
+    overflow-x: auto;
+    max-width: 100%;
+
+    h1  {
+      @extend %card-heading;
+      @include flex(1);
+      display: block;
+      padding: 0 0;
+      position: relative;
+      &:after {
+        @include border-bottom;
+      }
+    }
+    [description] {
+      font-weight: 300;
+      opacity: 0.5;
+      font-size: 1em;
+      line-height: 1.2;
+    }
+  }
+
+  article {
+    @include flex(1 0 auto);
+    background-color: $card-background;
+    padding-top: $gutter-md;
+    padding-bottom: $gutter-md;
+
+    > h3[description] {
+      line-height: 1.5;
+      position: relative;
+      margin:0;
+      &:after {
+        @include border-bottom($divider-color);
+      }
+    }
+
+
+    &:not([gutter]) {
+      padding-left: $gutter-md;
+      padding-right: $gutter-md;
+    }
+    > *:not(:last-child) {
+      margin-bottom: $half-gutter-md;
+    }
+  }
+
+  &.title-card {
+    > header {
+      background-color: transparent;
+      h1  {
+        @extend %page-title;
+        padding: 0;
+      }
+    }
+  }
+}
+
+section.au-card + h1 {
+  padding: 0;
+  margin: 0 0 $half-gutter-xs 0;
+}
+
+
+@include media-md {
+
+  section.au-card {
+    margin-bottom: $gutter-md;
+    border-radius: $card-radius;
+
+    header {
+      padding: 0 $gutter-md;
+    }
+
+    blockquote {
+      padding: $gutter-md $gutter-md 0;
+    }
+
+
+    article {
+      padding-top: $gutter-md;
+      padding-bottom: $gutter-md;
+
+      &:not([gutter]) {
+        padding-left: $gutter-md;
+        padding-right: $gutter-md;
+      }
+      > *:not(:last-child) {
+        margin-bottom: $half-gutter-md;
+      }
+    }
+  }
+
+  section.au-card + h1 {
+    margin-bottom: $half-gutter-md;
+  }
+}

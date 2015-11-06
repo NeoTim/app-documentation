@@ -15,6 +15,7 @@ export class Index {
   constructor(server) {
     this.server = server;
     this.selectedProfile = this.profiles[0];
+    this.isArticle = true;
   }
 
   configureRouter(config, router) {

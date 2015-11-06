@@ -9,13 +9,28 @@ export class AuDropdownElement {
 
   constructor(element) {
     this.element = element;
+    this.onBlur = this.onBlur.bind(this);
   }
 
   attached(){
-    this.button.tabIndex = -1;
+    this.button.addEventListener('blur', this.onBlur);
+  }
+
+  activeChanged(value) {
+    this.button.focus();
+    this.element.classList[value ? 'add' : 'remove']('is-active');
+  }
+
+  onBlur($event) {
+    this.active = false;
+  }
+
+  onClick($event) {
+    this.active = true;
   }
 
   selectItem($event, item) {
     this.value = item;
+    this.active = false;
   }
 }

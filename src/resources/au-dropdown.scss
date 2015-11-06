@@ -1,6 +1,6 @@
-@import '_variables';
-@import '_function';
-@import '_mixin';
+@import '../stylesheets/_variables';
+@import '../stylesheets/_function';
+@import '../stylesheets/_mixin';
 
 au-dropdown {
   display: inline-block;
@@ -8,7 +8,8 @@ au-dropdown {
   line-height: 1;
   min-width: auto;
   padding: 0 1em;
-  @include flex(0 1 auto);
+  @include flex-shrink(0);
+  @include flex-basis(auto);
 
 
   button {
@@ -16,7 +17,8 @@ au-dropdown {
     background-color: white;
     border-radius: 5px;
     border: 1px solid $divider-color;
-    min-width: 162px;
+    min-width: 120px;
+    font-size: 14px;
     @include button-element-defaults;
   }
 
@@ -67,7 +69,7 @@ au-dropdown {
     }
   }
 
-  button:focus + dropdown-container {
+  &.is-active dropdown-container {
     div[dropdown-item] {
       max-height: 32px;
       -webkit-transform: scaleY(1);

@@ -1,0 +1,6 @@
+
+au-icon.au-icon.au-navicon {
+  i:before {
+    @include use-auicon(navicon);
+  }
+}

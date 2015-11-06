@@ -1,0 +1,15 @@
+<template>
+  <require from="./au-settings-button.css"></require>
+
+  <content-wrap>
+    <settings-container>
+        <content></content>
+    </settings-container>
+
+    <button ref="button" click.trigger="onClick($event)">
+      <au-icon icon-auto>ios-cog-outline</au-icon>
+    </button>
+  </content-wrap>
+
+  <div class="exploding-circle"></div>
+</template>

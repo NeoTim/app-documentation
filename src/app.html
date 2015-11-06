@@ -1,41 +1,64 @@
 <template>
   <require from="./app.css"></require>
   <require from="resources/loading-indicator"></require>
+  <require from="resources/au-settings-button"></require>
   <require from="resources/au-dropdown"></require>
+  <require from="resources/au-aside"></require>
 
-  <loading-indicator loading.bind="router.isNavigating"></loading-indicator>
 
-  <nav class="au-navbar">
 
-    <au-nav logo>
-      <a href="#/" >
-        <span logo><img src="images/aurelia-logo.png"></span>
-        <span title>Docs</span>
-      </a>
-    </au-nav logo>
+  <header class="au-header" ref="header">
+    <nav class="au-navbar">
 
-    <!-- <au-nav left></au-nav left> -->
+      <nav-item menu click.trigger="openAside($event)">
+        <au-icon>navicon</au-icon>
+      </nav-item>
 
-    <au-nav left tabs>
-      <a au-tab href="#/" class="${router.currentInstruction.config.moduleId === 'article/index' ? 'au-active' : ''}">Step-by-Step</a>
-      <a au-tab href="#/api/home" class="au-tab ${router.currentInstruction.config.moduleId === 'api/index' ? 'au-active' : ''}">
+      <nav-item logo>
+        <a href="#/" logo><img src="images/aurelia-logo.png"></a>
+        <a href="#/" title>Docs</a>
+      </nav-item>
+
+      <nav-item au-tabs>
+        <a tab-item href="#/" class="${router.currentInstruction.config.moduleId === 'article/index' ? 'au-active' : ''}">Step-by-Step</a>
+        <a tab-item href="#/api/home" class="tab-item ${router.currentInstruction.config.moduleId === 'api/index' ? 'au-active' : ''}">
+          Libraries
+          <span class="au-tag">API</span>
+        </a>
+      </nav-item>
+
+      <nav-item right>
+        <au-dropdown options.bind="culture.options" value.bind="culture.current"></au-dropdown>
+        <au-dropdown options.bind="language.options" value.bind="language.current"></au-dropdown>
+      </nav-item right>
+
+      <nav-item search>
+        <a class="au-icon-button" href="#"><i class="fa fa-search"></i></a>
+      </nav-item>
+    </nav>
+    <loading-indicator loading.bind="router.isNavigating"></loading-indicator>
+  </header>
+
+  <au-aside class="au-animate au-aside">
+    <nav ref="mobileTabs" class="au-tabs">
+      <a tab-item href="#/" class="${title === 'Article' ? 'au-active' : ''}">Step-by-Step</a>
+      <a tab-item href="#/api/home" class="tab-item ${title === 'API' ? 'au-active' : ''}">
         Libraries
         <span class="au-tag">API</span>
       </a>
-    </au-nav>
+    </nav>
+  </au-aside>
 
-    <au-nav right>
-      <au-dropdown options.bind="culture.options" value.bind="culture.current"></au-dropdown>
-      <au-dropdown options.bind="language.options" value.bind="language.current"></au-dropdown>
-    </au-nav right>
+  <main class="main-host" id="pageHost">
+    <router-view class="main-view-port"></router-view>
+  </main>
 
-    <au-nav search>
-      <a class="au-icon-button" href="#"><i class="fa fa-search"></i></a>
-    </au-nav>
-
-  </nav>
-
-  <au-main class="page-host">
-    <router-view class="page-view-port"></router-view>
-  </au-main>
+  <au-settings-button>
+    <au-select-list>
+      <au-select-item options.bind="culture.options" value.bind="culture.current"></au-select-item>
+      <au-select-item options.bind="language.options" value.bind="language.current"></au-select-item>
+    </au-select-list>
+  </au-settings-button>
 </template>
+
+

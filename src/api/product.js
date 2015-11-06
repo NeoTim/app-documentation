@@ -18,9 +18,18 @@ export class Repository {
         product.select();
         return product.getVersion(params.version).then(productVersion => {
           product.preferredVersion = productVersion.version;
+
           this.product = product;
           this.selectedProductVersion = productVersion;
           this.selectedVersion = productVersion.version;
+
+          if (this.selectedProductVersion) {
+            this.isDeps       = this.selectedProductVersion.dependencies && this.selectedProductVersion.dependencies.length;
+            this.isClasses    = this.selectedProductVersion.classes && this.selectedProductVersion.classes.length > 0;
+            this.isInterfaces = this.selectedProductVersion.interfaces && this.selectedProductVersion.interfaces.length > 0;
+            this.isVariables  = this.selectedProductVersion.variables && this.selectedProductVersion.variables.length > 0;
+            this.isFunctions  = this.selectedProductVersion.functions && this.selectedProductVersion.functions.length > 0;
+          }
         });
       });
   }

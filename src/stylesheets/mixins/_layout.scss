@@ -1,0 +1,172 @@
+%relative-position {
+  position: relative;
+}
+
+%column-container {
+  @extend %flexbox;
+  @extend %relative-position;
+  @include flex-column;
+}
+
+%row-container {
+  @extend %flexbox;
+  @extend %relative-position;
+  @include flex-row;
+}
+
+%flex-auto-container {
+  @extend %flexbox;
+  @extend %relative-position;
+  @include flex(1 0 auto);
+}
+
+%flex-one-container {
+  @include flex(1);
+  @extend %relative-position;
+}
+
+%flex-vw-container {
+  @include flex(0 0 100vw);
+  @extend %relative-position;
+}
+
+
+
+body {// --------------------------------------------------- DOM-TREE--STRUCTURE
+  header.au-header {
+    nav.au-navbar {}
+  }
+
+  au-aside.au-aside {
+    nav.au-tabs {}
+  }
+
+  main.main-host {
+
+    aside.au-aside {/* aside content Here */}
+
+    router-view.main-view-port {
+      main.page-host {
+        router-view.page-view-port {
+          au-view.content {/* Page Content Here */}
+        }
+      }
+    }
+  }
+}
+
+
+@mixin Layout {
+
+  header.au-header {
+    @extend %column-container;
+    @include flex(0 0 $header-height);
+    @include flex-wrap(nowrap);
+    min-width: 100%;
+    max-height: $header-height;
+
+    nav.au-navbar {
+      @extend %row-container;
+      @extend %flex-auto-container;
+      @include flex(0 0 $navbar-height);
+    }
+  }
+
+  au-aside.au-aside {
+    nav.au-tabs {
+      @include flex(0 0 $tabs-height);
+    }
+  }
+
+  main.main-host {
+    @extend %column-container;
+    @extend %flex-one-container;
+    height: auto;
+
+    router-view.main-view-port {
+      @include has-scroll-containers();
+
+      au-menu {
+        display: none;
+      }
+
+      main.page-host {
+        @extend %column-container;
+        @include scroll-container(auto);
+
+        router-view.page-view-port {
+          @extend %flex-auto-container;
+          height: auto;
+
+          au-view.content {
+            @extend %column-container;
+            @extend %flex-auto-container;
+            position: absolute;
+            min-width: 100%;
+            height: auto;
+            @include translate3d(0,0,0);
+          }
+        }
+      }
+    }
+  }
+}
+
+@mixin Layout-xs {//-------------------------------------------- LAYOUT-XS
+  @include Layout();
+
+  header.au-header {
+    max-height: $header-height-xs;
+  }
+
+  main.main-host {
+
+    router-view.main-view-port {
+      main.page-host {
+        router-view.page-view-port {
+          au-view.content {
+          }
+        }
+      }
+    }
+  }
+}
+
+@mixin Layout-md {//-------------------------------------------- LAYOUT-MD
+  @include Layout();
+
+  header.au-header {
+  }
+
+  main.main-host {
+    @extend %column-container;
+    @extend %flex-one-container;
+    height: auto;
+
+    router-view.main-view-port {
+      @include has-scroll-containers();
+
+      main.page-host {
+        @extend %column-container;
+        @include scroll-container(auto);
+
+        router-view.page-view-port {
+          @extend %flex-auto-container;
+          height: auto;
+
+          au-view.content {
+            @extend %column-container;
+            @extend %flex-auto-container;
+            position: absolute;
+            min-width: 100%;
+            height: auto;
+            @include translate3d(0,0,0);
+          }
+        }
+      }
+    }
+  }
+}
+
+
+

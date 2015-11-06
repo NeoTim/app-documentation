@@ -7,6 +7,16 @@
  * @return {Hex|RGBA}  Color value
  */
 @function color($args...) {
-  $color: _get($colors, $args...);
+  $color: _get($colors, $args);
   @return $color;
+}
+
+@function color-primary($args...) {
+  $color: color(primary);
+  @return _get($color, $args);
+}
+
+@function au-button($props...) {
+  $state: _get($au-button, $props);
+  @return $state;
 }

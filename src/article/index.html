@@ -1,18 +1,24 @@
 <template>
-  <section class="au-animate">
-    <ul class="au-menu">
-      <li class="profile-selector">
-        I am<select class="au-select" value.bind="selectedProfile">
-          <option repeat.for="profile of profiles" model.bind="profile">${profile.displayName}</option>
-        </select>
-      </li>
-      <li repeat.for="tutorial of tutorials" class="${tutorial.isSelected ? 'active': ''}">
-        <a href="#/${tutorial.product.userName}/${tutorial.product.productName}/${tutorial.product.preferredVersion}/doc/article/${tutorial.slug}">
-          ${$index + 1}. ${tutorial.title}
-        </a>
-      </li>
-    </ul>
-  </section>
 
-  <router-view></router-view>
+  <require from="../resources/au-aside"></require>
+  <require from="../resources/au-menu"></require>
+
+  <au-aside-placeholder></au-aside-placeholder>
+
+  <au-menu name="article">
+    <li class="profile-selector">
+      I am<select class="au-select" value.bind="selectedProfile">
+        <option repeat.for="profile of profiles" model.bind="profile">${profile.displayName}</option>
+      </select>
+    </li>
+    <li repeat.for="tutorial of tutorials" au-menu-item="item.bind:tutorial; active.bind:tutorial.isSelected">
+      <a href="#/${tutorial.product.userName}/${tutorial.product.productName}/${tutorial.product.preferredVersion}/doc/article/${tutorial.slug}">
+        ${$index + 1}. ${tutorial.title}
+      </a>
+    </li>
+  </au-menu>
+
+  <main class="page-host">
+    <router-view class="page-view-port"></router-view>
+  </main>
 </template>

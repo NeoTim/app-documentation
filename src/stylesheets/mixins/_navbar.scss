@@ -1,0 +1,228 @@
+@mixin navbar-logo {
+  @extend %flexbox;
+  @include flex-shrink(0);
+  @include flex-basis(auto);
+  @include flex-items(center);
+  margin-left: $gutter-md-px;
+  margin-right: $gutter-md-px;
+
+  a[logo] {
+    @extend %flexbox;
+    @include flex-items(center);
+    @include justify-content(flex-end);
+    @include flex(0 1 auto);
+    position: relative;
+    padding-right: ($gutter-xs-px / 2);
+    margin-right: $gutter-xs-px;
+    width: 100%;
+    margin-bottom: 7px;
+
+    &:after {@include border-right($divider-color);}
+  }
+  a[title] {
+    @extend %flexbox;
+    @include flex-items(center);
+    @include justify-content(flex-end);
+    @include flex(1 0 auto);
+    display: flex;
+    font-size: 25px;
+    font-weight: 300;
+    color: $primary-color;
+    position: relative;
+  }
+
+  img {
+    width: 100%;
+    max-width: 146px;
+    display: inline-block
+  }
+}
+
+@mixin navbar-title {
+  display: flex;
+  font-size: 25px;
+  font-weight: 300;
+  color: $primary-color;
+  position: relative;
+}
+
+@mixin navbar-search {
+  padding: 0 $gutter-xs-px;
+  a.au-icon-button {
+    color: #70519e;
+    font-size: 28px;
+    font-weight: 300;
+  }
+}
+
+@mixin navbar-tab-items {
+  @include order(0);
+  @include flex(1 0 auto);
+  @include justify-content(center);
+  @include flex-items(center);
+  height: auto;
+  line-height: inherit;
+  min-width: 1px;
+
+  > a[tab-item] {
+    @include flex(1 0 auto);
+    @include flexbox;
+    @include flex-items(center);
+    @include justify-content(center);
+    @include flex-wrap(nowrap);
+    @include box-shadow(none);
+
+    border-radius: $tabs-tag--radius;
+    line-height: 1;
+    min-width: 72px;
+    padding: 6px 18px;
+    color: $tabs--color;
+    cursor: pointer;
+    font-size: 13px;
+    background-color: $tabs--bg;
+    text-align: center;
+
+    > .au-tag {
+      font-weight: bold;
+      font-size: 10px;
+      color: $tabs-tag--color;
+      background-color: $tabs-tag--bg;
+      border-radius: $tabs-tag--radius;
+      padding: 1px 7px;
+      margin-left: 4px;
+      line-height: 1;
+    }
+
+    &.au-active {
+      @include box-shadow($tabs-active--boxShadow-md);
+      color: $tabs-active--color;
+      background-color: $tabs-active--bg;
+
+      > .au-tag {
+        color: $tabs-active-tag--color;
+        background-color: $tabs-active-tag--bg;
+      }
+    }
+  }
+}
+
+@mixin navbar-items-xs {
+
+  nav-item {
+    cursor: pointer;
+    @extend %flexbox;
+    @include flex-items(flex-start);
+    position: relative;
+    height: inherit;
+    min-width: 1px;
+    min-height: $navbar-height;
+    line-height: $navbar-height;
+  }
+
+  nav-item[logo],
+  nav-item[menu],
+  nav-item[title],
+  nav-item[search],
+  nav-item[right] {
+    max-height: inherit;
+  }
+
+  nav-item[search],
+  nav-item[right] {
+    @include flex(1 0 auto);
+    @include justify-content(flex-end);
+  }
+
+  nav-item[menu] {
+    @extend %flexbox;
+    @include flex-items(center);
+    padding-left: $gutter-xs-px;
+    font-size: 2em;
+    color: $accent-color;
+  }
+
+  nav-item[logo] {
+    @include navbar-logo;
+  }
+
+  nav-item[au-tabs] {
+    @include navbar-tab-items;
+  }
+  nav-item[right] {
+    @include flex-items(center);
+  }
+  nav-item[search] {
+    @include navbar-search;
+  }
+
+  nav-item[menu] {
+    @include flexbox;
+  }
+}
+
+@mixin navbar-items-max-xs {
+
+  nav-item[logo] {
+    @include flex(1 0 auto);
+    @include justify-content(center);
+    a[title] {
+      font-size: 20px;
+      color: $primary-accent-color;
+      line-height: 4.3;
+    }
+  }
+
+  nav-item[left],
+  nav-item[right],
+  nav-item[au-tabs] {
+    display: none;
+  }
+
+}
+
+@mixin navbar-items-md {
+
+  nav-item[left],
+  nav-item[right],
+  nav-item[au-tabs] {
+    @include flexbox;
+  }
+
+  nav-item[search] {
+    padding: 0 $gutter-md-px;
+  }
+
+  nav-item[logo] {
+    max-width: 220px;
+  }
+
+  nav-item[menu] {
+    display: none;
+  }
+}
+
+@mixin au-navbar-xs {
+  @include size(100vw, $navbar-height);
+  @include navbar-items-xs;
+  line-height: $navbar-height;
+  background-color: $nav-bg;
+  content: " ";
+  background: white;
+  box-shadow: 0px 3px 2px -1px rgba(0,0,0,0.2);
+  border-bottom: 1px solid #CCCCCC;
+}
+
+@mixin au-navbar-max-xs {
+  @include navbar-items-max-xs;
+}
+
+@mixin au-navbar-md {
+  @include navbar-items-md;
+}
+
+
+@mixin au-navbar($size) {
+  @if $size == xs {@include au-navbar-xs;}
+  @else if $size == max-xs {@include au-navbar-max-xs;}
+  @else {@include au-navbar-md;}
+}

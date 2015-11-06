@@ -1,11 +1,20 @@
+@import url(https://fonts.googleapis.com/css?family=Source+Code+Pro:400,600,300,500,700,900,200|Source+Sans+Pro:400,300,600,700,900,200italic,300italic);
+
+%source-code {
+  font-family: 'Source Code Pro';
+}
+
+%source-sans {
+  font-family: 'Source Sans Pro', sans-serif;
+}
 
 /**
- * @Mixin(): compensate-navbar
+ * @Mixin(): compensate-header
  * @description Use with (:before|:after) pseudo selectors.
  *              Typically it is a bad practice to pixel position elements to get around fixed navbar sizes.
  *              This will help normalize your content to fill the correct space
  *              You can place this on elements instead of trying to position your content around fixed navbars with padding and margin
- * @return {Unit} [$navbar-height:5rem]  The current Navbar height
+ * @return {Unit} [$size:xs]  The current Navbar height
  *
  * @usage
  *
@@ -22,6 +31,7 @@
  *
  * ```scss
  * $navbar-height: 5rem;
+ *
  * nav {
  *   height: $navbar-height;
  *   position: fixed;
@@ -47,7 +57,7 @@
  * main {
  *   position: relative;
  *   &:before {
- *     @include compensate-navbar($navbar-height);
+ *     @include compensate-header($size);
  *   }
  * }
  * ```
@@ -65,14 +75,31 @@
  *
  * ```
  */
-@mixin compensate-navbar($navbar-height:5rem) {
+@mixin compensate-header($media:md) {
+    $size: if($media == md, $header-height-md, $header-height-xs);
     content: " ";
     display: flex;
     position: relative;
     left:0;
     min-width: 100%;
-    min-height: $navbar-height;
-    max-height: $navbar-height;
+    min-height: $size;
+    max-height: $size;
+}
+
+@mixin translate3d($values...) {
+  -webkit-transform: translate3d($values);
+     -moz-transform: translate3d($values);
+      -ms-transform: translate3d($values);
+       -o-transform: translate3d($values);
+          transform: translate3d($values);
+}
+
+@mixin transform($value) {
+  -webkit-transform: $value;
+     -moz-transform: $value;
+      -ms-transform: $value;
+       -o-transform: $value;
+          transform: $value;
 }
 
 
@@ -174,8 +201,15 @@
  *
  * ```
  */
+
 @mixin breakpoint($breakpoint) {
   @media (min-width: map-get($breakpoints, $breakpoint)) {
+    @content;
+  }
+}
+
+@mixin max-breakpoint($breakpoint) {
+  @media (max-width: map-get($max-breakpoints, $breakpoint)) {
     @content;
   }
 }
@@ -184,6 +218,11 @@
 @mixin media-md { @include breakpoint(md) {@content;} }
 @mixin media-lg { @include breakpoint(lg) {@content;} }
 @mixin media-xl { @include breakpoint(xl) {@content;} }
+
+@mixin max-media-xs { @include max-breakpoint(xs) {@content;} }
+@mixin max-media-sm { @include max-breakpoint(sm) {@content;} }
+@mixin max-media-md { @include max-breakpoint(md) {@content;} }
+@mixin max-media-lg { @include max-breakpoint(lg) {@content;} }
 
 
 /**-------------------------------------------------------------*/
@@ -208,8 +247,8 @@
 @mixin border-line($color:#eeeeee, $size:1px, $side:bottom) {
   $sizing: if($side == bottom or $side == top, height, width);
   content: " ";
-  background-color: $color;
-  background: $color;
+  @if $color {background-color: $color}
+  @if $color {background: $color}
   position: absolute;
   #{$sizing}: $size;
   max-#{$sizing}: $size;
@@ -645,6 +684,18 @@
   @include justify-content(center);
 }
 
+%button-element {
+  @include button-element-defaults;
+}
+
+@mixin au-button($state:default) {
+  $settings: au-button($state);
+  @if $state == default {
+    @extend %button-element;
+  }
+  @include _declare($settings);
+}
+
 /**
  * @Mixin(): default-transition
  *
@@ -701,3 +752,86 @@
 %shadow-6dp {box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2)}
 %shadow-8dp {box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2)}
 %shadow-16dp {box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)}
+
+
+
+@mixin gradient-h($start:rgba(255,255,255,0), $start-viz:0%, $end:rgba(255,255,255,1), $end-viz:100%) {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&0+0,1+100 */
+  background: -moz-linear-gradient(left, $start, $start-viz, $end, $end-viz); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right top, color-stop($start-viz, $start), color-stop($end-viz, $end)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(left, $start, $start-viz, $end, $end-viz); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(left, $start, $start-viz, $end, $end-viz); /* Opera 11.10+ */
+  background: -ms-linear-gradient(left, $start, $start-viz, $end, $end-viz); /* IE10+ */
+  background: linear-gradient(to right, $start, $start-viz, $end, $end-viz); /* W3C */
+}
+
+
+@mixin gradient-v($start:rgba(255,255,255,0), $start-viz:0%, $end:rgba(255,255,255,1), $end-viz:100%) {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&0+0,1+100 */
+  background: -moz-linear-gradient(top, $start, $start-viz, $end, $end-viz); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right bottom, color-stop($start-viz, $start), color-stop($end-viz, $end)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, $start, $start-viz, $end, $end-viz); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, $start, $start-viz, $end, $end-viz); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, $start, $start-viz, $end, $end-viz); /* IE10+ */
+  background: linear-gradient(to bottom, $start, $start-viz ,$end, $end-viz); /* W3C */
+}
+
+
+
+
+@mixin hide-scrollbar {
+  &::-webkit-scrollbar,
+  &::-webkit-scrollbar,
+  &::-webkit-scrollbar {
+      display: none;
+  }
+}
+
+@mixin has-scroll-containers($size:false) {
+  @extend %flexbox;
+  @include flex-row;
+  @include flex(if($size, 0 0 $size, 1 0 auto));
+  @include translate3d(0,0,0);
+  height: 100%;
+  max-height: 100%;
+  min-width: if($size, $size, 100%);
+  overflow: hidden;
+  position: absolute;
+  backface-visibility: hidden;
+  will-change: overflow;
+}
+
+@mixin scroll-container($size:auto, $media:false) {
+  $grow: if($size == auto,1,0);
+  @include flex($grow, 0, $size);
+
+  @if $media {
+    @include scroll-extension();
+  } @else {
+    @extend %scroll-container;
+  }
+}
+
+@mixin scroll-extension() {
+  @extend %flexbox;
+  @include flex-column;
+  @include hide-scrollbar;
+  @include translate3d(0,0,0);
+  position: relative;
+  overflow: auto;
+  height: auto;
+  max-height: 100%;
+  min-height: 100%;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+
+  & > * {@include translate3d(0,0,0)}
+}
+
+%scroll-container {
+  @include scroll-extension();
+}
+
+%has-scroll-container {
+  @include has-scroll-containers();
+}

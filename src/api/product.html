@@ -2,27 +2,27 @@
   <require from="./product.css"></require>
 
   <au-view class="content product">
-    <div class="au-section">
-      <h1 class="au-section-heading">
-        <span>${product.productName}</span>
-        <span class="au-tag" if.bind="selectedProductVersion.version">${selectedProductVersion.version}</span>
 
-        <div class="pull-right">
-          <select class="au-select" value.bind="selectedVersion">
+    <section class="au-card title-card">
+      <header>
+        <h1>${product.productName}</h1>
+        <span class="card-control">
+          <au-tag class="card-control">${selectedProductVersion.version}</au-tag>
+          <!-- <select class="au-select" value.bind="selectedVersion">
             <option repeat.for="version of product.availableVersions" model.bind="version.version">${version.display}</option>
-          </select>
-        </div>
-      </h1>
+          </select> -->
+        </span>
+      </header>
 
-      <div class="au-section-body">
-        <h3 if.bind="selectedProductVersion.description">${selectedProductVersion.description}</h3>
+      <article>
+        <h3 description if.bind="selectedProductVersion.description">${selectedProductVersion.description}</h3>
 
-        <div class="text-sm" if.bind="selectedProductVersion.keywords">
-          <span class="strong">Keywords:</span>
+        <ul class="inline-list" if.bind="selectedProductVersion.keywords">
+          <li list-heading>Keywords</li>
           <template repeat.for="keyword of selectedProductVersion.keywords">
-            <span>${keyword}</span><span if.bind="!$last">, </span>
+            <li list-item>${keyword}</li>
           </template>
-        </div>
+        </ul>
 
         <div class="spaced">
           <a class="au-button" href.bind="selectedProductVersion.changeLogUrl" target="_blank">Changes</a>
@@ -30,87 +30,113 @@
           <a class="au-button" href.bind="selectedProductVersion.licenseUrl" target="_blank">License</a>
           <a class="au-button" href.bind="selectedProductVersion.repositoryUrl" target="_blank">Repository</a>
         </div>
-      </div>
-    </div>
+      </article>
+    </section>
 
-    <template if.bind="selectedProductVersion.dependencies && selectedProductVersion.dependencies.length">
-      <h1>Dependencies</h1>
-      <div class="au-section">
-        <div class="au-section-body">
-          <ul class="no-bullet">
+    <section class="au-card">
+
+      <template if.bind="isDeps">
+        <blockquote>
+          <h1>Dependencies</h1>
+        </blockquote>
+        <article>
+          <ul class="stack-list" no-bullet gutter underline source-code>
             <li repeat.for="dependency of selectedProductVersion.dependencies">
-              <a href="#/${dependency.userName}/${dependency.productName}/${dependency.preferredVersion}/doc/api/overview">${dependency.productName}</a>
+              <a color="accent" href="#/${dependency.userName}/${dependency.productName}/${dependency.preferredVersion}/doc/api/overview">aurelia-${dependency.productName}</a>
             </li>
           </ul>
-        </div>
-      </div>
-    </template>
+        </article>
+      </template>
 
-    <template if.bind="selectedProductVersion.classes.length > 0">
-      <h1>Classes</h1>
-      <div class="au-section">
-        <div class="au-section-body">
-          <ul class="no-bullet">
+      <blockquote>
+        <h1>Exports</h1>
+      </blockquote>
+
+      <article>
+
+        <template if.bind="isClasses">
+          <h3 half-gutter=left color="primary-dark">Classes</h3>
+          <ul class="stack-list" gutter="2x">
             <li repeat.for="child of selectedProductVersion.classes">
-              <a href="#/${$parent.product.userName}/${$parent.product.productName}/${$parent.product.preferredVersion}/doc/api/class/${child.name}">
+              <a trans="6" color="primary-dark" href="#/${$parent.product.userName}/${$parent.product.productName}/${$parent.product.preferredVersion}/doc/api/class/${child.name}">
                 ${child.name}
               </a>
             </li>
           </ul>
-        </div>
-      </div>
-    </template>
+        </template>
 
-    <template if.bind="selectedProductVersion.interfaces.length > 0">
-      <h1>Interfaces</h1>
-      <div class="au-section">
-        <div class="au-section-body">
-          <ul class="no-bullet">
+        <template if.bind="isInterfaces">
+          <h3 half-gutter=left color="primary-dark">Interfaces</h3>
+          <ul class="stack-list" gutter="2x">
             <li repeat.for="child of selectedProductVersion.interfaces">
-              <a href="#/${$parent.product.userName}/${$parent.product.productName}/${$parent.product.preferredVersion}/doc/api/interface/${child.name}">
+              <a trans="6" color="primary-dark" href="#/${$parent.product.userName}/${$parent.product.productName}/${$parent.product.preferredVersion}/doc/api/interface/${child.name}">
                 ${child.name}
               </a>
             </li>
           </ul>
-        </div>
-      </div>
+        </template>
+
+        <template if.bind="isVariables">
+          <h3 half-gutter=left color="primary-dark">Variables</h3>
+          <ul class="stack-list" gutter="2x">
+            <li repeat.for="child of selectedProductVersion.variables">
+              <a trans="6" color="primary-dark" href="#variable-${child.name}">
+                ${child.name}
+              </a>
+            </li>
+          </ul>
+        </template>
+
+        <template if.bind="isFunctions">
+          <h3 half-gutter=left color="primary-dark">Functions</h3>
+          <ul class="stack-list" gutter="2x">
+            <li repeat.for="child of selectedProductVersion.functions">
+              <a trans="6" color="primary-dark" href="#function-${child.name}">
+                ${child.name}
+              </a>
+            </li>
+          </ul>
+        </template>
+      </article>
+    </section>
+
+    <template if.bind="isVariables">
+      <h1 gutter>Variables</h1>
+      <section class="au-card">
+        <template repeat.for="variable of selectedProductVersions.variables">
+          <article>
+            <blockquote>
+              <h1>${variable.name}: ${variable.type.name}</h1>
+              <div description>${variable.comment.shortText || 'no description available'}</div>
+            </blockquote>
+          </article>
+        </template>
+      </section>
     </template>
 
-    <template if.bind="selectedProductVersion.variables.length > 0">
-      <h1>Variables</h1>
-      <div class="au-section variable" repeat.for="variable of selectedProductVersion.variables">
-        <div class="au-section-body">
-          <h3>
-            <strong>${variable.name}: ${variable.type.name}</strong>
-          </h3>
-          <div class="description">${variable.comment.shortText || 'no description available'}</div>
-        </div>
-      </div>
-    </template>
+    <template if.bind="isFunctions">
+      <h1 gutter>Functions</h1>
+      <section class="au-card">
+        <template repeat.for="function of selectedProductVersion.functions">
 
-    <template if.bind="selectedProductVersion.functions.length > 0">
-      <h1>Functions</h1>
-      <div class="au-section function" repeat.for="function of selectedProductVersion.functions">
-        <div class="au-section-body">
-          <h3>
-            <strong>
-              ${function.signature.name}(<span repeat.for="param of function.signature.parameters">${param.name}: ${param.type.name || 'any'}<span if.bind="!$last">, </span></span>): ${function.signature.type.name || 'any'}
-            </strong>
-          </h3>
+          <blockquote id="function-${function.signature.name}">
+            <h1 color="accent">${function.signature.name}(<span repeat.for="param of function.signature.parameters">${param.name}: ${param.type.name || 'any'}<span if.bind="!$last">, </span></span>): ${function.signature.type.name || 'any'}</h1>
+            <div description>${function.signature.comment.shortText || 'no description available'}</div>
+          </blockquote>
 
-          <div class="description">${function.signature.comment.shortText || 'no description available'}</div>
-
-          <div class="parameters" if.bind="function.signature.parameters.length > 0">
-            <h4>Parameters</h4>
-            <ul>
+          <article gutter="2x" if.bind="function.signature.parameters.length > 0">
+            <h3 comment>@Parameters: </h3>
+            <ul class="stack-list" gutter>
               <li repeat.for="param of function.signature.parameters">
                 <strong>${param.name}: ${param.type.name || 'any'}</strong>
                 <p>${param.comment.text || 'no description available'}</p>
               </li>
             </ul>
-          </div>
-        </div>
-      </div>
+          </article>
+
+        </template>
+      </section>
     </template>
+
   </au-view>
 </template>

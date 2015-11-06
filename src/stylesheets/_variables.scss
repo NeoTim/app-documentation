@@ -1,0 +1,174 @@
+$browser-context: 16;
+
+// ---- DEFAULTS -------------------------------------->
+$aucons-font-family: "aIcons" !default;
+$aucons-version: "2.0.0" !default;
+$aucons-prefix: au- !default;
+$aucons-font-path: 'lib/font/aicon/';
+
+$primary-color:   #70519E;
+$accent-color:    #EC2685;
+$primary-accent-color: #A1478C;
+$text-color:      rgba(0,0,0,0.87);
+$secondary-color: rgba(0,0,0,0.54);
+$icon-color:      rgba(0,0,0,0.54);
+$disable-color:   rgba(0,0,0,0.38);
+$hint-color:      rgba(0,0,0,0.38);
+$label-color:     rgba(0,0,0,0.38);
+$divider-color:   rgba(0,0,0,0.12);
+
+// Gutters
+$gutter-xs: 1em;
+$gutter-xs-px: 16px;
+$gutter-md: 1.5em;
+$gutter-md-px: 24px;
+
+$half-gutter-xs: ($gutter-xs / 2);
+$half-gutter-xs-px: ($gutter-xs-px / 2);
+$half-gutter-md: ($gutter-md / 2);
+$half-gutter-md-px: ($gutter-md-px / 2);
+
+$default-radius: 4px;
+
+// Navbar
+$navbar-height: 5rem;
+$tabs-height: 3rem;
+
+$header-height: $navbar-height;
+$header-height-xs: $navbar-height;
+$header-height-md: $header-height;
+
+// Aside-Menu
+$aside-width: 18rem;
+$aside-width-xs: 75vw;
+$aside-width-md: $aside-width;
+$aside-bg-xs: $primary-color;
+$aside-bg-md: #ECECED;
+
+// Page View
+$page-view-port-width: 100vw;
+$page-view-port-width-xs: 175vw;
+$page-view-port-width-md: $page-view-port-width;
+
+// API Host
+$api-host-width: 100%;
+$api-host-width-xs: 100vw;
+$api-host-width-md: $api-host-width;
+
+
+// ---- BREAKPOINTS -------------------------------------->
+$breakpoint-xs: 0;
+$breakpoint-sm: 34em;
+$breakpoint-md: 48em;
+$breakpoint-lg: 62em;
+$breakpoint-xl: 75em;
+
+$breakpoints: (
+  xs: $breakpoint-xs,
+  sm: $breakpoint-sm,
+  md: $breakpoint-md,
+  lg: $breakpoint-lg,
+  xl: $breakpoint-xl
+) !default;
+
+$max-breakpoints: (
+  xs: ($breakpoint-md - 1em),
+  sm: ($breakpoint-md - 1em),
+  md: ($breakpoint-lg - 1em),
+  lg: ($breakpoint-xl - 1em)
+) !default;
+
+$screen-xs: "(min-width: #{$breakpoint-xs})";
+$screen-sm: "(min-width: #{$breakpoint-sm})";
+$screen-md: "(min-width: #{$breakpoint-md})";
+$screen-lg: "(min-width: #{$breakpoint-lg})";
+$screen-xl: "(min-width: #{$breakpoint-xl})";
+
+// ---- COLORS ---------------------------------------->
+$colors: (
+  primary: (
+      default: $primary-color
+    , light: lighten($primary-color, 10%)
+    , dark : darken($primary-color, 10%)
+    , transparent: transparentize($primary-color, 0.5)
+  ),
+  accent: (
+      default: $accent-color
+    , light: lighten($accent-color, 10%)
+    , dark : darken($accent-color, 10%)
+    , transparent: transparentize($accent-color, 0.5)
+  )
+  , text      : $text-color
+  , secondary : $secondary-color
+  , icon      : $icon-color
+  , disable   : $disable-color
+  , hint      : $hint-color
+  , label     : $label-color
+  , divider   : $divider-color
+);
+
+// ---- AU-NAV ---------------------------------------->
+
+$nav-bg: #796F88;
+
+/* au-nav */
+$tabs--bg: transparent;
+$tabs--color: $text-color;
+$tabs-active--bg: $primary-color;
+$tabs-active--color: white;
+$tabs--boxShadow-xs: inset -1px -1px 1px 1px rgba(0, 0, 0, 0.1), inset 1px 0px 1px 1px rgba(0, 0, 0, 0.1);
+$tabs-active--boxShadow: 0px 4px 2px -1px rgba(217,217,217,1);
+$tabs-active--boxShadow-xs: inset -1px -1px 8px 1px rgba(0, 0, 0, 0.2), inset 1px 0px 8px 1px rgba(0, 0, 0, 0.2);
+$tabs-active--boxShadow-md: 0px 4px 2px -1px rgba(217,217,217,1);
+
+$tabs-tag--bg: rgb(239,103,168);
+$tabs-tag--color: white;
+$tabs-tag--radius: 2px;
+$tabs-tag--radius: 2px;
+
+$tabs-active-tag--bg: rgb(255,255,255);
+$tabs-active-tag--color:rgb(239,103,168);
+
+
+
+// ---- SETTINGS-BUTTON ------------------------------->
+$settings-btn--bg: #777;
+$settings-btn--color: white;
+$settings-btn--fontSize: 1.5em;
+$settings-btn-active--bg: $primary-color;
+
+// ---- CARDS ----------------------------------------->
+
+$card-background: white;
+$card-border-color: rgb(218,218,218);
+$card-border: 1px solid $card-border-color;
+$card-header-height: em(64);
+$card-radius: 4px;
+
+
+
+// ---- DEFAULTS -------------------------------------->
+// ---- BUTTONS --------------------------------------->
+$button-bg: transparent;
+$button-color: $primary-color;
+$button-border: 1px solid $primary-color;
+$button-radius: 4px;
+$button-active-bg: $primary-color;
+$button-active-color: white;
+
+$au-button: (
+  default: (
+    background-color: $button-bg,
+    border-radius: $button-radius,
+    border: $button-border,
+    color: $button-color,
+  ),
+  hover: (
+    background-color: $button-active-bg,
+    color: $button-active-color,
+  ),
+  active: (
+    background-color: $button-active-bg,
+    color: $button-active-color,
+  )
+);

@@ -1,19 +1,18 @@
 <template>
-  <require from="./au-menu"></require>
-  <require from="./au-menu.css"></require>
+  <require from="../resources/au-aside"></require>
+  <require from="../resources/au-menu"></require>
 
-  <aside class="au-menu au-animate">
-    <ul class="au-menu-items">
-      <au-menu-indicator ref="indicator"></au-menu-indicator>
-      <li repeat.for="product of products" class="${product.isSelected ? 'active': ''}" au-menu-item="item.bind:product; active.bind:product.isSelected;">
-        <a href="#/${product.userName}/${product.productName}/${product.preferredVersion}/doc/api/overview">
-          ${product.productName}
-        </a>
-      </li>
-    </ul>
-  </aside>
+  <au-aside-placeholder></au-aside-placeholder>
 
-  <main class="api-host">
-    <router-view class="api-view-port"></router-view>
+  <au-menu name="api">
+    <li repeat.for="product of products" class="${product.isSelected ? 'active': ''}" au-menu-item="item.bind:product; active.bind:product.isSelected;">
+      <a href="#/${product.userName}/${product.productName}/${product.preferredVersion}/doc/api/overview">
+        ${product.productName}
+      </a>
+    </li>
+  </au-menu>
+
+  <main class="page-host">
+    <router-view class="page-view-port"></router-view>
   </main>
 </template>

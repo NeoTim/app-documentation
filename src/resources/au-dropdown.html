@@ -5,7 +5,7 @@
     <option repeat.for="item of options" value.bind="item">${item}</option>
   </select>
 
-  <button ref="button">${value}</button>
+  <button ref="button" click.trigger="onClick($event)">${value}</button>
 
   <dropdown-container>
     <div dropdown-item click.trigger="$parent.selectItem($event, item)" repeat.for="item of options"> ${item} </div>
