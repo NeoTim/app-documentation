@@ -9,10 +9,6 @@ export function configure(aurelia) {
     })
     .feature('article/language')
     .globalResources('resources/au-icon')
-    // .plugin('aurelia-interface', config => {
-    //   config.icons();
-    //   // config.platform();
-    // });
 
   aurelia.start().then(a => a.setRoot());
 }

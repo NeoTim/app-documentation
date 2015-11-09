@@ -3,21 +3,19 @@
 
   <au-view class="content class">
 
-    <div class="au-section">
-      <h1 class="au-section-heading">
-        <span>${product.productName} :: ${target.name}</span>
-      </h1>
-
-      <div class="au-section-body">
-        <h3>${target.comment.shortText || 'no description available'}</h3>
-
+    <section class="au-card title-card">
+      <header>
+        <h1>${product.productName} :: ${target.name}</h1>
+      </header>
+      <article>
+        <h3 description>${target.comment.shortText || 'no description available'}</h3>
         <div if.bind="constructorSignature" class="text-sm">
           <strong>
             ${constructorSignature.name}(<span repeat.for="param of constructorSignature.parameters">${param.name}: ${param.type.name}<span if.bind="!$last">, </span></span>)
           </strong>
         </div>
-      </div>
-    </div>
+      </article>
+    </section>
 
     <h1 if.bind="target.properties.length > 0">Properties</h1>
 
