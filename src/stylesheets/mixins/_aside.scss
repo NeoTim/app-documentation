@@ -1,0 +1,125 @@
+
+@mixin au-tabs-xs {
+  @include flexbox;
+  @extend %shadow-2dp;
+  @include flex-row;
+  background-color: white;
+  cursor: pointer;
+  line-height: $tabs-height;
+  max-height: $tabs-height;
+  min-width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  position: relative;
+
+  a[tab-item] {
+    @include flexbox;
+    @include flex(0 0 50%);
+    @include flex-items(center);
+    @include justify-content(center);
+
+    position: relative;
+    line-height: $tabs-height;
+    color: $primary-color;
+
+    &:after {
+      content: " ";
+      display: block;
+      width: 100%;
+      height: 3px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background-color: transparent;
+    }
+
+    &.au-active {
+      &:after {
+        background-color: $primary-color;
+      }
+    }
+  }
+}
+
+@mixin au-tabs-md {
+  min-height: $header-height;
+  max-height: $header-height;
+  visibility: collapse;
+}
+
+
+@mixin au-aside-xs {
+  @include flexbox;
+  @include flex-column;
+  @include translate3d(-100vw, 0, 0);
+
+  position: absolute;
+  max-width: $aside-width-xs;
+  min-width: $aside-width-xs;
+  top: 0;
+  z-index: 1;
+  height: inherit;
+
+  > nav.au-tabs {
+    @include au-tabs-xs;
+  }
+
+  > section {
+    @include flexbox;
+    @include flex-column;
+    @include scroll-container();
+    @include flex(1 0 auto);
+    background-color: $aside-bg-xs;
+    position: relative;
+    border-right: 1px solid rgba(0,0,0,0.2);
+
+    &:after {
+      content: " ";
+      position: relative;
+      min-height: $header-height;
+      max-height: $header-height;
+    }
+  }
+
+  & + * au-aside-placeholder {
+    display: none;
+  }
+}
+
+@mixin au-aside-max-xs {
+  @include default-transition;
+  box-shadow: 4px 0px 6px rgba(0,0,0,0.2);
+  &.is-active {
+    @include translate3d(0, 0, 0);
+  }
+}
+
+@mixin au-aside-md {
+  @include translate3d(0, 0, 0);
+  max-width: $aside-width-md;
+  min-width: $aside-width-md;
+
+  > nav.au-tabs {
+    @include au-tabs-md;
+  }
+
+  > section {
+    background-color: $aside-bg-md;
+  }
+
+  & + * au-aside-placeholder {
+    @include flexbox;
+    @include flex(0 0 $aside-width-md);
+    min-width: $aside-width-md;
+    max-width: $aside-width-md;
+    height: 100%;
+    visibility: collapse;
+  }
+}
+
+@mixin au-aside($size) {
+  @if $size == xs {@include au-aside-xs;}
+  @else if $size == max-xs {@include au-aside-max-xs;}
+  @else {@include au-aside-md;}
+}

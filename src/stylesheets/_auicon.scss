@@ -1,0 +1,21 @@
+
+/**
+ * AU ICONS
+ *
+ * Instead of creating classes for every Icon in './util/_icons',
+ * If you need a specific Icon Add it to the list Here.
+ */
+
+$compiled-icons: (
+  navicon,
+  ios-arrow-right
+);
+
+
+@each $icon in $compiled-icons {
+  au-icon.au-icon.au-#{$icon} {
+    i:before {
+      @include use-auicon($icon);
+    }
+  }
+}

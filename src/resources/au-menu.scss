@@ -1,0 +1,116 @@
+@import '../stylesheets/_variables';
+@import '../stylesheets/_function';
+@import '../stylesheets/_mixin';
+
+@mixin au-menu-indicator-xs {
+  display: flex;
+  position: absolute;
+  top: 0;
+  height: 48px;
+  width: 100%;
+  padding-left: 8px;
+  @include flex-items(center);
+
+  &:before {
+    content: " ";
+    display: block;
+    width: 10px;
+    height: 20px;
+    border-radius: 2px;
+    background-color: white;
+  }
+}
+
+@mixin au-menu {
+  position: relative;
+  height: auto;
+  min-width: 100%;
+  list-style: none;
+
+  li {
+    position: relative;
+    max-height: 48px;
+    min-height: 48px;
+    line-height: 48px;
+    color: white;
+    font-size: 16px;
+    font-weight: 300;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    padding-left: 0;
+  }
+
+  a {
+    position: relative;
+    display: block;
+    padding-left: 28px;
+  }
+
+  li.profile-selector {
+    padding-left: $gutter-xs;
+    border-bottom: 1px solid #CAC3C3;
+    background-color: #E6E6E6;
+    color: gray;
+
+    select {
+      border: none;
+      background-color: transparent;
+      font-weight: bold;
+      outline: 0;
+    }
+
+    select:-moz-focusring {
+      color: transparent;
+      text-shadow: 0 0 0 #000;
+    }
+  }
+
+  li.active {
+    color: white;
+  }
+}
+
+au-menu-indicator {
+  @include default-transition(100ms);
+  @include au-menu-indicator-xs;
+}
+
+au-menu.au-menu {
+  @include au-menu;
+}
+
+@include media-md {
+
+  au-menu-indicator:before {
+    background-color: $accent-color;
+  }
+
+  .au-menu {
+    li a {
+      color: $primary-color;
+    }
+
+    li.profile-selector {
+      padding-left: $gutter-xs;
+      border-bottom: 1px solid #CAC3C3;
+      color: gray;
+
+      select {
+        border: none;
+        background-color: transparent;
+        font-weight: bold;
+        outline: 0;
+      }
+
+      select:-moz-focusring {
+        color: transparent;
+        text-shadow: 0 0 0 #000;
+      }
+    }
+  }
+
+  .au-aside > .au-menu li.profile-selector {
+    padding-left: $gutter-md;
+  }
+}

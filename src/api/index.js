@@ -5,6 +5,7 @@ import {Server} from 'backend/server';
 export class Index {
   constructor(server) {
     this.server = server;
+    this.isApi = true;
   }
 
   configureRouter(config, router){

@@ -4,7 +4,11 @@ export function configure(aurelia) {
     .developmentLogging()
     .plugin('aurelia-animator-css')
     .plugin('joelcoxokc/aurelia-interface-grid')
-    .feature('article/language');
+    .plugin('aurelia-interface-platforms', config => {
+      config.setClassList(document.documentElement);
+    })
+    .feature('article/language')
+    .globalResources('resources/au-icon')
 
   aurelia.start().then(a => a.setRoot());
 }

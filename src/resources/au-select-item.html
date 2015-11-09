@@ -1,0 +1,22 @@
+<template>
+  <select ref="select" value.two-way="value">
+    <option repeat.for="o of options" value.bind="o">${o}</option>
+  </select>
+
+  <select-container show.bind="active" ref="container">
+    <div class="select-option" repeat.for="o of options" click.trigger="$parent.onSelect($event, o)">
+      <template replaceable part="each-item">
+        ${o}
+      </template>
+    </div>
+  </select-container>
+
+  <select-item ref="button" tabIndex="0" click.trigger="onClick($event)">
+    <span>
+      <template replaceable part="active-item">
+        ${value}
+      </template>
+    </span>
+    <au-icon caret icon="ios-arrow-right"></au-icon>
+  </select-item>
+</template>

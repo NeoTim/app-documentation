@@ -1,0 +1,113 @@
+@import 'sassdash';
+@import 'bourbon';
+@import 'neat';
+@import 'stylesheets/_variables';
+@import 'stylesheets/_function';
+@import 'stylesheets/_mixin';
+@import 'stylesheets/_elements';
+@import 'stylesheets/mixins/_select-list';
+@import 'stylesheets/mixins/_aside';
+@import 'stylesheets/mixins/_layout';
+@import 'stylesheets/mixins/_navbar';
+@import 'stylesheets/mixins/_page';
+@import 'stylesheets/util/_icons';
+@import 'stylesheets/_auicon';
+@import 'stylesheets/mixins/_settings-button';
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+///                                                                                               ///
+///                                           AU LAYOUT                                           ///
+///                                                                                               ///
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+@font-face {
+ font-family: $aucons-font-family;
+ src:url("#{$aucons-font-path}aicons.eot?v=#{$aucons-version}");
+ src:url("#{$aucons-font-path}aicons.eot?v=#{$aucons-version}#iefix") format("embedded-opentype"),
+  url("#{$aucons-font-path}aicons.ttf?v=#{$aucons-version}") format("truetype"),
+  url("#{$aucons-font-path}aicons.woff?v=#{$aucons-version}") format("woff"),
+  url("#{$aucons-font-path}aicons.svg?v=#{$aucons-version}#Ionicons") format("svg");
+ font-weight: normal;
+ font-style: normal;
+}
+
+
+html, body {
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  -webkit-transform: translate3d(0,0,0);
+     -moz-transform: translate3d(0,0,0);
+      -ms-transform: translate3d(0,0,0);
+       -o-transform: translate3d(0,0,0);
+          transform: translate3d(0,0,0);
+}
+
+body {// --------------------------------------------------- Layout
+  @extend %column-container;
+  @include Layout();
+
+  &.active-navigation-aside,
+  &.active-navigation-settings {
+    nav.au-navbar,
+    main.page-host {
+      -webkit-filter: blur(10px);
+         -moz-filter: blur(10px);
+              filter: blur(10px);
+    }
+  }
+}
+
+@include media-xs {// --------------------------------------  @MEDIA XS
+  body {
+    header.au-header > nav.au-navbar {
+      @include au-navbar(xs);
+    }
+
+    au-aside.au-aside {
+      @include au-aside(xs);
+    }
+  }
+}
+
+@include max-media-xs {// ----------------------------------  @MEDIA MAX-MD
+
+  body {// -------------------------------------------------  @MEDIA MAX-MD: Layout
+    @extend %column-container;
+    @include Layout-xs();
+
+    header.au-header > nav.au-navbar {
+      @include au-navbar(max-xs);
+    }
+
+    au-aside {
+      @include au-aside(max-xs);
+    }
+
+    main router-view.main-view-port {// --------------------  @media MAX-MD: router-view.main-view-port
+      @include align-content(flex-end);
+      @include default-transition;
+      overflow:visible;
+    }
+  }
+}
+
+@include media-md {// --------------------------------------  @MEDIA MD
+
+  body {// -------------------------------------------------  @MEDIA MAX-MD: Layout
+    @extend %column-container;
+    @include Layout-md();
+
+    header.au-header > nav.au-navbar{// --------------------  @MEDIA MD: nav.au-navbar
+      @include au-navbar(md);
+    }
+
+    au-aside.au-aside {//-----------------------------------  @MEDIA MD:  nav.au-tabs
+      @include au-aside(md);
+    }
+
+    main.page-host au-view.content {//----------------------  @MEDIA MD:  au-view.content
+      padding: $gutter-md;
+    }
+  }
+}

@@ -1,0 +1,123 @@
+@mixin AUSelectListElement {
+
+  @extend %flexbox;
+  @include flex-column;
+  @include translate3d(0, 0, 0);
+  @include default-transition;
+  min-width: 100%;
+  max-width: 100%;
+
+  &.active-item {
+    @include translate3d(-100%, 0, 0);
+  }
+
+  au-select-item {
+    @extend %flexbox;
+    @include flex-row;
+    @include flex-shrink(0);
+    line-height: em(48);
+
+    select-container {
+      @extend %flexbox;
+      @include flex-direction(column);
+      @include translate3d(100%, 0, 0);
+      min-width: 100%;
+      overflow: auto;
+      position: absolute;
+      line-height: inherit;
+      right: 0;
+
+      div.select-option {
+        @include flex-shrink(0);
+        cursor: pointer;
+        line-height: inherit;
+        padding-left: 16px;
+      }
+    }
+
+    &:not(:first-child) {
+      select-container {
+        top: 0;
+      }
+    }
+
+    select-item {
+
+      @extend %flexbox;
+      @include flex(1 0);
+      position: relative;
+      cursor: pointer;
+      line-height: inherit;
+      padding-left: $gutter-xs-px;
+
+      span {
+        text-align: right;
+        padding-right: $gutter-xs-px;
+        @include flex(1);
+      }
+
+
+      .ai-icon[caret] {
+        @include flex(0 1 auto);
+        line-height: inherit;
+        padding-right: $gutter-xs-px;
+        color: theme-light(icon);
+
+        i {
+          line-height: inherit;
+          @include transform(rotate(-90deg))
+        }
+      }
+    }
+  }
+
+  select {
+    visibility: hidden;
+    height: 0;
+    width: 0;
+  }
+}
+
+@mixin AUSelectListElement-xs {
+
+  au-select-item {
+    select-item {
+      padding-left: $gutter-xs-px;
+
+      span,
+      .ai-icon[caret] {
+        padding-right: $gutter-xs-px;
+      }
+    }
+  }
+}
+
+@mixin AUSelectListElement-md {
+
+  au-select-item {
+    select-item {
+      padding-left: $gutter-md-px;
+
+      span,
+      .ai-icon[caret] {
+        padding-right: $gutter-md-px;
+      }
+    }
+  }
+}
+
+au-select-list {
+  @include AUSelectListElement;
+}
+
+@include media-xs {
+  au-select-list {
+    @include AUSelectListElement-xs;
+  }
+}
+
+@include media-md {
+  au-select-list {
+    @include AUSelectListElement-md;
+  }
+}

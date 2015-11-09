@@ -1,0 +1,277 @@
+
+// ---------------------------------------------------------  STYLE UTILS
+[color="accent"] {color: $accent-color;}
+[color="primary"] {color: $primary-color;}
+[color="primary-dark"] {color: color-primary(dark);}
+[font="code"] {@extend %source-code;}
+[font="sans"] {@extend %source-sans;}
+[comment] {@extend %source-code;}
+[trans="3"] {opacity: 0.3}
+[trans="6"] {opacity: 0.6}
+[trans="9"] {opacity: 0.9}
+
+[gutter] {// -----------------------------------------------  gutter
+  padding: 0 $gutter-xs-px !important;
+}
+
+[half-gutter] {
+  padding: 0 ($gutter-xs-px / 2) !important;
+}
+
+
+[gutter="2x"] {
+  padding: 0 ($gutter-xs-px * 2) !important;
+}
+
+
+
+loading-indicator {// --------------------------------------  loading-indicator
+  display: block;
+  position: absolute;
+  min-width: 100%;
+  top: $navbar-height;
+}
+
+#nprogress .bar {position: absolute !important;}
+
+au-overlay {
+  display: block;
+  min-height: 100vh;
+  min-width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  overlay {
+    @include transform(scale(1));
+    @include default-animation;
+    background-color: rgba(0,0,0,0.5);
+    display: block;
+    min-height: 300vw;
+    min-width: 200vw;
+    position: absolute;
+    top: -25vw;
+    left: -25vw;
+    z-index: 1;
+
+    -webkit-animation-direction: forwards;
+            animation-direction: forwards;
+    -webkit-animation: overlay-animation 300ms;
+            animation: overlay-animation 300ms;
+  }
+}
+
+button.au-button,
+     a.au-button {// --------------------------------------- au-button
+
+  @include au-button(default);
+  @include default-transition();
+  @include translate3d(0,0,0);
+  display: inline-block;
+  margin: 0 2px;
+  font-size: 12px;
+  padding: 8px 12px;
+
+  &:hover {
+    @include au-button(hover);
+    background: #7d519e;
+    color: white;
+  }
+}
+
+
+.au-reference-list {// -------------------------------------  au-reference-list
+
+  ul {
+    margin-left: 24px;
+    font-size: 14px;
+    line-height: 26px;
+    margin-left: 0;
+    list-style: initial;
+
+    a {
+      font-family: consolas;
+      font-size: 14px;
+      color: #ef67a8;
+      text-decoration: underline;
+    }
+
+    li {
+      padding-left: 6px;
+    }
+
+    &.no-bullet {
+      list-style-type:none
+    }
+  }
+}
+
+au-tag {// ------------------------------------------------- au-tag
+
+  @include flex(0 1 auto);
+  @include flex-self(center);
+  background: white;
+  border: 1px solid $divider-color;
+  border-radius: $default-radius;
+  color: rgb(128,128,128);
+  display: inline-block;
+  font-size: 10px;
+  line-height: 1.5;
+  margin: 0 5px;
+  padding: 2px 7px;
+
+  // -webkit-box-shadow: 0px 1px 3px 0px #dadada;
+  // -moz-box-shadow: 0px 1px 3px 0px #dadada;
+  // box-shadow: 0px 1px 1px 0px #dadada;
+  // vertical-align: middle;
+  // position: relative;
+  // top: -12px;
+}
+
+ul.stack-list {// ------------------------------------------  stack-list
+  font-size: 1em;
+  line-height: 1.5;
+  margin-left: 0;
+  list-style: initial;
+
+  li a {
+    font-weight: 300;
+    font-size: 1em;
+  }
+
+  &[no-bullet] {list-style-type:none}
+
+  &[underline] {
+    li a {text-decoration: underline}
+  }
+
+  &[source-code] {
+    li a  {@extend %source-code;}
+  }
+}
+
+ul.inline-list {// -----------------------------------------  inline-list
+
+  @extend %flexbox;
+  @include flex(1);
+  @include flex-items(center);
+  list-style: none;
+  min-width: 100%;
+  margin: $half-gutter-xs 0;
+
+  li {
+    @extend %inline-flex;
+    @include flex(0 1 auto);
+    margin: 0 2px;
+  }
+
+  li[list-heading] {
+    font-weight: 800;
+    font-size: 0.9em;
+    opacity: 0.5;
+
+    &:after {
+      @include flex(1);
+      content: ": ";
+      display: flex;
+    }
+  }
+
+  li[list-item] {
+    font-size: 0.8em;
+    &:not(:last-child):after {
+      @include flex(1);
+      content: ", ";
+      display: flex;
+    }
+  }
+}
+
+
+au-icon.au-icon i:before,
+au-icon i:before {
+  @extend %icon-style;
+}
+
+au-icon,
+au-icon.au-icon i,
+au-icon.au-icon i:before {
+  font-family: $aucons-font-family;
+}
+
+au-icon.au-icon {// ----------------------------------------  au-icon
+  display: flex;
+  font-size: 1.5em;
+  font-weight: normal;
+  height: 2em;
+  width: 2em;
+  position: relative;
+  @include align-items(center);
+
+
+  &[icon-auto] {@include size(auto)}
+  &[icon-2x] {@include size(2em)}
+  &[icon-3x] {@include size(3em)}
+  &[icon-4x] {@include size(4em)}
+
+  &[size-2x] {font-size: 2em}
+  &[size-3x] {font-size: 3em}
+  &[size-4x] {font-size: 4em}
+
+  &[fit] {@include size(100%)}
+  &[fit-x] {width:100%}
+  &[fit-y] {height:100%}
+
+  &[align-left] {@include justify-content(flex-start)}
+  &[align-right] {@include justify-content(flex-end)}
+  &[align-center] {@include justify-content(center)}
+  &[align-top] {@include align-items(flex-start)}
+  &[align-middle] {@include align-items(center)}
+  &[align-bottom] {@include align-items(flex-end)}
+}
+
+.profile-selector {
+  @include flexbox;
+}
+
+@include max-media-xs {
+  .profile-selector {
+    display: none;
+  }
+}
+
+@include media-md {// --------------------------------------  @MEDIA MEDIUM
+  ul.inline-list {
+    margin: $half-gutter-md 0 !important;
+  }
+
+  [gutter] {
+    padding: 0 $gutter-md-px !important;
+  }
+
+  [half-gutter] {
+    padding: 0 ($gutter-md-px / 2) !important;
+  }
+
+  [gutter="2x"] {
+    padding: 0 ($gutter-md-px * 2) !important;
+  }
+}
+
+@keyframes overlay-animation {
+  from {
+    @include transform(scale(0));
+  }
+  to {
+    @include transform(scale(1));
+  }
+}
+
+@-webkit-keyframes overlay-animation {
+  from {
+    @include transform(scale(0));
+  }
+  to {
+    @include transform(scale(1));
+  }
+}

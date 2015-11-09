@@ -1,0 +1,186 @@
+au-settings-button {
+
+  @extend %flexbox;
+  @include flex-basis(auto);
+  @include flex-shrink(0);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: auto;
+  width: auto;
+  border-top-left-radius: 200vw;
+
+  content-wrap {
+    overflow: hidden;
+    @extend %flexbox;
+    @include flex-column;
+    @include flex-items(flex-end);
+    @include justify-content(flex-end);
+    z-index: 11;
+    border-top-left-radius: 200vw;
+    min-width: 100%;
+    position: relative;
+    -webkit-transform: translateZ(0);
+       -moz-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+         -o-transform: translateZ(0);
+            transform: translateZ(0);
+  }
+
+  settings-container {
+    @extend %flexbox;
+    @include flex-column;
+
+    min-width: 100%;
+    opacity: 0;
+    outline: none;
+    overflow: hidden;
+    position: static;
+    visibility: hidden;
+    z-index: 1;
+
+    > au-select-list  {
+      au-select-item {
+        outline: none;
+        position: static;
+        select-item {
+          span:focus {
+            outline: none;
+          }
+          &:active,&:focus {
+            background-color: transparent;
+            outline: none;
+          }
+          &:after {
+            @include border-bottom($color:false);
+            @include gradient-h($end: #777);
+          }
+        }
+
+
+        select-container div.select-option {
+          background-color: $accent-color;
+          color: white;
+          outline: none;
+          position: relative;
+          padding-left: 40%;
+          &:after {
+            @include border-bottom($color:false);
+            @include gradient-h($end: white);
+          }
+        }
+      }
+    }
+
+    > au-dropdown {
+      @include flex-self(flex-end);
+    }
+  }
+
+  content-wrap > button {
+
+    @include default-transition;
+    @include button-element-defaults;
+    @include justify-content(center);
+    @include size(64px);
+
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    &:active, &:focus {
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    background-color: $settings-btn--bg;
+    border-radius: 64px;
+    border:none;
+    bottom: 0;
+    color: $settings-btn--color;
+    font-size: $settings-btn--fontSize;
+    margin: 24px;
+    padding: 0;
+    position: relative;
+    right: 0;
+    z-index: 1;
+
+    .au-icon {
+      @include flex(1);
+      @include justify-content(center);
+      font: normal normal normal 14px/1 FontAwesome;
+      font-size: inherit;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .au-icon i:before {
+      position: relative;
+      @include use-auicon('android-settings');
+      @include transform(translateZ(0) rotate(0deg));
+      @include transition(all 200ms $ease-in-out-quad);
+    }
+  }
+
+
+  div.exploding-circle {
+
+    position: absolute;
+    right: -100vw;
+    bottom: -100vw;
+    min-width: 200vw;
+    min-height: 200vw;
+    border-radius: 100%;
+    background-color: white;
+    z-index: 10;
+
+    -webkit-transition-timing-function: cubic-bezier(0,1.28,0,1);
+       -moz-transition-timing-function: cubic-bezier(0,1.28,0,1);
+        -ms-transition-timing-function: cubic-bezier(0,1.28,0,1);
+         -o-transition-timing-function: cubic-bezier(0,1.28,0,1);
+            transition-timing-function: cubic-bezier(0,1.28,0,1);
+
+    -webkit-transition-duration: 300ms;
+       -moz-transition-duration: 300ms;
+        -ms-transition-duration: 300ms;
+         -o-transition-duration: 300ms;
+            transition-duration: 300ms;
+
+    -webkit-transform: translateZ(0) scale(0);
+       -moz-transform: translateZ(0) scale(0);
+        -ms-transform: translateZ(0) scale(0);
+         -o-transform: translateZ(0) scale(0);
+            transform: translateZ(0) scale(0);
+  }
+
+  &.is-active {
+    @include transition(box-shadow 100ms ease 100ms);
+    @extend %shadow-8dp;
+    height: 100vw;
+    min-width: 100vw;
+    overflow: hidden;
+
+    settings-container {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    content-wrap > button {
+      background-color: $settings-btn-active--bg;
+      .au-icon i:before {
+
+        // content: "\f00d";
+        @include use-auicon(android-close);
+        @include transform(translateZ(0) rotate(360deg));
+      }
+    }
+
+    div.exploding-circle {
+      @include transform(translateZ(0) scale(1));
+    }
+  }
+}
+
+
+@include breakpoint(md) {
+  au-settings-button {
+    display: none;
+  }
+}
