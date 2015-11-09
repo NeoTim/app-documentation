@@ -21,6 +21,10 @@ export class AuMenuElement {
     this.events = events;
   }
 
+  created(view) {
+    this.view = view;
+  }
+
   bind(bindingContext) {
     this.bindingContext = this.bindingContext || bindingContext;
     this.events.publish('set-au-menu', this);

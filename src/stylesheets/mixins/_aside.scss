@@ -90,7 +90,7 @@
 @mixin au-aside-max-xs {
   @include default-transition;
   box-shadow: 4px 0px 6px rgba(0,0,0,0.2);
-  &.is-open {
+  &.is-active {
     @include translate3d(0, 0, 0);
   }
 }

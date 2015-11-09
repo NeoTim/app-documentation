@@ -6,20 +6,16 @@
   @include default-transition;
   min-width: 100%;
   max-width: 100%;
-  position: relative;
 
   &.active-item {
     @include translate3d(-100%, 0, 0);
   }
 
-
   au-select-item {
     @extend %flexbox;
     @include flex-row;
     @include flex-shrink(0);
-    position: relative;
     line-height: em(48);
-
 
     select-container {
       @extend %flexbox;
@@ -35,13 +31,13 @@
         @include flex-shrink(0);
         cursor: pointer;
         line-height: inherit;
-        padding-left: 20%;
+        padding-left: 16px;
       }
     }
 
     &:not(:first-child) {
       select-container {
-        top: -100%;
+        top: 0;
       }
     }
 

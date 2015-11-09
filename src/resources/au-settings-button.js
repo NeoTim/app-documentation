@@ -1,29 +1,60 @@
 import {customElement, bindable, inject} from 'aurelia-framework';
-import {EventAggregator} from 'aurelia-event-aggregator';
+import {OverlayController} from 'resources/au-overlay';
+import {isTouch} from 'aurelia-interface-platforms';
+import {AUChannel} from 'services/channel';
+
+const ACTIVE_CLASSNAME = 'is-active';
+const DEFAULT_CLASSNAME = 'au-settings-button';
 
 @customElement('au-settings-button')
-@inject(Element, EventAggregator)
+@inject(Element, AUChannel, OverlayController)
 export class AuSettingsButtonElement {
   @bindable active = null;
-  clickEvent = 'touchstart';
 
-  constructor(element, events) {
+  bindableKey = 'active';
+  name = 'settings';
+
+  constructor(element, channel, overlayController) {
+    element.className += ` ${DEFAULT_CLASSNAME}`;
+    channel.createInstruction(this);
+
     this.element = element;
-    this.events = events;
+    this.channel = channel;
+    this.overlayController = overlayController;
     this.onClick = this.onClick.bind(this);
-    this.onDocumentTouch = this.onDocumentTouch.bind(this);
+  }
 
-    if (document.aureliaInterface && !document.aureliaInterface.device.isTouch()) {
-      this.clickEvent = 'click';
-    }
+  open() {
+    this.overlay && this.overlay.attach();
+    this.active = true;
+  }
 
-    events.subscribe('screen-navigation', payload => {
-      if (payload.type !== 'settings-button') this.active = false;
+  close() {
+    this.overlay && this.overlay.destroy();
+    this.active = false;
+  }
+
+  created() {
+    let channel = this.channel;
+
+    channel.subscribe('navigation-activated', (payload) => {
+      if (this.active && !payload.validate(this)) {
+        this.close();
+      }
+    });
+
+    channel.subscribe('activate-settings', (payload) => {
+      this.open();
+    });
+
+    channel.subscribe('deactivate-settings', (payload) => {
+      this.close();
     });
   }
 
   attached(){
-    this.pageHost = document.getElementById('pageHost');
+    this.overlay = this.overlayController.createOverlay();
+    this.overlay.onClick(()=> this.close());
   }
 
   detached() {
@@ -31,23 +62,17 @@ export class AuSettingsButtonElement {
   }
 
   activeChanged(value) {
-    this.element.classList[value ? 'add' : 'remove']('is-active');
-    this.pageHost.classList[value ? 'add' : 'remove']('is-active-settings');
+    this.element.classList[value ? 'add' : 'remove'](ACTIVE_CLASSNAME);
 
     if (value) {
-      this.events.publish('screen-navigation', {nav:this, type:'settings-button'});
+      this.channel.publish('navigation-activated', this.channelInstruction);
     } else {
-      this.events.publish('stop-screen-navigation', {nav:this, type:'settings-button'});
+      this.channel.publish('navigation-deactivated', this.channelInstruction);
     }
   }
 
   onClick($event) {
-    this.active = !this.active;
-  }
-
-  onDocumentTouch($event) {
-    if (!this.element.contains($event.target)) {
-      this.active = false;
-    }
+    if (this.active) this.close();
+    else this.open();
   }
 }

@@ -1,21 +1,87 @@
+
+// ---------------------------------------------------------  STYLE UTILS
+[color="accent"] {color: $accent-color;}
+[color="primary"] {color: $primary-color;}
+[color="primary-dark"] {color: color-primary(dark);}
+[font="code"] {@extend %source-code;}
+[font="sans"] {@extend %source-sans;}
+[comment] {@extend %source-code;}
+[trans="3"] {opacity: 0.3}
+[trans="6"] {opacity: 0.6}
+[trans="9"] {opacity: 0.9}
+
+[gutter] {// -----------------------------------------------  gutter
+  padding: 0 $gutter-xs-px !important;
+}
+
+[half-gutter] {
+  padding: 0 ($gutter-xs-px / 2) !important;
+}
+
+
+[gutter="2x"] {
+  padding: 0 ($gutter-xs-px * 2) !important;
+}
+
+
+
+loading-indicator {// --------------------------------------  loading-indicator
+  display: block;
+  position: absolute;
+  min-width: 100%;
+  top: $navbar-height;
+}
+
+#nprogress .bar {position: absolute !important;}
+
+au-overlay {
+  display: block;
+  min-height: 100vh;
+  min-width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  overlay {
+    @include transform(scale(1));
+    @include default-animation;
+    background-color: rgba(0,0,0,0.5);
+    display: block;
+    min-height: 200vw;
+    min-width: 200vw;
+    position: absolute;
+    top: -25vw;
+    left: -25vw;
+    z-index: 1;
+
+    -webkit-animation-direction: forwards;
+            animation-direction: forwards;
+    -webkit-animation: overlay-animation 300ms;
+            animation: overlay-animation 300ms;
+  }
+}
+
 button.au-button,
-a.au-button {
+     a.au-button {// --------------------------------------- au-button
+
   @include au-button(default);
-  @include default-transition;
+  @include default-transition();
   @include translate3d(0,0,0);
   display: inline-block;
-  padding: 8px 12px;
-  font-size: 12px;
   margin: 0 2px;
+  font-size: 12px;
+  padding: 8px 12px;
+
+  &:hover {
+    @include au-button(hover);
+    background: #7d519e;
+    color: white;
+  }
 }
 
-.au-button:hover {
-  @include au-button(hover);
-  background: #7d519e;
-  color: white;
-}
 
-.au-reference-list {
+.au-reference-list {// -------------------------------------  au-reference-list
+
   ul {
     margin-left: 24px;
     font-size: 14px;
@@ -33,33 +99,36 @@ a.au-button {
     li {
       padding-left: 6px;
     }
+
     &.no-bullet {
       list-style-type:none
     }
   }
 }
 
-au-tag {
+au-tag {// ------------------------------------------------- au-tag
+
   @include flex(0 1 auto);
   @include flex-self(center);
-  display: inline-block;
-  color: rgb(128,128,128);
   background: white;
   border: 1px solid $divider-color;
   border-radius: $default-radius;
+  color: rgb(128,128,128);
+  display: inline-block;
+  font-size: 10px;
+  line-height: 1.5;
+  margin: 0 5px;
+  padding: 2px 7px;
+
   // -webkit-box-shadow: 0px 1px 3px 0px #dadada;
   // -moz-box-shadow: 0px 1px 3px 0px #dadada;
   // box-shadow: 0px 1px 1px 0px #dadada;
-  font-size: 10px;
-  padding: 2px 7px;
-  line-height: 1.5;
-  margin: 0 5px;
   // vertical-align: middle;
   // position: relative;
   // top: -12px;
 }
 
-ul.stack-list {
+ul.stack-list {// ------------------------------------------  stack-list
   font-size: 1em;
   line-height: 1.5;
   margin-left: 0;
@@ -77,18 +146,17 @@ ul.stack-list {
   }
 
   &[source-code] {
-    li a  {
-      @extend %source-code;
-    }
+    li a  {@extend %source-code;}
   }
 }
-ul.inline-list {// -----------------------------------------  ul.inline-list
+
+ul.inline-list {// -----------------------------------------  inline-list
+
   @extend %flexbox;
   @include flex(1);
   @include flex-items(center);
-
-  min-width: 100%;
   list-style: none;
+  min-width: 100%;
   margin: $half-gutter-xs 0;
 
   li {
@@ -99,8 +167,8 @@ ul.inline-list {// -----------------------------------------  ul.inline-list
 
   li[list-heading] {
     font-weight: 800;
-    opacity: 0.5;
     font-size: 0.9em;
+    opacity: 0.5;
 
     &:after {
       @include flex(1);
@@ -131,8 +199,7 @@ au-icon.au-icon i:before {
   font-family: $aucons-font-family;
 }
 
-
-au-icon.au-icon {
+au-icon.au-icon {// ----------------------------------------  au-icon
   display: flex;
   font-size: 1.5em;
   font-weight: normal;
@@ -163,30 +230,17 @@ au-icon.au-icon {
   &[align-bottom] {@include align-items(flex-end)}
 }
 
-[color="accent"] {color: $accent-color;}
-[color="primary"] {color: $primary-color;}
-[color="primary-dark"] {color: color-primary(dark);}
-[font="code"] {@extend %source-code;}
-[font="sans"] {@extend %source-sans;}
-[comment] {@extend %source-code;}
-[trans="3"] {opacity: 0.3}
-[trans="6"] {opacity: 0.6}
-[trans="9"] {opacity: 0.9}
-
-[gutter] {
-  padding: 0 $gutter-xs-px !important;
+.profile-selector {
+  @include flexbox;
 }
 
-[half-gutter] {
-  padding: 0 ($gutter-xs-px / 2) !important;
+@include max-media-xs {
+  .profile-selector {
+    display: none;
+  }
 }
 
-
-[gutter="2x"] {
-  padding: 0 ($gutter-xs-px * 2) !important;
-}
-
-@include media-md {
+@include media-md {// --------------------------------------  @MEDIA MEDIUM
   ul.inline-list {
     margin: $half-gutter-md 0 !important;
   }
@@ -199,9 +253,25 @@ au-icon.au-icon {
     padding: 0 ($gutter-md-px / 2) !important;
   }
 
-
   [gutter="2x"] {
     padding: 0 ($gutter-md-px * 2) !important;
   }
 }
 
+@keyframes overlay-animation {
+  from {
+    @include transform(scale(0));
+  }
+  to {
+    @include transform(scale(1));
+  }
+}
+
+@-webkit-keyframes overlay-animation {
+  from {
+    @include transform(scale(0));
+  }
+  to {
+    @include transform(scale(1));
+  }
+}

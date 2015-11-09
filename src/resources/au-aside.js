@@ -1,75 +1,81 @@
 import {noView, customAttribute, customElement, bindable, inject, sync} from 'aurelia-framework';
-import {EventAggregator} from 'aurelia-event-aggregator';
+import {OverlayController} from 'resources/au-overlay';
+import {AUChannel} from 'services/channel';
+
+const ACTIVE_CLASSNAME = 'is-active';
+const DEFAULT_CLASSNAME = 'au-aside';
 
 @customElement('au-aside')
-@inject(Element, EventAggregator)
+@inject(Element, AUChannel, OverlayController)
 export class AuAsideElement {
-  @bindable open = null;
-  @sync('[au-menu-item]') _items = [];
-  items = [];
 
-  constructor(element, events, dom) {
-    this.element = element;
-    this.closeEvent = this.closeEvent.bind(this);
-    this.events = events;
+  @bindable active = null;
+  @sync('[au-menu-item]') _items = [];
+
+  items = [];
+  name = 'aside';
+  bindableKey = 'active';
+
+  constructor(element, channel, overlayController) {
+    element.className += ` ${DEFAULT_CLASSNAME}`;
+    channel.createInstruction(this, this.name, this.bindableKey);
+
+    this.element  = element;
+    this.channel  = channel;
+    this.open     = this.open.bind(this);
+    this.close    = this.close.bind(this);
+    this.overlayController = overlayController;
   }
 
-  created() {
-    let events = this.events;
-    events.subscribe('toggle-aside', (payload)=> {
-      this.open = payload.open;
+  bind() {
+    let channel = this.channel;
+
+    channel.subscribe('navigation-activated', (payload) => {
+      !payload.validate(this) && this.close();
     });
 
-    events.subscribe('screen-navigation', payload => {
-      if (!payload.type === 'aside') this.open = false;
+    channel.subscribe('activate-aside', (payload)=> {
+      this.open();
     });
-
-    events.subscribe('set-au-menu', (view)=> {
-      this.setContent(view.name, view);
-    });
+    channel.subscribe('deactivate-aside', (view)=> this.close(veiw));
+    channel.subscribe('set-au-menu', (view) => this.setContent(view))
   }
 
   attached() {
     this.parentElement = this.element.parentElement;
+    this.overlay = this.overlayController.createOverlay();
+
+    this.overlay.onClick(
+      ($event)=> this.close()
+    );
   }
 
-  openChanged(value) {
-    this.element.classList[value ? 'add' : 'remove']('is-open');
-
-    if (this.parentElement) {
-      this.parentElement.classList[value ? 'add' : 'remove']('active-navigation');
-    }
-
-    this.setCloseEvent(value, this.parentElement);
-
+  activeChanged(value) {
+    this.element.classList[value ? 'add' : 'remove'](ACTIVE_CLASSNAME);
     if (value) {
-      this.events.publish('screen-navigation', {nav:this, type:'aside'});
+      this.channel.publish('navigation-activated', this.channelInstruction);
+      console.log(this.parentElement)
+      this.overlay.attach();
     } else {
-      this.events.publish('stop-screen-navigation', {nav:this, type:'aside'});
+      this.channel.publish('navigation-deactivated', this.channelInstruction);
+      this.overlay.detach();
     }
   }
 
-  setCloseEvent(value, parent) {
-    if (parent && value) {
-      if (!this.isCloseEvent) {
-        this.isCloseEvent = true;
-        return this.parentElement.addEventListener('click', this.closeEvent, true);
-      }
+  open($event) {
+    if (!this.overlay) {
+       this.overlay.detach();
     }
-
-    if (parent && !value) {
-      if (this.isCloseEvent) {
-        this.isCloseEvent = false;
-        return this.parentElement.removeEventListener('click', this.closeEvent, true);
-      }
-    }
+    this.active = true;
   }
 
-  closeEvent($event) {
-    this.open = false;
+  close($event) {
+    this.overlay && this.overlay.destroy();
+    this.active = false;
+    this.overlay.detach();
   }
 
-  setContent(name, view) {
+  setContent(view) {
     if (this.activeView) {
       this.content.removeChild(this.activeView.element);
     }
@@ -87,3 +93,4 @@ export class AuAsidePlaceholderElement {
   constructor(element) {}
   attached(){}
 }
+

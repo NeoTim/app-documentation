@@ -6,9 +6,9 @@
   <au-aside-placeholder></au-aside-placeholder>
 
   <au-menu name="article">
-    <li class="profile-selector">
-      I am<select class="au-select" value.bind="selectedProfile">
-        <option repeat.for="profile of profiles" model.bind="profile">${profile.displayName}</option>
+    <li class="profile-selector" hide-xs>
+      I am<select class="au-select" value.bind="profile.current">
+        <option repeat.for="option of profile.options" model.bind="option">${option.displayName}</option>
       </select>
     </li>
     <li repeat.for="tutorial of tutorials" au-menu-item="item.bind:tutorial; active.bind:tutorial.isSelected">

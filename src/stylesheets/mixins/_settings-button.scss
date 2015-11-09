@@ -35,14 +35,14 @@ au-settings-button {
     opacity: 0;
     outline: none;
     overflow: hidden;
-    position: relative;
+    position: static;
     visibility: hidden;
     z-index: 1;
 
     > au-select-list  {
       au-select-item {
         outline: none;
-
+        position: static;
         select-item {
           span:focus {
             outline: none;
@@ -59,10 +59,11 @@ au-settings-button {
 
 
         select-container div.select-option {
-          outline: none;
           background-color: $accent-color;
-          position: relative;
           color: white;
+          outline: none;
+          position: relative;
+          padding-left: 40%;
           &:after {
             @include border-bottom($color:false);
             @include gradient-h($end: white);
@@ -83,7 +84,6 @@ au-settings-button {
     @include justify-content(center);
     @include size(64px);
 
-
     box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     &:active, &:focus {
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
@@ -92,18 +92,18 @@ au-settings-button {
     background-color: $settings-btn--bg;
     border-radius: 64px;
     border:none;
+    bottom: 0;
     color: $settings-btn--color;
     font-size: $settings-btn--fontSize;
-    position: relative;
-    z-index: 1;
-    right: 0;
-    bottom: 0;
     margin: 24px;
     padding: 0;
+    position: relative;
+    right: 0;
+    z-index: 1;
 
     .au-icon {
-      flex: 1;
-      justify-content: center;
+      @include flex(1);
+      @include justify-content(center);
       font: normal normal normal 14px/1 FontAwesome;
       font-size: inherit;
       text-rendering: auto;

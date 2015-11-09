@@ -11,10 +11,6 @@ export class SelectListElement {
     this.element = element;
   }
 
-  attached(){
-
-  }
-
   activeChanged(activeItem) {
     this.element.classList[activeItem ? 'add' : 'remove']('active-item');
   }

@@ -20,7 +20,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
 @font-face {
  font-family: $aucons-font-family;
  src:url("#{$aucons-font-path}aicons.eot?v=#{$aucons-version}");
@@ -49,7 +48,7 @@ body {// --------------------------------------------------- Layout
   @include Layout();
 
   &.active-navigation-aside,
-  &.active-navigation-settings-button {
+  &.active-navigation-settings {
     nav.au-navbar,
     main.page-host {
       -webkit-filter: blur(10px);
@@ -73,7 +72,7 @@ body {// --------------------------------------------------- Layout
 
 @include max-media-xs {// ----------------------------------  @MEDIA MAX-MD
 
-  body {// -----------------------------------------------  @MEDIA MAX-MD: Layout
+  body {// -------------------------------------------------  @MEDIA MAX-MD: Layout
     @extend %column-container;
     @include Layout-xs();
 
@@ -103,7 +102,7 @@ body {// --------------------------------------------------- Layout
       @include au-navbar(md);
     }
 
-    au-aside.au-aside {//---------------------------------  @MEDIA MD:  nav.au-tabs
+    au-aside.au-aside {//-----------------------------------  @MEDIA MD:  nav.au-tabs
       @include au-aside(md);
     }
 
@@ -112,12 +111,3 @@ body {// --------------------------------------------------- Layout
     }
   }
 }
-
-
-loading-indicator {
-  display: block;
-  position: absolute;
-  min-width: 100%;
-  top: $navbar-height;
-}
-#nprogress .bar {position: absolute !important;}

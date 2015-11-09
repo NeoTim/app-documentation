@@ -6,13 +6,14 @@
   <require from="resources/au-settings-button"></require>
   <require from="resources/au-dropdown"></require>
   <require from="resources/au-aside"></require>
+  <require from="resources/au-overlay"></require>
 
 
 
   <header class="au-header" ref="header">
     <nav class="au-navbar">
 
-      <nav-item menu click.trigger="openAside($event)">
+      <nav-item menu click.delegate="openAside($event)">
         <au-icon>navicon</au-icon>
       </nav-item>
 
@@ -41,7 +42,7 @@
     <loading-indicator loading.bind="router.isNavigating"></loading-indicator>
   </header>
 
-  <au-aside class="au-animate au-aside">
+  <au-aside class="au-animate">
     <nav ref="mobileTabs" class="au-tabs">
       <a tab-item href="#/" class="${title === 'Article' ? 'au-active' : ''}">Step-by-Step</a>
       <a tab-item href="#/api/home" class="tab-item ${title === 'API' ? 'au-active' : ''}">
@@ -59,8 +60,15 @@
     <au-select-list>
       <au-select-item options.bind="culture.options" value.bind="culture.current"></au-select-item>
       <au-select-item options.bind="language.options" value.bind="language.current"></au-select-item>
+
+      <au-select-item options.bind="profile.options" value.two-way="profile.current">
+        <template replace-part="each-item">${o.displayName}</template>
+        <template replace-part="active-item">${value.displayName}</template>
+      </au-select-item>
     </au-select-list>
   </au-settings-button>
+
+  <au-overlay au-overlay.ref="overlay"></au-overlay>
 </template>
 
 
