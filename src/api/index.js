@@ -1,11 +1,9 @@
 import {inject} from 'aurelia-framework';
 import {Server} from 'backend/server';
-import {EventAggregator} from 'aurelia-event-aggregator';
 
-@inject(Server, EventAggregator)
+@inject(Server)
 export class Index {
-  constructor(server, events) {
-    this.events = events;
+  constructor(server) {
     this.server = server;
     this.isApi = true;
   }
