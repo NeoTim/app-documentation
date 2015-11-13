@@ -11,7 +11,6 @@ export class ArticleView {
     this.server = server;
     this.router = router;
     this.culture = culture;
-    console.log(this);
   }
 
   attached() {
@@ -27,7 +26,6 @@ export class ArticleView {
       : this.server.getProduct(params.userName, params.productName)
           .then(product => {
             let tutorial = product.getTutorialBySlug(params.articleSlug);
-            console.log(product)
             if(tutorial) {
               tutorial.select();
             }

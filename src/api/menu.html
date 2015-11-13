@@ -1,7 +1,7 @@
 <template>
   <require from="resources/au-menu"></require>
   <au-menu>
-    <li repeat.for="product of products" class="${product.isSelected ? 'active': ''}" au-menu-item="item.bind:product; active.bind:product.isSelected;">
+    <li repeat.for="product of products" au-menu-item="item.bind:product; active.bind:product.isSelected;">
       <a href="#/${product.userName}/${product.productName}/${product.preferredVersion}/doc/api/overview">
         ${product.productName}
       </a>

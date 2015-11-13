@@ -54,6 +54,12 @@ export class AuMenuItemAttribute {
     this.channel = channel;
   }
 
+  attached() {
+    if (this.active) {
+      this.channel.publish('au-menu:set-active', this.element);
+    }
+  }
+
   activeChanged(value) {
     this.element.classList[value ? 'add' : 'remove']('active');
     if (value) this.channel.publish('au-menu:set-active', this.element);
