@@ -10,7 +10,6 @@ var prefixer = require('gulp-autoprefixer');
 var paths = require('../paths');
 var compilerOptions = require('../babel-options');
 var stripCssComments = require('gulp-strip-css-comments');
-var ai = require('node-ai').ai;
 var assign = Object.assign || require('object.assign');
 
 // transpiles changed es6 files to SystemJS format
