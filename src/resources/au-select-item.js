@@ -24,7 +24,6 @@ export class SelectItemElement {
   }
 
   attached() {
-    console.log(this)
     this.parentElement = this.element.parentElement;
   }
 

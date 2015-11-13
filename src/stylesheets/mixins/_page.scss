@@ -61,6 +61,7 @@ section.au-card {
 
   > header {
     @extend %flexbox;
+    @include flex-wrap(wrap);
     min-height: $card-header-height;
     position: relative;
 
@@ -93,14 +94,12 @@ section.au-card {
     span.card-control {
       @extend %flexbox;
       @include flex-items(center);
-      right: 0;
-      top: 0;
-      position: absolute;
+      @include justify-content(center);
+      min-width: 100%;
+      position: relative;
       min-height: 100%;
-      padding: 0 $gutter-xs;
+      padding: 0 $gutter-xs $gutter-xs;
     }
-
-
   }
 
   > blockquote {
@@ -181,6 +180,13 @@ section.au-card + h1 {
 
     header {
       padding: 0 $gutter-md;
+      span.card-control {
+        right: 0;
+        top: 0;
+        position: absolute;
+        min-width: 0;
+        padding: 0 $gutter-xs;
+      }
     }
 
     blockquote {
