@@ -25,7 +25,7 @@
 
       > This is a block quote.
 
-      Nowe we are going to have a list:
+      Now we are going to have a list:
       * One
       * Two
       * Three
@@ -37,7 +37,17 @@
     -->
     <example uid="2" title="Example 1">
       <source-code lang="ES 2016">
+        -------
+
         import {inject} from 'aurelia-framework';
+
+
+        const number   = 123;
+        const regex    = /^\hg([0-9])/;
+        const string   = 'Aurelia';
+        const function = aurelia();
+        const keyword  = function, import, export, var, const, let, class
+
 
         @inject(Element)
         export class Test {
@@ -46,7 +56,9 @@
           }
         }
       </source-code>
-      <source-code lang="TypeScript" src="src/example.ts"></source-code>
+      <source-code lang="TypeScript" src="src/example.ts">
+
+      </source-code>
       <source-code lang="ES 2015">
         export class Test {
           static inject() { return [Element]; }

@@ -20,21 +20,58 @@ export class App {
   configureRouter(config, router) {
     config.title = 'Aurelia Docs';
     config.map([
-      { route: '', moduleId: 'article/index', title: 'Article' },
-      { route: ':userName/:productName/:version/doc/article', moduleId: 'article/index', title: 'Article' },
-      { route: 'doc/article', moduleId: 'article/index', title: 'Local Article', name: 'local' },
-      { route: 'api', moduleId: 'api/index', title: 'API' },
-      { route: ':userName/:productName/:version/doc/api', moduleId: 'api/index', title: 'API' }
+      {
+        route: '',
+        settings: {isArticle:true},
+        viewPorts: {
+          default: {moduleId: 'article/index', title: 'Article'},
+          menu: {moduleId: 'article/menu', title: 'Article'}
+        }
+      },
+      {
+        route: ':userName/:productName/:version/doc/article',
+        settings: {isArticle:true},
+        viewPorts: {
+          default: {moduleId: 'article/index', title: 'Article'},
+          menu: {moduleId: 'article/menu', title: 'Article'}
+        }
+      },
+      {
+        route: 'doc/article',
+        name: 'local',
+        settings: {isArticle:true},
+        viewPorts: {
+          default: {moduleId: 'article/index', title: 'Local Article'},
+          menu: {moduleId: 'article/menu', title: 'Article'}
+        }
+      },
+      {
+        route: 'api',
+        settings: {isApi:true},
+        viewPorts: {
+          default: {moduleId: 'api/index', title: 'API'},
+          menu: {moduleId: 'api/menu', title: 'API'}
+        }
+      },
+      {
+        route: ':userName/:productName/:version/doc/api',
+        settings: {isApi:true},
+        viewPorts: {
+          default: {moduleId: 'api/index', title: 'API'},
+          menu: {moduleId: 'api/menu', title: 'API'}
+        }
+      }
     ]);
     this.router = router;
   }
 
   activate() {
-     this.overlayContainer = this.overlayController.registerContainer(this, this.element);
+    this.profile.current = this.profile.current || this.profile.options[0];
+    this.overlayContainer = this.overlayController.registerContainer(this, this.element);
   }
 
   openAside($event) {
     this.title = this.router.currentInstruction.config.title;
-    this.channel.publish('activate-aside');
+    this.aside.open();
   }
 }

@@ -1,52 +1,63 @@
-import {customElement, bindable, inject} from 'aurelia-framework';
+import {customElement, bindable, inject, bindingMode} from 'aurelia-framework';
 import {isTouch} from 'aurelia-interface-platforms';
+import {DOM} from 'aurelia-pal';
 
-@inject(Element)
+const clickEvent = isTouch ? 'touchstart': 'click';
+
 @customElement('au-select-item')
+@inject(Element)
+@bindable({
+  name:'value',
+  attribute:'value',
+  changeHandler:'valueChanged',
+  defaultBindingMode: bindingMode.twoWay
+})
 export class SelectItemElement {
   @bindable options = null;
   @bindable active = null;
-  @bindable value = null;
 
   constructor(element) {
-    this.onClick = this.onClick.bind(this);
-    this.onSelect = this.onSelect.bind(this);
     this.element = element;
-    element.tabIndex = '0';
+    this.element.tabIndex = '0';
+    this.onClick = this.onClick.bind(this);
   }
 
-  created(view) {
-    this.list = view.container.viewModel;
-    this.clickEvent = isTouch ? 'touchstart': 'click';
-  }
-
-  attached(){
+  bind() {
     this.parentElement = this.element.parentElement;
   }
 
-  detached() {
-    this.button.removeEventListener(this.clickEvent, this.onClick, false);
-    this.container.removeEventListener(this.clickEvent, this.onSelect);
+  valueChanged(value, oldValue) {
+    this.change && this.change(value, oldValue);
   }
 
-
   activeChanged(value) {
+    if (value) this.addListeners();
+
     if (this.container) {
-      this.container.style.height = (this.list.getHeight() + 'px');
+      this.container.style.height = this.parentElement.clientHeight + 'px';
     }
     if (this.parentElement) {
       this.parentElement.classList[value ? 'add' : 'remove']('active-item');
     }
   }
 
-  onClick(event) {
-    if (!this.active) {
-      this.active = true;
-    }
+  addListeners() {
+    DOM.addEventListener(clickEvent, this.onClick, true);
   }
 
-  onSelect($event, value) {
+  removeListeners() {
+    DOM.removeEventListener(clickEvent, this.onClick, true);
+  }
+
+  change() {
     this.active = false;
-    this.value = value;
+    this.removeListeners();
+  }
+
+  onClick(event) {
+    if (!this.element.contains(event.target)) {
+      this.active = false;
+      this.removeListeners();
+    }
   }
 }

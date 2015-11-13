@@ -10,6 +10,8 @@
 @import 'stylesheets/mixins/_layout';
 @import 'stylesheets/mixins/_navbar';
 @import 'stylesheets/mixins/_page';
+@import 'stylesheets/mixins/_overlay';
+@import 'stylesheets/mixins/_preview';
 @import 'stylesheets/util/_icons';
 @import 'stylesheets/_auicon';
 @import 'stylesheets/mixins/_settings-button';
@@ -100,6 +102,7 @@ body {// --------------------------------------------------- Layout
 
     header.au-header > nav.au-navbar{// --------------------  @MEDIA MD: nav.au-navbar
       @include au-navbar(md);
+      z-index: 2;
     }
 
     au-aside.au-aside {//-----------------------------------  @MEDIA MD:  nav.au-tabs

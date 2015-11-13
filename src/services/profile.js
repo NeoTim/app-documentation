@@ -13,7 +13,7 @@ export class Profile {
   constructor(observerLocator) {
     this.current = this.options[0];
 
-    observerLocator.getObserver(this, 'current').subscribe(value => {
+    this.observer = observerLocator.getObserver(this, 'current').subscribe(value => {
       value && this._currentChanged(value);
     });
   }
@@ -22,9 +22,9 @@ export class Profile {
     this._handlers.forEach(cb => cb(value));
   }
 
-  getValue(value) {
-    value = value || this.current;
-    return this.options.find(x => x === value);
+  getValue(name) {
+    name = name || this.current.name;
+    return this.options.find(x => x.name === name);
   }
 
   setValue(value) {

@@ -1,36 +1,48 @@
-import {customElement, bindable, inject} from 'aurelia-framework';
+import {customElement, bindable, inject, bindingMode} from 'aurelia-framework';
+import {isTouch} from 'aurelia-interface-platforms';
+import {DOM} from 'aurelia-pal';
 
-@inject(Element)
+const clickEvent = isTouch ? 'touchstart': 'click';
+
 @customElement('au-dropdown')
-export class AuDropdownElement {
-  @bindable value   = null;
+@inject(Element)
+@bindable({
+  name:'value',
+  attribute:'value',
+  changeHandler:'valueChanged',
+  defaultBindingMode: bindingMode.twoWay,
+})
+export class DropdownElement {
   @bindable options = null;
-  @bindable active  = null;
+  @bindable active = null;
 
   constructor(element) {
     this.element = element;
-    this.onBlur = this.onBlur.bind(this);
+    this.onClick = this.onClick.bind(this);
   }
 
-  attached(){
-    this.button.addEventListener('blur', this.onBlur);
+  valueChanged(value) {
+    this.change && this.change(value);
+    this.active = false;
   }
 
   activeChanged(value) {
-    this.button.focus();
     this.element.classList[value ? 'add' : 'remove']('is-active');
+    if (value) this.addListeners();
   }
 
-  onBlur($event) {
-    this.active = false;
+  addListeners() {
+    DOM.addEventListener(clickEvent, this.onClick, true);
   }
 
-  onClick($event) {
-    this.active = true;
+  removeListeners() {
+    DOM.removeEventListener(clickEvent, this.onClick, true);
   }
 
-  selectItem($event, item) {
-    this.value = item;
-    this.active = false;
+  onClick(event) {
+    if (!this.element.contains(event.target)) {
+      this.active = false;
+      this.removeListeners()
+    }
   }
 }

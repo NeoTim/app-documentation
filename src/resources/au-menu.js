@@ -1,5 +1,6 @@
-import {inlineView, noView, customAttribute, customElement, bindable, inject, sync} from 'aurelia-framework';
-import {EventAggregator} from 'aurelia-event-aggregator';
+import {noView, customAttribute, customElement, bindable, inject} from 'aurelia-framework';
+import {AUChannel} from 'services/channel';
+
 
 function translateIndicator(element, indicator) {
   if (!indicator) return;
@@ -13,28 +14,28 @@ function translateIndicator(element, indicator) {
 }
 
 @customElement('au-menu')
-@inject(Element, EventAggregator)
+@inject(Element, AUChannel)
 export class AuMenuElement {
+
   @bindable name = null;
-  constructor(element, events) {
+  subscriptions = [];
+
+  constructor(element, channel) {
     this.element = element;
-    this.events = events;
+    this.channel = channel;
+  }
+  bind() {
+    let channel = this.channel;
+    let subscriptions = this.subscriptions;
+    subscriptions.push(
+      channel.subscribe('au-menu:set-active', (element) => {
+        translateIndicator(element, this.indicator);
+      })
+    );
   }
 
-  created(view) {
-    this.view = view;
-  }
-
-  bind(bindingContext) {
-    this.bindingContext = this.bindingContext || bindingContext;
-    this.events.publish('set-au-menu', this);
-  }
-
-  attached() {
-    this.events.subscribe('au-menu:set-active', element => {
-      console.log(element.offsetTop)
-      translateIndicator(element, this.indicator);
-    });
+  unbind() {
+    this.subscriptions.forEach(evt => evt());
   }
 
   detached() {}
@@ -42,20 +43,20 @@ export class AuMenuElement {
 
 @customAttribute('au-menu-item')
 @noView
-@inject(Element, EventAggregator)
+@inject(Element, AUChannel)
 export class AuMenuItemAttribute {
   @bindable item = null;
   @bindable active = null;
   @bindable indicator = null;
 
-  constructor(element, events) {
+  constructor(element, channel) {
     this.element = element;
-    this.events = events;
+    this.channel = channel;
   }
 
   activeChanged(value) {
     this.element.classList[value ? 'add' : 'remove']('active');
-    if (value) this.events.publish('au-menu:set-active', this.element);
+    if (value) this.channel.publish('au-menu:set-active', this.element);
   }
 }
 

@@ -1,6 +1,9 @@
-import {noView, customAttribute, customElement, bindable, inject, sync} from 'aurelia-framework';
-import {OverlayController} from 'resources/au-overlay';
+import {noView, customElement, bindable, inject} from 'aurelia-framework';
+import {DOM} from 'aurelia-pal';
 import {AUChannel} from 'services/channel';
+import {OverlayController} from 'resources/au-overlay';
+import {onTransitionEnd, onDocumentEvent, clickEvent, resolvePromise} from './util';
+
 
 const ACTIVE_CLASSNAME = 'is-active';
 const DEFAULT_CLASSNAME = 'au-aside';
@@ -10,11 +13,11 @@ const DEFAULT_CLASSNAME = 'au-aside';
 export class AuAsideElement {
 
   @bindable active = null;
-  @sync('[au-menu-item]') _items = [];
 
-  items = [];
   name = 'aside';
   bindableKey = 'active';
+  eventListeners = [];
+  subscriptions = [];
 
   constructor(element, channel, overlayController) {
     element.className += ` ${DEFAULT_CLASSNAME}`;
@@ -22,69 +25,71 @@ export class AuAsideElement {
 
     this.element  = element;
     this.channel  = channel;
-    this.open     = this.open.bind(this);
-    this.close    = this.close.bind(this);
-    this.overlayController = overlayController;
+    this.overlay  = overlayController.createOverlay(this);
+    this.onTransitionEnd = onTransitionEnd(this.element);
+    window.aside = this;
   }
 
   bind() {
     let channel = this.channel;
+    let subscriptions = this.subscriptions;
 
-    channel.subscribe('navigation-activated', (payload) => {
-      !payload.validate(this) && this.close();
-    });
+    subscriptions.push(
 
-    channel.subscribe('activate-aside', (payload)=> {
-      this.open();
-    });
-    channel.subscribe('deactivate-aside', (view)=> this.close(veiw));
-    channel.subscribe('set-au-menu', (view) => this.setContent(view))
+      channel.subscribe('au-deactivate:navigation', (payload) => {
+        !payload.validate(this) && this.close();
+      }),
+      channel.subscribe('au-activate:aside', (x)=> {
+        resolvePromise(this.open(), x);
+      }),
+      channel.subscribe('au-deactivate:aside', (x)=> {
+        resolvePromise(this.close(), x);
+      }),
+    );
   }
 
-  attached() {
-    this.parentElement = this.element.parentElement;
-    this.overlay = this.overlayController.createOverlay();
-
-    this.overlay.onClick(
-      ($event)=> this.close()
-    );
+  unbind() {
+    this.subscriptions.forEach(event => event.dispose());
   }
 
   activeChanged(value) {
     this.element.classList[value ? 'add' : 'remove'](ACTIVE_CLASSNAME);
-    if (value) {
-      this.channel.publish('navigation-activated', this.channelInstruction);
-      console.log(this.parentElement)
-      this.overlay.attach();
-    } else {
-      this.channel.publish('navigation-deactivated', this.channelInstruction);
-      this.overlay.detach();
-    }
   }
 
-  open($event) {
-    if (!this.overlay) {
-       this.overlay.detach();
-    }
-    this.active = true;
+  open() {
+    return this.invokeAnimationLifecycle();
   }
 
-  close($event) {
-    this.overlay && this.overlay.destroy();
-    this.active = false;
-    this.overlay.detach();
+  close() {
+    if (!this.active) return;
+    return new Promise( resolve => {
+      let event = this.channel.subscribe('au-on-deactivate:aside', (promise) => {
+        event.dispose();
+        resolve(promise);
+      })
+      DOM.dispatchEvent(new Event(clickEvent));
+    });
   }
 
-  setContent(view) {
-    if (this.activeView) {
-      this.content.removeChild(this.activeView.element);
-    }
+  invokeAnimationLifecycle() {
+      this.overlay.attach()
+    return this.setActive(true)
+      .then(() => this.addListeners())
+      .then(() => this.setActive(false))
+      .then(() => this.overlay.detach())
+      .then(() => this.channel.publish('au-on-deactivate:aside'))
+  }
 
-    this.activeView = view;
-    this.content.appendChild(this.activeView.element);
+  setActive(value) {
+    return this.onTransitionEnd( ()=> this.active = value );
+  }
+
+  addListeners() {
+    return onDocumentEvent(clickEvent, (e, ready)=> {
+      if (!this.element.contains(e.target)) return ready();
+    }, true);
   }
 }
-
 
 @customElement('au-aside-placeholder')
 @noView
@@ -93,4 +98,3 @@ export class AuAsidePlaceholderElement {
   constructor(element) {}
   attached(){}
 }
-

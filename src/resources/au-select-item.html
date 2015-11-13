@@ -1,17 +1,18 @@
 <template>
-  <select ref="select" value.two-way="value">
+  <select change.trigger="change($event)" ref="select" value.bind="value">
     <option repeat.for="o of options" value.bind="o">${o}</option>
   </select>
 
   <select-container show.bind="active" ref="container">
-    <div class="select-option" repeat.for="o of options" click.trigger="$parent.onSelect($event, o)">
+    <div class="select-option" repeat.for="o of options" click.trigger="$parent.value = o">
       <template replaceable part="each-item">
         ${o}
       </template>
+      <au-icon show.bind="$parent.active && value === o">checkmark</au-icon>
     </div>
   </select-container>
 
-  <select-item ref="button" tabIndex="0" click.trigger="onClick($event)">
+  <select-item ref="button" tabIndex="0" click.trigger="active = true">
     <span>
       <template replaceable part="active-item">
         ${value}

@@ -63,6 +63,12 @@ au-dropdown {
           -ms-transform: scaleY(0);
               transform: scaleY(0);
 
+      .au-icon {
+        @include flex(1);
+        @include justify-content(flex-end);
+        color: $accent-color;
+      }
+
       &:hover {
         background-color: $divider-color;
       }

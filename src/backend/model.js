@@ -1,7 +1,8 @@
 import {join} from 'aurelia-path';
 import {DOM, FEATURE} from 'aurelia-pal';
-import {ViewStrategy} from 'aurelia-framework';
+import {viewStrategy} from 'aurelia-framework';
 import {TemplateRegistryEntry} from 'aurelia-loader';
+
 
 let baseTranslation = 'en-US';
 
@@ -17,10 +18,12 @@ export class Product {
   static previousSelection = null;
 
   constructor(attrs, server) {
+    attrs.tutorials = attrs.tutorials || [];
     this.userName = attrs.userName;
     this.productName = attrs.productName;
     this.latestVersion = 'latest';
     this.preferredVersion = this.latestVersion;
+
     this.tutorials = attrs.tutorials.map(a => new Tutorial(a, this));
     this.isSelected = false;
     this.versions = [];
@@ -120,9 +123,9 @@ export class ProductVersion {
   }
 }
 
-class ArticleTranslationViewStrategy extends ViewStrategy {
+@viewStrategy
+class ArticleTranslationViewStrategy {
   constructor(articleTranslation) {
-    super();
     this.articleTranslation = articleTranslation;
   }
 
@@ -132,7 +135,7 @@ class ArticleTranslationViewStrategy extends ViewStrategy {
     }
 
     this.entry = new TemplateRegistryEntry(this.articleTranslation.url);
-    this.entry.setTemplate(this.articleTranslation.template);
+    this.entry.template = this.articleTranslation.template;
     return viewEngine.loadViewFactory(this.entry, compileInstruction, loadContext);
   }
 }

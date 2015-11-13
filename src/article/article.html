@@ -1,27 +1,27 @@
 <template>
   <au-view class="content">
-    <div class="au-section">
-      <h1 class="au-section-heading">
-        <span>${article.title}</span>
-        <div class="author">by ${article.author}</div>
-      </h1>
 
-      <div class="au-section-body">
-        <h3 if.bind="article.description">${article.description}</h3>
+    <section class="au-card title-card">
+      <header direction="flex-column">
+        <h1>${article.title}</h1>
+        <h5>by ${article.author}</h5>
+      </header>
 
-        <div class="text-sm" if.bind="article.keywords">
-          <span class="strong">Keywords:</span>
+      <article>
+        <h3 description if.bind="article.description">${article.description}</h3>
+        <ul class="inline-list" if.bind="article.keywords">
+          <li list-heading>Keywords</li>
           <template repeat.for="keyword of article.keywords">
-            <span>${keyword}</span><span if.bind="!$last">, </span>
+            <li list-item>${keyword}</li>
           </template>
-        </div>
-      </div>
-    </div>
+        </ul>
+      </article>
+    </section>
 
-    <div class="au-section">
-      <div class="au-section-body">
-        <compose view.bind="article.view" view-model.bind="article"></compose>
-      </div>
-    </div>
+    <section class="au-card">
+      <article>
+        <au-preview view.bind="article.view" view-model.bind="article"></au-preview>
+      </article>
+    </section>
   </au-view>
 </template>

@@ -7,10 +7,10 @@
       <header>
         <h1>${product.productName}</h1>
         <span class="card-control">
-          <au-tag class="card-control">${selectedProductVersion.version}</au-tag>
-          <!-- <select class="au-select" value.bind="selectedVersion">
+          <!-- <au-tag class="card-control">${selectedProductVersion.version}</au-tag> -->
+          <select class="au-tag" value.bind="selectedVersion">
             <option repeat.for="version of product.availableVersions" model.bind="version.version">${version.display}</option>
-          </select> -->
+          </select>
         </span>
       </header>
 
@@ -54,7 +54,7 @@
 
       <article>
 
-        <template if.bind="isClasses">
+        <template if.bind="selectedProductVersion.classes.length">
           <h3 half-gutter=left color="primary-dark">Classes</h3>
           <ul class="stack-list" gutter="2x">
             <li repeat.for="child of selectedProductVersion.classes">
@@ -65,7 +65,7 @@
           </ul>
         </template>
 
-        <template if.bind="isInterfaces">
+        <template if.bind="selectedProductVersion.interfaces.length">
           <h3 half-gutter=left color="primary-dark">Interfaces</h3>
           <ul class="stack-list" gutter="2x">
             <li repeat.for="child of selectedProductVersion.interfaces">
@@ -76,7 +76,7 @@
           </ul>
         </template>
 
-        <template if.bind="isVariables">
+        <template if.bind="selectedProductVersion.variables.length">
           <h3 half-gutter=left color="primary-dark">Variables</h3>
           <ul class="stack-list" gutter="2x">
             <li repeat.for="child of selectedProductVersion.variables">
@@ -87,7 +87,7 @@
           </ul>
         </template>
 
-        <template if.bind="isFunctions">
+        <template if.bind="selectedProductVersion.functions.length">
           <h3 half-gutter=left color="primary-dark">Functions</h3>
           <ul class="stack-list" gutter="2x">
             <li repeat.for="child of selectedProductVersion.functions">
@@ -100,7 +100,7 @@
       </article>
     </section>
 
-    <template if.bind="isVariables">
+    <template if.bind="selectedProductVersion.variables.length">
       <h1 gutter>Variables</h1>
       <section class="au-card">
         <template repeat.for="variable of selectedProductVersions.variables">
@@ -114,7 +114,7 @@
       </section>
     </template>
 
-    <template if.bind="isFunctions">
+    <template if.bind="selectedProductVersion.functions.length">
       <h1 gutter>Functions</h1>
       <section class="au-card">
         <template repeat.for="function of selectedProductVersion.functions">

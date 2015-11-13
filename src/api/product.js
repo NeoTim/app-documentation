@@ -5,6 +5,7 @@ import {Server} from 'backend/server';
 
 @inject(Server, Router)
 export class Repository {
+
   @bindable selectedVersion;
 
   constructor(server, router) {

@@ -1,17 +1,5 @@
 <template>
-  <require from="../resources/au-aside"></require>
-  <require from="../resources/au-menu"></require>
-
   <au-aside-placeholder></au-aside-placeholder>
-
-  <au-menu name="api">
-    <li repeat.for="product of products" class="${product.isSelected ? 'active': ''}" au-menu-item="item.bind:product; active.bind:product.isSelected;">
-      <a href="#/${product.userName}/${product.productName}/${product.preferredVersion}/doc/api/overview">
-        ${product.productName}
-      </a>
-    </li>
-  </au-menu>
-
   <main class="page-host">
     <router-view class="page-view-port"></router-view>
   </main>

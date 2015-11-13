@@ -23,6 +23,14 @@
   padding: 0 ($gutter-xs-px * 2) !important;
 }
 
+[direction="flex-row"] {
+  @include flex-direction(row !important);
+}
+
+[direction="flex-column"] {
+  @include flex-direction(column !important);
+}
+
 
 
 loading-indicator {// --------------------------------------  loading-indicator
@@ -34,32 +42,6 @@ loading-indicator {// --------------------------------------  loading-indicator
 
 #nprogress .bar {position: absolute !important;}
 
-au-overlay {
-  display: block;
-  min-height: 100vh;
-  min-width: 100vw;
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  overlay {
-    @include transform(scale(1));
-    @include default-animation;
-    background-color: rgba(0,0,0,0.5);
-    display: block;
-    min-height: 300vw;
-    min-width: 200vw;
-    position: absolute;
-    top: -25vw;
-    left: -25vw;
-    z-index: 1;
-
-    -webkit-animation-direction: forwards;
-            animation-direction: forwards;
-    -webkit-animation: overlay-animation 300ms;
-            animation: overlay-animation 300ms;
-  }
-}
 
 button.au-button,
      a.au-button {// --------------------------------------- au-button
@@ -126,6 +108,15 @@ au-tag {// ------------------------------------------------- au-tag
   // vertical-align: middle;
   // position: relative;
   // top: -12px;
+}
+
+select.au-tag {
+  background-color: white;
+  padding: 4px;
+  border-radius: 2px;
+  color: #808080;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  font-size: 14px;
 }
 
 ul.stack-list {// ------------------------------------------  stack-list
@@ -255,23 +246,5 @@ au-icon.au-icon {// ----------------------------------------  au-icon
 
   [gutter="2x"] {
     padding: 0 ($gutter-md-px * 2) !important;
-  }
-}
-
-@keyframes overlay-animation {
-  from {
-    @include transform(scale(0));
-  }
-  to {
-    @include transform(scale(1));
-  }
-}
-
-@-webkit-keyframes overlay-animation {
-  from {
-    @include transform(scale(0));
-  }
-  to {
-    @include transform(scale(1));
   }
 }

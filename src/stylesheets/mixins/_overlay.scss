@@ -1,0 +1,78 @@
+@mixin scale-from-to($from:small, $to:large) {
+
+  @include default-animation();
+  @include transform(scale(1));
+  -webkit-animation-direction: forwards;
+          animation-direction: forwards;
+  -webkit-animation: scale-from-#{$from}-to-#{$to} 300ms;
+          animation: scale-from-#{$from}-to-#{$to} 300ms;
+}
+
+au-overlay {
+  display: block;
+  min-height: 100vh;
+  min-width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  overlay {
+    background-color: rgba(0,0,0,0.5);
+    display: block;
+    min-height: 300vw;
+    min-width: 200vw;
+    position: absolute;
+    top: -25vw;
+    left: -25vw;
+    z-index: 1;
+  }
+}
+
+au-overlay{
+
+  overlay {
+    @include scale-from-to(small, large);
+  }
+
+  overlay.au-leave {
+    @include scale-from-to(large, small);
+  }
+}
+
+
+@keyframes scale-from-small-to-large {
+  from {
+    @include transform(scale(0));
+  }
+  to {
+    @include transform(scale(1));
+  }
+}
+
+@-webkit-keyframes scale-from-small-to-large {
+  from {
+    @include transform(scale(0));
+  }
+  to {
+    @include transform(scale(1));
+  }
+}
+
+
+@keyframes scale-from-large-to-small {
+  from {
+    @include transform(scale(0));
+  }
+  to {
+    @include transform(scale(1));
+  }
+}
+
+@-webkit-keyframes scale-from-large-to-small {
+  from {
+    @include transform(scale(0));
+  }
+  to {
+    @include transform(scale(1));
+  }
+}

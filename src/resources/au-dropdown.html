@@ -1,13 +1,16 @@
 <template>
   <require from="./au-dropdown.css"></require>
 
-  <select ref="selectElement" show.bind="isMobile" class="au-select" value.two-way="value">
+  <select ref="selectElement" show.bind="isMobile" class="au-select" value.bind="value">
     <option repeat.for="item of options" value.bind="item">${item}</option>
   </select>
 
-  <button ref="button" click.trigger="onClick($event)">${value}</button>
+  <button ref="button" click.trigger="active = true">${value}</button>
 
   <dropdown-container>
-    <div dropdown-item click.trigger="$parent.selectItem($event, item)" repeat.for="item of options"> ${item} </div>
+    <div dropdown-item repeat.for="item of options" click.trigger="$parent.value = item">
+      ${item}
+      <au-icon show.bind="$parent.value === item">checkmark</au-icon>
+    </div>
   </dropdown-container>
 </template>

@@ -28,10 +28,17 @@
       right: 0;
 
       div.select-option {
+        @extend %flexbox;
         @include flex-shrink(0);
         cursor: pointer;
         line-height: inherit;
         padding-left: 16px;
+        .au-icon {
+          position: absolute;
+          right: 0;
+          top: 0;
+          z-index: 1;
+        }
       }
     }
 

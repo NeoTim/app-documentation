@@ -1,11 +1,9 @@
-import {inlineView, customElement, bindable, inject} from 'aurelia-framework';
+import {inlineView, customElement, bindable, inject, children} from 'aurelia-framework';
 
 
 @customElement('au-select-list')
 @inject(Element)
 export class SelectListElement {
-  @bindable active = null;
-  items = [];
 
   constructor(element) {
     this.element = element;

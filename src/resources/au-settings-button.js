@@ -1,7 +1,7 @@
 import {customElement, bindable, inject} from 'aurelia-framework';
 import {OverlayController} from 'resources/au-overlay';
-import {isTouch} from 'aurelia-interface-platforms';
 import {AUChannel} from 'services/channel';
+import {onTransitionEnd, onDocumentEvent, clickEvent} from './util';
 
 const ACTIVE_CLASSNAME = 'is-active';
 const DEFAULT_CLASSNAME = 'au-settings-button';
@@ -11,8 +11,9 @@ const DEFAULT_CLASSNAME = 'au-settings-button';
 export class AuSettingsButtonElement {
   @bindable active = null;
 
-  bindableKey = 'active';
   name = 'settings';
+  bindableKey = 'active';
+  subscriptions = [];
 
   constructor(element, channel, overlayController) {
     element.className += ` ${DEFAULT_CLASSNAME}`;
@@ -20,59 +21,70 @@ export class AuSettingsButtonElement {
 
     this.element = element;
     this.channel = channel;
-    this.overlayController = overlayController;
-    this.onClick = this.onClick.bind(this);
+    this.overlay = overlayController.getOrCreateOverlay(this);
+  }
+
+  bind() {
+    let channel = this.channel;
+    let subscriptions = this.subscriptions;
+
+    subscriptions.push(
+
+      channel.subscribe('au-deactivate:navigation', (payload) => {
+        !payload.validate(this) && this.close();// if (this.active && !payload.validate(this)) { this.close(); }
+      }),
+
+      channel.subscribe('au-activate:settings', (payload) => {
+        this.open();
+      }),
+
+      channel.subscribe('deactivate-settings', (payload) => {
+        this.close();
+      })
+    );
+  }
+
+  unbind() {
+    this.subscriptions.forEach(event => event.dispose());
   }
 
   open() {
-    this.overlay && this.overlay.attach();
-    this.active = true;
+    return this.invokeAnimationLifecycle();
   }
 
   close() {
-    this.overlay && this.overlay.destroy();
-    this.active = false;
-  }
-
-  created() {
-    let channel = this.channel;
-
-    channel.subscribe('navigation-activated', (payload) => {
-      if (this.active && !payload.validate(this)) {
-        this.close();
-      }
-    });
-
-    channel.subscribe('activate-settings', (payload) => {
-      this.open();
-    });
-
-    channel.subscribe('deactivate-settings', (payload) => {
-      this.close();
-    });
-  }
-
-  attached(){
-    this.overlay = this.overlayController.createOverlay();
-    this.overlay.onClick(()=> this.close());
-  }
-
-  detached() {
-    this.button.removeEventListener(this.clickEvent, this.touchstart);
+    if (!this.active) return;
+    document.dispatchEvent(new Event(clickEvent));
   }
 
   activeChanged(value) {
+    console.log(value, 'value')
+    this.onClick = this[value ? 'close' : 'open'];
     this.element.classList[value ? 'add' : 'remove'](ACTIVE_CLASSNAME);
+  }
 
-    if (value) {
-      this.channel.publish('navigation-activated', this.channelInstruction);
-    } else {
-      this.channel.publish('navigation-deactivated', this.channelInstruction);
-    }
+  invokeAnimationLifecycle() {
+    this.overlay.attach()
+    return this.setActive(true)
+      .then(() => this.addListeners())
+      .then(() => this.setActive(false))
+      .then(() => this.overlay.detach())
+      .then(() => this.channel.publish('au-on-deactivate:settings'))
+  }
+
+  setActive(value) {
+    return onTransitionEnd(this.element, ()=> {
+      return this.active = value;
+    })
+  }
+
+  addListeners() {
+    return onDocumentEvent(clickEvent, (e, ready)=> {
+      if (!this.element.contains(e.target)) return ready();
+    }, true);
   }
 
   onClick($event) {
-    if (this.active) this.close();
-    else this.open();
+    this.open();
   }
 }

@@ -2,48 +2,47 @@ import {noView, customElement, bindable, inject, singleton} from 'aurelia-framew
 import {AUChannel} from '../services/channel';
 import {DOM} from 'aurelia-pal';
 import {isTouch} from 'aurelia-interface-platforms';
+import {onAnimationEnd, onElementEvent, onDocumentEvent, clickEvent, resolvePromise} from './util';
 
 const ACTIVE_CLASSNAME = 'is-active';
+const ANIMATION_CLASSNAME = 'au-animation';
 const DEFAULT_CLASSNAME = 'au-overlay';
-const clickEvent = isTouch ? 'touchstart' : 'click';
+
+
 
 export class OverlayElement {
   element = DOM.createElement('overlay');
-  eventListeners = [];
+
+  eventListeners = {};
 
   constructor(parent) {
+    this.element.className += ` ${ANIMATION_CLASSNAME} ${DEFAULT_CLASSNAME}`;
     this.parent = parent;
-    this.element.addEventListener(clickEvent, this._onClick.bind(this), false);
+    this.element.classList.add('au-animate');
+    window.overlay = this;
     return this;
   }
 
   attach() {
-    this.parent.element.appendChild(this.element);
+    return onAnimationEnd( this.element, ()=> this.parent.element.appendChild(this.element) );
   }
 
   detach() {
-    this.parent.fragment.appendChild(this.element);
+    return onAnimationEnd( this.element, ()=> this.parent.fragment.appendChild(this.element) );
   }
 
   destroy() {
-    this.element.removeEventListener(clickEvent, this._onClick);
     this.element.remove();
-  }
-
-  _onClick($event) {
-    this.destroy();
-    this.eventListeners.forEach(e => e($event));
-  }
-
-  onClick(callback) {
-    this.eventListeners.push(callback);
   }
 }
 
 @inject(AUChannel)
 export class OverlayController {
-  element = DOM.createElement('au-overlay');
+
+  element  = DOM.createElement('au-overlay');
+  active   = true;
   fragment = DOM.createDocumentFragment();
+
   constructor(channel) {
     this.channel = channel;
   }
@@ -59,7 +58,10 @@ export class OverlayController {
     this.container.removeChild(this.element);
   }
 
-  createOverlay() {
+  getOrCreateOverlay(context) {
+    return new OverlayElement(this);
+  }
+  createOverlay(context) {
     return new OverlayElement(this);
   }
 

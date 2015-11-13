@@ -4,11 +4,14 @@ import {Server} from 'backend/server';
 import {Culture} from 'services/culture';
 
 @inject(Server, Router, Culture)
-export class Article {
+export class ArticleView {
+  tutorials = [];
+
   constructor(server, router, culture) {
     this.server = server;
     this.router = router;
     this.culture = culture;
+    console.log(this);
   }
 
   attached() {
@@ -24,6 +27,7 @@ export class Article {
       : this.server.getProduct(params.userName, params.productName)
           .then(product => {
             let tutorial = product.getTutorialBySlug(params.articleSlug);
+            console.log(product)
             if(tutorial) {
               tutorial.select();
             }
@@ -43,6 +47,6 @@ export class Article {
   }
 
   detached() {
-    this.cultureSubscription.dispose();
+    this.cultureSubscription && this.cultureSubscription.dispose();
   }
 }

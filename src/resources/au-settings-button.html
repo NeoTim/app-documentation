@@ -1,11 +1,11 @@
 <template>
 
   <content-wrap>
-    <settings-container>
+    <settings-container ref="content">
         <content></content>
     </settings-container>
 
-    <button ref="button" click.trigger="onClick($event)">
+    <button ref="button" click.trigger="onClick()">
       <au-icon icon-auto>ios-cog-outline</au-icon>
     </button>
   </content-wrap>

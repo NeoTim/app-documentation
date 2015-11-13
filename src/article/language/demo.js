@@ -9,6 +9,6 @@ export class Demo {
   }
 
   attached() {
-    this.element.getElementsByTagName('source-code')[0].au.controller.model.createApp(this.host);
+    this.element.getElementsByTagName('source-code')[0].au.controller.viewModel.createApp(this.host);
   }
 }

@@ -99,6 +99,7 @@ body {// --------------------------------------------------- DOM-TREE--STRUCTURE
             @extend %flex-auto-container;
             position: absolute;
             min-width: 100%;
+            max-width: 100%;
             height: auto;
             @include translate3d(0,0,0);
           }

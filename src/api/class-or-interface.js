@@ -3,6 +3,7 @@ import {Server} from 'backend/server';
 
 @inject(Server)
 export class ClassOrInterface {
+  target = {};
   constructor(server) {
     this.server = server;
   }
@@ -20,8 +21,7 @@ export class ClassOrInterface {
           } else {
             this.target = productVersion.findInterface(params.name);
           }
-
-          this.constructorSignature = this.target.constructorMethod ? this.target.constructorMethod.signature : null;
+          if (this.target) this.constructorSignature = this.target.constructorMethod ? this.target.constructorMethod.signature : null;
         });
       });
   }

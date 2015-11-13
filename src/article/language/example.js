@@ -15,7 +15,9 @@ export class Example {
   }
 
   attached() {
-    this.availableSources = map.call(this.element.getElementsByTagName('source-code'), x => x.au.controller.model);
+    // This should return x.au.controller.model, but for someReason only viewModel exist
+    this.availableSources = map.call(this.element.getElementsByTagName('source-code'), x => x.au.controller.viewModel);
+
     this.languageSubscription = this.language.onChange(() => this.selectSourceForLanguage())
     this.selectSourceForLanguage();
   }
@@ -35,12 +37,11 @@ export class Example {
     ];
 
     for (let i = 0, ii = priorities.length; i < ii; ++i) {
-      found = this.availableSources.find(x => x.lang === priorities[i]);
+      found = this.availableSources.find(x => x && (x.lang === priorities[i]) );
       if (found) {
         break;
       }
     }
-
     this.select(found);
   }
 

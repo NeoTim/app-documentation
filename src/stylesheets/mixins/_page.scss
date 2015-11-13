@@ -4,8 +4,8 @@
   text-align: center;
   font-weight: 300;
   font-size: 2rem;
-  line-height: 4rem;
-  margin: 0;
+  line-height: 1;
+  margin: 16px 0;
 }
 
 %section-title {
@@ -61,7 +61,7 @@ section.au-card {
 
   > header {
     @extend %flexbox;
-    @include flex(0 0 $card-header-height);
+    min-height: $card-header-height;
     position: relative;
 
     &:after {
@@ -74,6 +74,22 @@ section.au-card {
       padding-left: $half-gutter-xs;
     }
 
+    h2,h3,h4,h5 {
+      @extend %flexbox;
+      @include flex(1 0 auto);
+      @include justify-content(center);
+      line-height: inherit;
+      margin: em(16) 0;
+      color: $accent-color;
+    }
+    h1 + h2,
+    h1 + h3,
+    h1 + h4,
+    h1 + h5,
+    h1 + h6 {
+      margin-top:0;
+    }
+
     span.card-control {
       @extend %flexbox;
       @include flex-items(center);
@@ -83,6 +99,8 @@ section.au-card {
       min-height: 100%;
       padding: 0 $gutter-xs;
     }
+
+
   }
 
   > blockquote {
