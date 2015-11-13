@@ -133,7 +133,7 @@ section.au-card {
   article {
     @include flex(1 0 auto);
     background-color: $card-background;
-    padding-top: $gutter-md;
+    padding-top: 8px;
     padding-bottom: $gutter-md;
 
     > h3[description] {
@@ -167,8 +167,9 @@ section.au-card {
 }
 
 section.au-card + h1 {
-  padding: 0;
-  margin: 0 0 $half-gutter-xs 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: $half-gutter-xs 0 $half-gutter-xs 0;
 }
 
 
@@ -188,7 +189,7 @@ section.au-card + h1 {
 
 
     article {
-      padding-top: $gutter-md;
+      padding-top: 8px;
       padding-bottom: $gutter-md;
 
       &:not([gutter]) {

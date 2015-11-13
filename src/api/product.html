@@ -80,7 +80,7 @@
           <h3 half-gutter=left color="primary-dark">Variables</h3>
           <ul class="stack-list" gutter="2x">
             <li repeat.for="child of selectedProductVersion.variables">
-              <a trans="6" color="primary-dark" href="#variable-${child.name}">
+              <a trans="6" color="primary-dark" click.trigger="scrollTo('variable', child.name)">
                 ${child.name}
               </a>
             </li>
@@ -91,7 +91,7 @@
           <h3 half-gutter=left color="primary-dark">Functions</h3>
           <ul class="stack-list" gutter="2x">
             <li repeat.for="child of selectedProductVersion.functions">
-              <a trans="6" color="primary-dark" href="#function-${child.name}">
+              <a trans="6" color="primary-dark" click.trigger="scrollTo('function', child.name)">
                 ${child.name}
               </a>
             </li>
@@ -103,13 +103,12 @@
     <template if.bind="selectedProductVersion.variables.length">
       <h1 gutter>Variables</h1>
       <section class="au-card">
-        <template repeat.for="variable of selectedProductVersions.variables">
-          <article>
-            <blockquote>
-              <h1>${variable.name}: ${variable.type.name}</h1>
-              <div description>${variable.comment.shortText || 'no description available'}</div>
-            </blockquote>
-          </article>
+
+        <template repeat.for="variable of selectedProductVersion.variables">
+          <blockquote id="variable-${variable.name}">
+            <h1 bold color=accent>${variable.name}: <span color=secondary>${variable.type.name}</span></h1>
+            <div description>${variable.comment.shortText || 'no description available'}</div>
+          </blockquote>
         </template>
       </section>
     </template>
@@ -120,12 +119,13 @@
         <template repeat.for="function of selectedProductVersion.functions">
 
           <blockquote id="function-${function.signature.name}">
-            <h1 color="accent">${function.signature.name}(<span repeat.for="param of function.signature.parameters">${param.name}: ${param.type.name || 'any'}<span if.bind="!$last">, </span></span>): ${function.signature.type.name || 'any'}</h1>
+            <h1 bold color=accent>${function.signature.name}(<span trans="6" color="primary" repeat.for="param of function.signature.parameters">${param.name}: ${param.type.name || 'any'}<span if.bind="!$last">, </span></span>): <span color=secondary>${function.signature.type.name ||'any'}</span></h1>
             <div description>${function.signature.comment.shortText || 'no description available'}</div>
           </blockquote>
 
           <article gutter="2x" if.bind="function.signature.parameters.length > 0">
-            <h3 comment>@Parameters: </h3>
+            <br>
+            <h3 comment>Parameters: </h3>
             <ul class="stack-list" gutter>
               <li repeat.for="param of function.signature.parameters">
                 <strong>${param.name}: ${param.type.name || 'any'}</strong>

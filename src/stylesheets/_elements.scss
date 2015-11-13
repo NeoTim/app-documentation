@@ -3,24 +3,31 @@
 [color="accent"] {color: $accent-color;}
 [color="primary"] {color: $primary-color;}
 [color="primary-dark"] {color: color-primary(dark);}
+[color="text"] {color: $text-color;}
+[color="label"] {color: $label-color;}
+[color="secondary"] {color: $secondary-color;}
 [font="code"] {@extend %source-code;}
 [font="sans"] {@extend %source-sans;}
 [comment] {@extend %source-code;}
 [trans="3"] {opacity: 0.3}
 [trans="6"] {opacity: 0.6}
 [trans="9"] {opacity: 0.9}
+[bold] {font-weight: bold !important}
 
 [gutter] {// -----------------------------------------------  gutter
-  padding: 0 $gutter-xs-px !important;
+  padding-left: 0 $gutter-xs-px !important;
+  padding-right: 0 $gutter-xs-px !important;
 }
 
 [half-gutter] {
-  padding: 0 ($gutter-xs-px / 2) !important;
+  padding-left: ($gutter-xs-px / 2) !important;
+  padding-right: ($gutter-xs-px / 2) !important;
 }
 
 
 [gutter="2x"] {
-  padding: 0 ($gutter-xs-px * 2) !important;
+  padding-left: ($gutter-xs-px * 2) !important;
+  padding-right: ($gutter-xs-px * 2) !important;
 }
 
 [direction="flex-row"] {
@@ -237,14 +244,17 @@ au-icon.au-icon {// ----------------------------------------  au-icon
   }
 
   [gutter] {
-    padding: 0 $gutter-md-px !important;
+    padding-left: $gutter-md-px !important;
+    padding-right: $gutter-md-px !important;
   }
 
   [half-gutter] {
-    padding: 0 ($gutter-md-px / 2) !important;
+    padding-left: ($gutter-md-px / 2) !important;
+    padding-right: ($gutter-md-px / 2) !important;
   }
 
   [gutter="2x"] {
-    padding: 0 ($gutter-md-px * 2) !important;
+    padding-left: ($gutter-md-px * 2) !important;
+    padding-right: ($gutter-md-px * 2) !important;
   }
 }

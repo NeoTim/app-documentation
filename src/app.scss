@@ -114,5 +114,9 @@ body {// --------------------------------------------------- Layout
     main.page-host au-view.content {//----------------------  @MEDIA MD:  au-view.content
       padding: $gutter-md;
     }
+
+    main.page-host {
+      scroll-behavior: smooth;
+    }
   }
 }
