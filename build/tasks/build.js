@@ -5,12 +5,26 @@ var plumber = require('gulp-plumber');
 var to5 = require('gulp-babel');
 var sourcemaps = require('gulp-sourcemaps');
 var less = require('gulp-less');
-var sass = require('gulp-sass');
-var prefixer = require('gulp-autoprefixer');
 var paths = require('../paths');
 var compilerOptions = require('../babel-options');
-var stripCssComments = require('gulp-strip-css-comments');
+var gutil = require('gulp-util');
 var assign = Object.assign || require('object.assign');
+var sass;
+var minfy;
+var concat;
+var prefixer;
+var stripCssComments;
+var isSassDepsRequired = false;
+var pkg = paths('package.json');
+
+function requireSassDeps(){
+  isSassDepsRequired = true;
+  sass = require('gulp-sass');
+  minfy = require('gulp-minify-css');
+  concat = require('gulp-concat');
+  prefixer = require('gulp-autoprefixer');
+  stripCssComments = require('gulp-strip-css-comments');
+}
 
 // transpiles changed es6 files to SystemJS format
 // the plumber() call prevents 'pipe breaking' caused
@@ -44,14 +58,20 @@ gulp.task('build-css', function() {
 });
 
 gulp.task('build-sass', function() {
+  if (!gutil.env.dev) {
+    return gulp.src(paths.app('*.css')).pipe(gulp.dest(paths.output))
+  }
+  if (!isSassDepsRequired) requireSassDeps();
   return gulp.src(paths.sass)
     .pipe(plumber())
     .pipe(sourcemaps.init())
-    .pipe(sass(paths.sassOptions))
+    .pipe(sass(paths.sassOptions()))
     .pipe(prefixer())
     .pipe(stripCssComments())
+    .pipe(gutil.env.min ? minfy() : gutil.noop())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.output))
+    .pipe(gulp.dest(paths.app()))
 });
 
 // this task calls the clean task (located
@@ -59,9 +79,7 @@ gulp.task('build-sass', function() {
 // and build-html tasks in parallel
 // https://www.npmjs.com/package/gulp-run-sequence
 gulp.task('build', function(callback) {
-  return runSequence(
-    'clean',
+  return runSequence('clean',
     ['build-system', 'build-html', 'build-css', 'build-sass'],
-    callback
-  );
+  callback);
 });

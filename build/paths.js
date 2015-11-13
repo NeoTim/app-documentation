@@ -1,5 +1,4 @@
 var path = require('path');
-var neat = require('node-neat');
 var assign = Object.assign || require('object.assign');
 var appRoot = 'src/';
 var outputRoot = 'dist/';
@@ -10,8 +9,6 @@ var app  = cwd.bind(cwd, 'src')
 var out  = cwd.bind(cwd, 'dist')
 var test = cwd.bind(cwd, 'test')
 var npm  = cwd.bind(cwd, 'node_modules')
-
-
 
 assign(cwd, {
   app: app,
@@ -25,12 +22,15 @@ assign(cwd, {
   output: out(),
   root: app(),
   sass: app('**/*.scss'),
+  css: app('stylesheets/**/*.css'),
   source: app('**/*.js'),
   style: cwd('styles/**/*.less'),
   test: test,
-  sassOptions: {
-    errLogToConsole: true,
-    includePaths: neat.includePaths.concat(npm('sassdash/scss'), npm('include-media/dist/_include-media.scss'))
+  sassOptions: function(){
+    return {
+      errLogToConsole: true,
+      includePaths: require('node-neat').includePaths.concat(npm('sassdash/scss'), npm('include-media/dist/_include-media.scss'))
+    }
   }
 });
 module.exports = cwd;

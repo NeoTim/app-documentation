@@ -1,5 +1,4 @@
 <template>
-  <require from="./au-dropdown.css"></require>
 
   <select ref="selectElement" show.bind="isMobile" class="au-select" value.bind="value">
     <option repeat.for="item of options" value.bind="item">${item}</option>
