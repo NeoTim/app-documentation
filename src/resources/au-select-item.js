@@ -15,6 +15,7 @@ const clickEvent = isTouch ? 'touchstart': 'click';
 export class SelectItemElement {
   @bindable options = null;
   @bindable active = null;
+  @bindable value = null;
 
   constructor(element) {
     this.element = element;
@@ -22,7 +23,8 @@ export class SelectItemElement {
     this.onClick = this.onClick.bind(this);
   }
 
-  bind() {
+  attached() {
+    console.log(this)
     this.parentElement = this.element.parentElement;
   }
 

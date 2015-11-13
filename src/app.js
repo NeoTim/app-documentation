@@ -66,8 +66,18 @@ export class App {
   }
 
   activate() {
-    this.profile.current = this.profile.current || this.profile.options[0];
     this.overlayContainer = this.overlayController.registerContainer(this, this.element);
+    this.profileChanged   = this.channel.subscribe( 'profile-changed', profile => this.onProfileChange(profile) );
+  }
+
+  deactivate() {
+    this.profileChanged.dispose();
+  }
+
+  onProfileChange(profile) {
+    // this.server.getTutorialsForProfile(profile.current.value).then(tutorials => {
+    //   this.tutorials = tutorials;
+    // });
   }
 
   openAside($event) {

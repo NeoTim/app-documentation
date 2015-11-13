@@ -2,7 +2,7 @@ import {customElement, bindable, inject} from 'aurelia-framework';
 import {OverlayController} from 'resources/au-overlay';
 import {AUChannel} from 'services/channel';
 import {onTransitionEnd, onDocumentEvent, clickEvent} from './util';
-
+import {DOM} from 'aurelia-pal';
 const ACTIVE_CLASSNAME = 'is-active';
 const DEFAULT_CLASSNAME = 'au-settings-button';
 
@@ -54,11 +54,10 @@ export class AuSettingsButtonElement {
 
   close() {
     if (!this.active) return;
-    document.dispatchEvent(new Event(clickEvent));
+    DOM.dispatchEvent(new Event(clickEvent));
   }
 
   activeChanged(value) {
-    console.log(value, 'value')
     this.onClick = this[value ? 'close' : 'open'];
     this.element.classList[value ? 'add' : 'remove'](ACTIVE_CLASSNAME);
   }

@@ -25,14 +25,6 @@ export class Server {
     this.otherProducts = [];
   }
 
-  getProfile() {
-    return new Promise(resolve => resolve(this.cache.getItem('profile')));
-  }
-
-  saveProfile(profileName) {
-    return new Promise(resolve => resolve(this.cache.setItem('profile', profileName, this.cache.farFuture())));
-  }
-
   getOfficialProducts() {
     if(this.officialProducts.length > 0){
       return Promise.resolve(this.officialProducts);

@@ -1,47 +1,38 @@
 import {inject, ObserverLocator} from 'aurelia-framework';
+import {CacheModel} from './cache-model';
+import {Cache} from './cache';
+import {AUChannel} from './channel';
 
-@inject(ObserverLocator)
-export class Profile {
-
-  _handlers = [];
+@inject(ObserverLocator, Cache, AUChannel)
+export class Profile extends CacheModel {
+  id = 'profile';
   options   = [
-    {name: 'developer' , displayName: 'a developer'},
-    {name: 'architect' , displayName: 'an architect'},
-    {name: 'manager'   , displayName: 'a manager or CTO'}
+    {value: 'developer' , text: 'a developer'},
+    {value: 'architect' , text: 'an architect'},
+    {value: 'manager'   , text: 'a manager or CTO'}
   ];
+  _handlers = [];
 
-  constructor(observerLocator) {
-    this.current = this.options[0];
+  constructor(observerLocator, cache, channel) {
+    super(observerLocator, cache);
+    this.channel = channel;
+    this.init();
+  }
 
-    this.observer = observerLocator.getObserver(this, 'current').subscribe(value => {
-      value && this._currentChanged(value);
+  init() {
+    super.init(this.id, this.options, this.options[2]);
+
+    this.onChange((profile) => {
+      this.channel.publish('profile-changed', profile);
     });
   }
 
-  _currentChanged(value) {
-    this._handlers.forEach(cb => cb(value));
-  }
-
-  getValue(name) {
-    name = name || this.current.name;
-    return this.options.find(x => x.name === name);
+  getValue(value) {
+    value = value || this.current.value;
+    return this.options.find(x => x.value === value);
   }
 
   setValue(value) {
     this.current = value;
-  }
-
-  onChange(callback) {
-    let handlers = this._handlers;
-    handlers.push(callback);
-    return {
-      dispose() {
-        let index = handlers.indexOf(callback);
-
-        if (index !== -1) {
-          handlers.splice(index, 1);
-        }
-      }
-    };
   }
 }

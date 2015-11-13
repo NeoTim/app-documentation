@@ -64,11 +64,7 @@
 
       <au-select-item options.bind="culture.options" value.bind="culture.current"></au-select-item>
       <au-select-item options.bind="language.options" value.bind="language.current"></au-select-item>
-
-      <au-select-item options.bind="profile.options" value.bind="profile.current">
-        <template replace-part="each-item"> ${o.displayName} </template>
-        <template replace-part="active-item">${value.displayName ||options[0].displayName}</template>
-      </au-select-item>
+      <au-select-item options.bind="profile.options" value.bind="profile.current"></au-select-item>
 
     </au-select-list>
   </au-settings-button>

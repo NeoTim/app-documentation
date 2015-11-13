@@ -31,7 +31,6 @@ export class Repository {
           this.product = product;
           this.selectedProductVersion = productVersion;
           this.selectedVersion = productVersion.version;
-          console.log(this.selectedProductVersion);
           if (this.selectedProductVersion) {
             this.isDeps       = this.selectedProductVersion.dependencies && this.selectedProductVersion.dependencies.length;
             this.isClasses    = this.selectedProductVersion.classes && this.selectedProductVersion.classes.length > 0;
