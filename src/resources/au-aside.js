@@ -44,7 +44,7 @@ export class AuAsideElement {
       }),
       channel.subscribe('au-deactivate:aside', (x)=> {
         resolvePromise(this.close(), x);
-      }),
+      })
     );
   }
 
