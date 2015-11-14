@@ -9,8 +9,7 @@ export class Index {
   constructor(server, profile, channel) {
     this.profile = profile;
     this.server = server;
-    this.channel = channel;
-    this.selectedProfile = this.profile.current;
+    this.channel = channel
   }
 
   configureRouter(config, router) {

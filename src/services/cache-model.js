@@ -11,12 +11,15 @@ export class CacheModel {
   }
 
   init(id, options, current) {
+    current || options[0];
+
     this.id = id;
     this.options = options;
-    this.base = current || this.options[0];
-    this.current = this.cache.getItem(`${this.id}.current`) || this.base;
     this.observerLocator.getObserver(this, 'current')
       .subscribe(newValue => this._currentChanged(newValue));
+
+    this.current = this.cache.getItem(`${this.id}.current`) || this.base;
+    this.base = this.current || current;
   }
 
   _currentChanged(newValue) {

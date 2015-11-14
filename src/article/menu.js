@@ -12,22 +12,22 @@ export class ArticleMenu {
     this.profile = profile;
     this.server = server;
     this.channel = channel;
+    this.selectedProfile = this.profile.current.value;
   }
 
   activate() {
-    this.onProfileChange(this.profile.current);
-    this.profileChanged = this.channel.subscribe('profile-changed', (profile) => {
-      this.onProfileChange(profile);
-    })
+    this.profileChanged(this.profile.current);
   }
 
-  deactivate() {
-    this.profileChanged.dispose();
-  }
-
-  onProfileChange(profile) {
+  profileChanged(profile) {
     this.server.getTutorialsForProfile(profile.value).then(tutorials => {
       this.tutorials = tutorials;
     });
+  }
+
+  selectedProfileChanged(profile) {
+    profile = profile.value ? profile : this.profile.getValue(profile);
+    this.profile.current = profile;
+    this.profileChanged(profile);
   }
 }

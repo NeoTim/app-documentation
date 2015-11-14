@@ -22,7 +22,7 @@ export class App {
     config.map([
       {
         route: '',
-        settings: {isArticle:true},
+        settings: { isArticle:true },
         viewPorts: {
           default: {moduleId: 'article/index', title: 'Article'},
           menu: {moduleId: 'article/menu', title: 'Article'}
@@ -30,7 +30,7 @@ export class App {
       },
       {
         route: ':userName/:productName/:version/doc/article',
-        settings: {isArticle:true},
+        settings: { isArticle:true },
         viewPorts: {
           default: {moduleId: 'article/index', title: 'Article'},
           menu: {moduleId: 'article/menu', title: 'Article'}
@@ -39,7 +39,7 @@ export class App {
       {
         route: 'doc/article',
         name: 'local',
-        settings: {isArticle:true},
+        settings: { isArticle:true },
         viewPorts: {
           default: {moduleId: 'article/index', title: 'Local Article'},
           menu: {moduleId: 'article/menu', title: 'Article'}
@@ -67,10 +67,6 @@ export class App {
 
   activate() {
     this.overlayContainer = this.overlayController.registerContainer(this, this.element);
-  }
-
-  deactivate() {
-    this.profileChanged.dispose();
   }
 
   openAside($event) {

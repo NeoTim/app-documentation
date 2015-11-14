@@ -20,7 +20,7 @@ export class Profile extends CacheModel {
   }
 
   init() {
-    super.init(this.id, this.options, this.options[2]);
+    super.init(this.id, this.options);
 
     this.onChange((profile) => {
       this.channel.publish('profile-changed', profile);
