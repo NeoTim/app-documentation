@@ -22,6 +22,10 @@ export class ArticleMenu {
   profileChanged(profile) {
     this.server.getTutorialsForProfile(profile.value).then(tutorials => {
       this.tutorials = tutorials;
+      let selectedTuroial = tutorials.find(x => x.isSelected);
+      if (!selectedTuroial && tutorials.length) {
+        this.tutorials[0].isSelected = true;
+      }
     });
   }
 
