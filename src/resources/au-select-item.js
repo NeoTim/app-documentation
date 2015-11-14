@@ -23,7 +23,7 @@ export class SelectItemElement {
     this.onClick = this.onClick.bind(this);
   }
 
-  attached() {
+  bind() {
     this.parentElement = this.element.parentElement;
   }
 
