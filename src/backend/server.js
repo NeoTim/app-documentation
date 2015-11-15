@@ -248,7 +248,7 @@ export class Server {
 }
 
 function checkForChildren(obj) {
-  if (obj.children) {
+  if (obj && obj.children) {
     obj.children.forEach(child => {
       let newChild = castObjectAsType(child, obj);
       checkForChildren(newChild);

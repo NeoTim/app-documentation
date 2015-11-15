@@ -28,7 +28,7 @@ export class Product {
     this.isSelected = false;
     this.versions = [];
     this.server = server;
-    this.baseUrl = `https://rawgit.com/${this.userName}/${this.productName}`;
+    this.baseUrl = `https://cdn.rawgit.com/${this.userName}/${this.productName}`;
   }
 
   select(){
