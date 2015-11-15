@@ -1,37 +1,44 @@
 import {bindable, inject} from 'aurelia-framework';
 import {Server} from 'backend/server';
-import {Profile} from 'services/profile'
-import {AUChannel} from 'services/channel'
+import {LocalAPI} from 'services/local';
+import {AUChannel} from 'services/channel';
 
-@inject(Server, Profile, AUChannel)
+@inject(Server, AUChannel, LocalAPI)
 export class ArticleMenu {
   tutorials = null;
-  @bindable selectedProfile;
 
-  constructor(server, profile, channel) {
-    this.profile = profile;
+  constructor(server, channel, api) {
+    this.api = api;
     this.server = server;
     this.channel = channel;
-    this.selectedProfile = this.profile.current.value;
-  }
-
-  activate() {
-    this.profileChanged(this.profile.current);
-  }
-
-  profileChanged(profile) {
-    this.server.getTutorialsForProfile(profile.value).then(tutorials => {
-      this.tutorials = tutorials;
-      let selectedTuroial = tutorials.find(x => x.isSelected);
-      if (!selectedTuroial && tutorials.length) {
-        this.tutorials[0].isSelected = true;
-      }
+    this.profile = api.getProfile();
+    this.profile.getTutorials().then(tutorials => {
+      this.tutorials = tutorials
     });
   }
 
-  selectedProfileChanged(profile) {
-    profile = profile.value ? profile : this.profile.getValue(profile);
-    this.profile.current = profile;
-    this.profileChanged(profile);
+  activate() {
+      console.log(this)
+    this.changedHandler = this.channel.subscribe('profile-changed', (profile)=> {
+      profile.getTutorials().then( tutorials => {
+        this.tutorials = tutorials
+      });
+
+      this.profile = profile;
+    });
+  }
+
+  deactivate() {
+    this.changedHandler.dispose();
+  }
+
+}
+
+
+const Vowels = ['a', 'e', 'i', 'o', 'u'];
+export class VowelValueConverter {
+  toView(text) {
+    let first = text[0];
+    return (Vowels.indexOf(first) < 0) ? ('a ' + text ) : ('an ' + text)
   }
 }

@@ -27,7 +27,9 @@ export class AuMenuElement {
   bind() {
     let channel = this.channel;
     let subscriptions = this.subscriptions;
-
+    if (!this.indicator.nextElementSibling) {
+      this.indicator.style.display = 'none';
+    }
     subscriptions.push(
       channel.subscribe('au-menu:set-active', (element) => {
         translateIndicator(element, this.indicator);

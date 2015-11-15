@@ -1,19 +1,9 @@
-import {inject, ObserverLocator} from 'aurelia-framework';
-import {CacheModel} from './cache-model';
-import {Cache} from './cache';
 
-@inject(ObserverLocator, Cache)
-export class Culture extends CacheModel {
-  id = 'culture';
+export class Culture {
   options = ['en-US', 'pt-BR'];
-  _handlers = [];
+  current = undefined;
 
-  constructor(observerLocator, cache) {
-    super(observerLocator, cache);
-    this.init();
-  }
-
-  init() {
-    super.init(this.id, this.options);
+  constructor(api) {
+    this.key = new.target.name.toLowerCase();
   }
 }

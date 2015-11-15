@@ -32,6 +32,7 @@ export class SelectItemElement {
   }
 
   activeChanged(value) {
+    if (this.options.length < 2) return;
     if (value) this.addListeners();
 
     if (this.container) {

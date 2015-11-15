@@ -1,38 +1,56 @@
-import {inject, ObserverLocator} from 'aurelia-framework';
-import {CacheModel} from './cache-model';
-import {Cache} from './cache';
-import {AUChannel} from './channel';
+import {inject} from 'aurelia-framework';
+import {Server} from 'backend/server';
 
-@inject(ObserverLocator, Cache, AUChannel)
-export class Profile extends CacheModel {
-  id = 'profile';
-  options   = [
-    {value: 'developer' , text: 'a developer'},
-    {value: 'architect' , text: 'an architect'},
-    {value: 'manager'   , text: 'a manager or CTO'}
+@inject(Server)
+export class Profile {
+  current = undefined;
+  options = ['developer', 'architect', 'manager'];
+  display = [
+    {name:'developer', value: 'developer',  text: 'a developer'},
+    {name:'architect', value: 'architect',  text: 'an architect'},
+    {name:'manager', value: 'manager',      text: 'a manager or CTO'}
   ];
-  _handlers = [];
 
-  constructor(observerLocator, cache, channel) {
-    super(observerLocator, cache);
-    this.channel = channel;
-    this.init();
+  constructor(server) {
+    this.server = server;
+    this.key    = new.target.name.toLowerCase();
   }
 
-  init() {
-    super.init(this.id, this.options);
-
-    this.onChange((profile) => {
-      this.channel.publish('profile-changed', profile);
-    });
+  getTutorials() {
+    if (!this.profilesCleaned) {
+      this.profilesCleaned = true;
+      return this.cleanEmptyProfiles().then(args => {
+        this.options = args.options;
+        this.current = args.current;
+        return args.tutorials;
+      })
+    }
+    return this.server.getTutorialsForProfile(this.current);
   }
 
-  getValue(value) {
-    value = value || this.current.value;
-    return this.options.find(x => x.value === value);
-  }
-
-  setValue(value) {
-    this.current = value;
+  cleanEmptyProfiles() {
+    let server = this.server;
+    let self = this;
+    let options = [];
+    let current = null;
+    let tutorials = null;
+    let child;
+    return new Promise(resolve => {
+      lookup()
+      function lookup() {
+        child = self.options.pop();
+        if (!child) {
+         return resolve({options, tutorials, current})
+        }
+        server.getTutorialsForProfile(child).then(tuts => {
+          if (tuts && tuts.length)  {
+            tutorials = tutorials || tuts;
+            current = current || child;
+            options.push(child);
+          }
+          lookup(child);
+        })
+      }
+    })
   }
 }

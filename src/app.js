@@ -1,17 +1,16 @@
-import {Culture} from 'services/culture';
-import {Language} from 'services/language';
-import {Profile} from 'services/profile';
+import {LocalAPI} from 'services/local';
 import {AUChannel} from 'services/channel';
 import {OverlayController} from 'resources/au-overlay';
 import {inject} from 'aurelia-framework';
 
-@inject(Element, Culture, Language, Profile, AUChannel, OverlayController)
+@inject(Element, AUChannel, OverlayController, LocalAPI)
 export class App {
 
-  constructor(element, culture, language, profile, channel, overlayController) {
-    this.culture  = culture;
-    this.language = language;
-    this.profile  = profile;
+  constructor(element, channel, overlayController, api) {
+    this.culture  = api.getCulture();
+    this.language = api.getLanguage();
+    this.profile  = api.getProfile();
+    this.api      = api;
     this.channel  = channel;
     this.element  = element;
     this.overlayController = overlayController;
@@ -74,3 +73,7 @@ export class App {
     this.aside.open();
   }
 }
+
+
+
+
