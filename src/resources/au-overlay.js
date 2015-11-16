@@ -16,16 +16,19 @@ export class OverlayElement {
     this.element.className += ` ${ANIMATION_CLASSNAME} ${DEFAULT_CLASSNAME}`;
     this.parent = parent;
     this.element.classList.add('au-animate');
-    window.overlay = this;
     return this;
   }
 
   attach() {
-    return onAnimationEnd( this.element, ()=> this.parent.element.appendChild(this.element) );
+    return onAnimationEnd( this.element, ()=> {
+      this.parent.element.appendChild(this.element);
+    });
   }
 
   detach() {
-    return onAnimationEnd( this.element, ()=> this.parent.fragment.appendChild(this.element) );
+    return onAnimationEnd( this.element, ()=> {
+      this.parent.fragment.appendChild(this.element);
+    });
   }
 
   destroy() {
@@ -37,8 +40,8 @@ export class OverlayElement {
 export class OverlayController {
 
   element  = DOM.createElement('au-overlay');
-  active   = true;
   fragment = DOM.createDocumentFragment();
+  active   = true;
 
   constructor(channel) {
     this.channel = channel;

@@ -21,10 +21,10 @@ export class LocalAPI {
     let channel = this.channel;
     let cache   = this.cache;
     let capitalKey = capitalize(key);
-    let getKey     = `get${capitalKey}`;
-    let setKey     = `set${capitalKey}`;
-    let currentKey = `${key}.current`;
-    let eventKey   = `${key}-changed`;
+    let getKey     = 'get' + capitalKey;
+    let setKey     = 'set' + capitalKey;
+    let currentKey =  key  + '.current';
+    let eventKey   =  key  + '-changed';
 
     let currentValue = this.cache.getItem(currentKey);
     if (!currentValue) {

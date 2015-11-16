@@ -34,7 +34,6 @@ export class ArticleMenu {
 
 }
 
-
 const Vowels = ['a', 'e', 'i', 'o', 'u'];
 export class VowelValueConverter {
   toView(text) {

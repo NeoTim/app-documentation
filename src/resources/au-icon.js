@@ -3,7 +3,7 @@ import {inlineView, processContent, customElement, inject, bindable} from 'aurel
 const aiRegex = /ai\-/gi;
 
 function auPrefix(className) {
-  return aiRegex.test(className) ? className : `au-${className}`;
+  return aiRegex.test(className) ? className : (  'au-' + className);
 }
 
 @customElement('au-icon')
@@ -21,7 +21,7 @@ export class IconElement {
 
   className = 'au-icon aucon';
   constructor(element) {
-    element.className += ` ${this.className}`;
+    element.className += ' ' + this.className;
     this.element = element;
   }
 

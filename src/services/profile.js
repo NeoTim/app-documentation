@@ -3,6 +3,7 @@ import {Server} from 'backend/server';
 
 @inject(Server)
 export class Profile {
+  key = 'profile';
   current = undefined;
   options = ['developer', 'architect', 'manager'];
   display = [
@@ -13,18 +14,17 @@ export class Profile {
 
   constructor(server) {
     this.server = server;
-    this.key    = new.target.name.toLowerCase();
   }
 
   getTutorials() {
-    if (!this.profilesCleaned) {
-      this.profilesCleaned = true;
-      return this.cleanEmptyProfiles().then(args => {
-        this.options = args.options;
-        this.current = args.current;
-        return args.tutorials;
-      });
-    }
+    // if (!this.profilesCleaned) {
+    //   this.profilesCleaned = true;
+    //   return this.cleanEmptyProfiles().then(args => {
+    //     this.options = args.options;
+    //     this.current = args.current;
+    //     return args.tutorials;
+    //   });
+    // }
     return this.server.getTutorialsForProfile(this.current);
   }
 

@@ -1,14 +1,15 @@
 import {inject} from 'aurelia-framework';
 import {Server} from 'backend/server';
-import {Profile} from 'services/profile';
+import {LocalAPI} from 'services/local';
 import {AUChannel} from 'services/channel';
 
-@inject(Server, Profile, AUChannel)
+@inject(Server, LocalAPI, AUChannel)
 export class Index {
 
-  constructor(server, profile, channel) {
-    this.profile = profile;
-    this.server = server;
+  constructor(server, api, channel) {
+    this.api     = api;
+    this.profile = api.getProfile();
+    this.server  = server;
     this.channel = channel;
   }
 

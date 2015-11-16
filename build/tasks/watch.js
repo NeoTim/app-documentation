@@ -12,7 +12,11 @@ function reportChange(event){
 // reportChange method. Also, by depending on the
 // serve task, it will instantiate a browserSync session
 gulp.task('watch', ['serve'], function() {
-  gulp.watch(paths.source, ['build-system', gutil.env.lint && 'lint',  browserSync.reload]).on('change', reportChange);
+  if (gutil.env.lint) {
+    gulp.watch(paths.source, ['build-system', 'lint',  browserSync.reload]).on('change', reportChange);
+  } else {
+    gulp.watch(paths.source, ['build-system',  browserSync.reload]).on('change', reportChange);
+  }
   gulp.watch(paths.html, ['build-html', browserSync.reload]).on('change', reportChange);
   gulp.watch([paths.style, paths.less], ['build-css', browserSync.reload]).on('change', reportChange);
   if (gutil.env.dev) {

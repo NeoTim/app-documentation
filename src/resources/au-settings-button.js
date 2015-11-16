@@ -16,7 +16,7 @@ export class AuSettingsButtonElement {
   subscriptions = [];
 
   constructor(element, channel, overlayController) {
-    element.className += ` ${DEFAULT_CLASSNAME}`;
+    element.className += ' ' + DEFAULT_CLASSNAME;
     channel.createInstruction(this);
 
     this.element = element;

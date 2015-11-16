@@ -20,7 +20,7 @@ export class AuAsideElement {
   subscriptions = [];
 
   constructor(element, channel, overlayController) {
-    element.className += ` ${DEFAULT_CLASSNAME}`;
+    element.className += ' ' + DEFAULT_CLASSNAME;
     channel.createInstruction(this, this.name, this.bindableKey);
 
     this.element  = element;
