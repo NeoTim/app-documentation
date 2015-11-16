@@ -1,16 +1,21 @@
 <template>
-  <form submit.trigger="save()">
-    <div>
-      <input type="text" value.bind="firstName">
-    </div>
-    <div>
-      <input type="text" value.bind="lastName">
-    </div>
-    <div>
+  <section>
+    <h5>
       Full name is ${fullName}.
-    </div>
-    <div>
+    </h5>
+
+    <form submit.trigger="save()" class="inline">
+      <div>
+        <label> First Name </label>
+        <input type="text" value.bind="firstName">
+      </div>
+
+      <div class="inline">
+        <label> Last Name </label>
+        <input type="text" value.bind="lastName">
+      </div>
+
       <button class="au-button" typef="submit">Save</button>
-    </div>
-  </form>
+    </form>
+  </section>
 </template>
