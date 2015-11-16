@@ -9,7 +9,7 @@ export class AUChannel {
 
   subscribe(eventName, callback) {
     return this.channel.subscribe(eventName, (payload)=> {
-      callback(payload)
+      callback(payload);
     });
   }
 
@@ -18,12 +18,13 @@ export class AUChannel {
   }
 
   createInstruction(context, name, bindablekey) {
-    let self = this;
-    return context.channelInstruction = {context, name, isValue, validate};
+    context.channelInstruction = {context, name, isValue, validate};
+    return context.channelInstruction;
     //////////////////
 
     function isValue(value) {
-      value = value ? value : bindablekey ? context[bindablekey] : true;
+      if (!value) value = bindablekey || context[bindablekey];
+      value = value || true;
       return  (bindablekey && context[bindablekey]) === value;
     }
 

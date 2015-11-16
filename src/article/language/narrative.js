@@ -15,13 +15,13 @@ export class Narrative {
   constructor(element) {
     this.element = element;
 
-    if(element.innerHTML) {
+    if (element.innerHTML) {
       this.setContent(element.innerHTML);
     }
   }
 
   valueChanged(newValue) {
-    if(newValue) {
+    if (newValue) {
       this.setContent(newValue);
     }
   }
@@ -34,8 +34,8 @@ export class Narrative {
   }
 }
 
-var reader = new commonmark.Parser(),
-    writer = new commonmark.HtmlRenderer();
+let reader = new commonmark.Parser();
+let writer = new commonmark.HtmlRenderer();
 
 function isExternalLink(url) {
   return ( ( url.indexOf(':') > -1 || url.indexOf('//') > -1 ) && checkDomain(location.href) !== checkDomain(url) );
@@ -53,7 +53,7 @@ function updateAnchorTargets(element) {
   // external links need target="_blank"
   let anchors = element.getElementsByTagName('a');
 
-  for(let i = 0, ii = anchors.length; i < ii; i++) {
+  for (let i = 0, ii = anchors.length; i < ii; i++) {
     if (isExternalLink(anchors[i].href)) {
       anchors[i].target = '_blank';
     }

@@ -1,4 +1,4 @@
-import {bindable, inject} from 'aurelia-framework';
+import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {Server} from 'backend/server';
 import {LocalAPI} from 'services/local';
@@ -12,14 +12,13 @@ export class ArticleView {
     this.server = server;
     this.router = router;
     this.culture = api.getCulture();
-    window.art = this
   }
 
   attached() {
     this.cultureSubscription = this.api.channel.subscribe('culture-changed', (culture)=> {
       this.loadArticle();
       this.culture = culture;
-    })
+    });
   }
 
   activate(params, config, instruction) {
@@ -32,11 +31,11 @@ export class ArticleView {
 
           .then(product => {
             let tutorial = product.getTutorialBySlug(params.articleSlug);
-            if(tutorial) {
+            if (tutorial) {
               tutorial.select();
             }
 
-            return product.getVersion(params.version)
+            return product.getVersion(params.version);
           });
 
     return getProductVersion.then(productVersion => {

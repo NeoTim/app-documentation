@@ -7,10 +7,10 @@ nprogress.configure({ showSpinner: false });
 export class LoadingIndicator {
   @bindable loading = false;
 
-  loadingChanged(newValue){
-    if(newValue){
+  loadingChanged(newValue) {
+    if (newValue) {
       nprogress.start();
-    }else{
+    } else {
       nprogress.done();
     }
   }

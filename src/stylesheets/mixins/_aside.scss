@@ -45,7 +45,7 @@
 @mixin au-tabs-md {
   min-height: $header-height;
   max-height: $header-height;
-  visibility: collapse;
+  // visibility: collapse;
 }
 
 
@@ -98,9 +98,17 @@
 
 @mixin au-aside-md {
   @include translate3d(0, 0, 0);
-  max-width: $aside-width-md;
+  // max-width: $aside-width-md;
   min-width: $aside-width-md;
-
+  &:before {
+    content: " ";
+    display: block;
+    height: $header-height;
+    width: 100%;
+  }
+  &:after {
+    display: none;
+  }
   > nav.au-tabs {
     @include au-tabs-md;
   }
@@ -115,7 +123,6 @@
     min-width: $aside-width-md;
     max-width: $aside-width-md;
     height: 100%;
-    visibility: collapse;
   }
 }
 

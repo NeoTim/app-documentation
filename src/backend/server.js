@@ -1,7 +1,7 @@
 import {database} from './database';
 import {HttpClient} from 'aurelia-http-client';
 import {Cache} from 'services/cache';
-import {join, inject} from 'aurelia-framework';
+import {inject} from 'aurelia-framework';
 import {
   Product,
   ProductVersion,
@@ -26,7 +26,7 @@ export class Server {
   }
 
   getOfficialProducts() {
-    if(this.officialProducts.length > 0){
+    if (this.officialProducts.length > 0) {
       return Promise.resolve(this.officialProducts);
     }
 
@@ -38,25 +38,25 @@ export class Server {
     return this.getOfficialProducts().then(products => {
       let temp = [];
 
-      for(let i = 0, ii = products.length; i < ii; ++i) {
+      for (let i = 0, ii = products.length; i < ii; ++i) {
         temp = products[i].getTutorialForProfile(profileName).concat(temp);
       }
 
-      return temp.sort((a,b) => a.getOrderForProfile(profileName) < b.getOrderForProfile(profileName) ? -1 : 1);
+      return temp.sort((a, b) => a.getOrderForProfile(profileName) < b.getOrderForProfile(profileName) ? -1 : 1);
     });
   }
 
   getProduct(userName, productName) {
     let found = this.otherProducts.find(x => x.userName === userName && x.productName === productName);
-    if(found) {
+    if (found) {
       return Promise.resolve(found);
     }
 
     return this.getOfficialProducts().then(officialProducts => {
       found = officialProducts.find(x => x.userName === userName && x.productName === productName);
 
-      if(!found) {
-        found = new Product({userName:userName, productName:productName, latestVersion: 'latest'}, this)
+      if (!found) {
+        found = new Product({userName: userName, productName: productName, latestVersion: 'latest'}, this);
         this.otherProducts.push(found);
       }
 
@@ -65,7 +65,7 @@ export class Server {
   }
 
   getProductVersion(product, version) {
-    if(product.isLoaded) {
+    if (product.isLoaded) {
       return this._loadProductVersion(product, version);
     }
 
@@ -107,12 +107,12 @@ export class Server {
             }
 
             return content;
-           });
+          });
 
     return loaded.then(content => {
       translation.content = content;
 
-      if(!content) {
+      if (!content) {
         translation.unavailable = true;
       }
 
@@ -121,7 +121,7 @@ export class Server {
   }
 
   _loadProductVersion(product, version) {
-    if(version === 'latest') {
+    if (version === 'latest') {
       version = product.latestVersion;
     }
 
@@ -146,14 +146,14 @@ export class Server {
         productVersion.changeLogUrl = `https://github.com/${product.userName}/${product.productName}/blob/master/doc/CHANGELOG.md`;
         productVersion.licenseUrl = `https://github.com/${product.userName}/${product.productName}/blob/master/LICENSE`;
 
-        if(pack.jspm && pack.jspm.dependencies) {
+        if (pack.jspm && pack.jspm.dependencies) {
           productVersion.dependencies = Object.keys(pack.jspm.dependencies)
             .filter(x => x.startsWith('aurelia-'))
             .map(x => x.replace('aurelia-', ''))
             .map(x => this.officialProducts.find(y => y.productName === x) || this.otherProducts.find(y => y.productName === x));
         }
 
-        if(pack.aurelia && pack.aurelia.documentation) {
+        if (pack.aurelia && pack.aurelia.documentation) {
           productVersion.articles = pack.aurelia.documentation.articles || [];
           productVersion.articles = productVersion.articles.map(x => new Article(x, productVersion, this));
         }
@@ -170,7 +170,7 @@ export class Server {
     let content = this.cache.getItem(tagList);
     let loaded;
 
-    if(content) {
+    if (content) {
       loaded = Promise.resolve(content);
     } else {
       loaded = new HttpClient()
@@ -180,8 +180,8 @@ export class Server {
         .then(response => this.cache.setItem(tagList, response.content));
     }
 
-    return loaded.then(content => {
-      product.availableVersions = this._getVersions(content.map(x => x.name));
+    return loaded.then(_content => {
+      product.availableVersions = this._getVersions(_content.map(x => x.name));
       product.configureLatestVersion();
     }).then(() => {
       product.isLoaded = true;
@@ -200,32 +200,31 @@ export class Server {
 
     versions.forEach(x => {
       let major = majors[x.major];
-      if(!major) {
+      if (!major) {
         majors[x.major] = major = {};
       }
 
       let minor = major[x.minor];
-      if(!minor) {
+      if (!minor) {
         major[x.minor] = minor = [];
       }
-
       let patch = minor.find(y => y === x.patch);
-      if(!patch) {
-        minor.push(parseInt(x.patch));
+      if (!patch) {
+        minor.push(parseInt( x.patch, 10));
       }
     });
 
     let available = [];
 
-    for(let major in majors) {
+    for (let major in majors) {
       let minors = majors[major];
 
-      for(let minor in minors) {
+      for (let minor in minors) {
         let patches = minors[minor].sort();
         let patch = patches[patches.length - 1];
         available.push({
-          major: parseInt(major),
-          minor: parseInt(minor),
+          major: parseInt(major, 10),
+          minor: parseInt(minor, 10),
           patch: patch,
           version: major + '.' + minor + '.' + patch,
           display: major + '.' + minor + '.x'
@@ -234,11 +233,11 @@ export class Server {
     }
 
     available.sort((a, b) => {
-      if(a.major > b.major) return -1;
-      if(a.major < b.major) return 1;
+      if (a.major > b.major) return -1;
+      if (a.major < b.major) return 1;
 
-      if(a.minor > b.minor) return -1;
-      if(a.minor < b.minor) return 1;
+      if (a.minor > b.minor) return -1;
+      if (a.minor < b.minor) return 1;
 
       return 0;
     });
@@ -272,43 +271,43 @@ function castObjectAsType(obj, parent) {
   let thisObject;
 
   switch (type) {
-    case 'Class':
-      thisObject = new ClassModel(obj);
-      parent.classes.push(thisObject);
-      break;
-    case 'Constructor':
-      thisObject = new ConstructorModel(obj);
-      thisObject.signature = new SignatureModel(thisObject.signatures[0]);
-      parent.constructorMethod = thisObject;
-      break;
-    case 'Method':
-      thisObject = new MethodModel(obj);
-      thisObject.signature = new SignatureModel(thisObject.signatures[0]);
-      parent.methods.push(thisObject);
-      break;
-    case 'Interface':
-      thisObject = new InterfaceModel(obj);
-      parent.interfaces.push(thisObject);
-      break;
-    case 'Property':
-      thisObject = new PropertyModel(obj);
-      parent.properties.push(thisObject);
-      break;
-    case 'Variable':
-      thisObject = new VariableModel(obj);
-      parent.variables.push(thisObject);
-      break;
-    case 'Signature':
-      thisObject = new SignatureModel(obj);
-      parent.signature.push(thisObject);
-      break;
-    case 'Function':
-      thisObject = new FunctionModel(obj);
-      parent.functions.push(thisObject);
-      break;
-    default:
-      // Do nothing
-  };
+  case 'Class':
+    thisObject = new ClassModel(obj);
+    parent.classes.push(thisObject);
+    break;
+  case 'Constructor':
+    thisObject = new ConstructorModel(obj);
+    thisObject.signature = new SignatureModel(thisObject.signatures[0]);
+    parent.constructorMethod = thisObject;
+    break;
+  case 'Method':
+    thisObject = new MethodModel(obj);
+    thisObject.signature = new SignatureModel(thisObject.signatures[0]);
+    parent.methods.push(thisObject);
+    break;
+  case 'Interface':
+    thisObject = new InterfaceModel(obj);
+    parent.interfaces.push(thisObject);
+    break;
+  case 'Property':
+    thisObject = new PropertyModel(obj);
+    parent.properties.push(thisObject);
+    break;
+  case 'Variable':
+    thisObject = new VariableModel(obj);
+    parent.variables.push(thisObject);
+    break;
+  case 'Signature':
+    thisObject = new SignatureModel(obj);
+    parent.signature.push(thisObject);
+    break;
+  case 'Function':
+    thisObject = new FunctionModel(obj);
+    parent.functions.push(thisObject);
+    break;
+  default:
+  // Do nothing
+  }
 
   return thisObject;
 }

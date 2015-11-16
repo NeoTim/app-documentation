@@ -11,7 +11,7 @@ export class Index {
     this.isApi = true;
   }
 
-  configureRouter(config, router){
+  configureRouter(config, router) {
     config.map([
       { route: 'overview', moduleId: './product', title: 'API' },
       { route: 'home', moduleId: './no-selection', title: 'API Home' },

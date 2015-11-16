@@ -1,29 +1,21 @@
-import {inlineView, customElement, inject, bindable} from 'aurelia-framework';
-
-const faRegex = /^fa\-/;
-function faPrefix(icon, isfa) {
-  isfa = isfa || isFa(icon);
-  return isfa ? icon : `fa-${icon}`;
-}
-
-function isFa(icon) {
-  return faRegex.test(icon);
-}
+import {inlineView, processContent, customElement, inject, bindable} from 'aurelia-framework';
 
 const aiRegex = /ai\-/gi;
+
 function auPrefix(className) {
   return aiRegex.test(className) ? className : `au-${className}`;
 }
 
 @customElement('au-icon')
 @inlineView('<template class="${actualClass}"><i ref="iel"><content></content></i></template>')
+@processContent(false)
 @inject(Element)
 export class IconElement {
 
-  @bindable icon   = null;
+  @bindable icon = null;
+  @bindable next = null;
   @bindable faIcon = null;
   @bindable nextIcon = null;
-  @bindable next = null;
 
   taxtValue = null;
 
@@ -35,10 +27,10 @@ export class IconElement {
 
   transformers = {
     scale: 1,
-    rotate:0,
+    rotate: 0,
     translateX: 0,
     translateY: 0,
-    translateZ: 0,
+    translateZ: 0
   };
 
   attached() {
@@ -46,6 +38,7 @@ export class IconElement {
 
     this.iel.setAttribute('data-text', this.textValue);
     this.iel.innerText = '';
+    this.iel.innerHTML = '';
   }
 
   iconChanged(icon) {

@@ -1,4 +1,4 @@
-import {customElement, bindable, inject} from 'aurelia-framework';
+import {customElement, bindable} from 'aurelia-framework';
 
 @customElement('au-preview')
 export class PreviewElement {

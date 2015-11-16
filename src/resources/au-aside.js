@@ -27,7 +27,6 @@ export class AuAsideElement {
     this.channel  = channel;
     this.overlay  = overlayController.createOverlay(this);
     this.onTransitionEnd = onTransitionEnd(this.element);
-    window.aside = this;
   }
 
   bind() {
@@ -61,23 +60,24 @@ export class AuAsideElement {
   }
 
   close() {
-    if (!this.active) return;
-    return new Promise( resolve => {
-      let event = this.channel.subscribe('au-on-deactivate:aside', (promise) => {
-        event.dispose();
-        resolve(promise);
-      })
-      DOM.dispatchEvent(new Event(clickEvent));
-    });
+    if (this.active) {
+      return new Promise( resolve => {
+        let event = this.channel.subscribe('au-on-deactivate:aside', (promise) => {
+          event.dispose();
+          resolve(promise);
+        });
+        DOM.dispatchEvent(new Event(clickEvent));
+      });
+    }
   }
 
   invokeAnimationLifecycle() {
-      this.overlay.attach()
+    this.overlay.attach();
     return this.setActive(true)
       .then(() => this.addListeners())
       .then(() => this.setActive(false))
       .then(() => this.overlay.detach())
-      .then(() => this.channel.publish('au-on-deactivate:aside'))
+      .then(() => this.channel.publish('au-on-deactivate:aside'));
   }
 
   setActive(value) {
@@ -96,5 +96,5 @@ export class AuAsideElement {
 @inject(Element)
 export class AuAsidePlaceholderElement {
   constructor(element) {}
-  attached(){}
+  attached() {}
 }

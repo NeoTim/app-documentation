@@ -16,7 +16,7 @@
   "main": "dist/commonjs/index.js",
   "repository": {
     "type": "git",
-    "url": "http://github.com/aurelia/skeleton-navigation"
+    "url": "git+ssh://git@github.com/aurelia/skeleton-navigation.git"
   },
   "scripts": {
     "install-sass": "npm install gulp-sass node-sass node-bourbon node-neat gulp-strip-css-comments gulp-autoprefixer gulp-minify-css gulp-concat"
@@ -96,5 +96,17 @@
       "babel-runtime": "npm:babel-runtime@^5.8.24",
       "core-js": "npm:core-js@^0.8.1"
     }
+  },
+  "directories": {
+    "doc": "doc"
+  },
+  "dependencies": {
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-minify-css": "^1.2.1",
+    "gulp-sass": "^2.1.0",
+    "gulp-strip-css-comments": "^1.2.0",
+    "node-sass": "^3.4.2",
+    "node-neat": "^1.7.2"
   }
 }

@@ -1,24 +1,26 @@
 import {bindable, inject} from 'aurelia-framework';
-import {Language} from 'services/language';
 import {fixIndent} from './util';
+import {LocalAPI} from 'services/local';
 
 let map = Array.prototype.map;
 
-@inject(Element, Language)
+@inject(Element, LocalAPI)
 export class Example {
   @bindable selectedSource;
   @bindable title;
 
-  constructor(element, language) {
-    this.element = element;
-    this.language = language;
+  constructor(element, api) {
+    this.api      = api;
+    this.element  = element;
+    this.language = api.getLanguage();
   }
 
   attached() {
     // This should return x.au.controller.model, but for someReason only viewModel exist
     this.availableSources = map.call(this.element.getElementsByTagName('source-code'), x => x.au.controller.viewModel);
 
-    this.languageSubscription = this.language.onChange(() => this.selectSourceForLanguage())
+    this.languageSubscription =
+    this.languageSubscription = this.api.channel.subscribe('language-changed', () => this.selectSourceForLanguage());
     this.selectSourceForLanguage();
   }
 
@@ -36,8 +38,10 @@ export class Example {
       'HTML'
     ];
 
+    function getSource(_x, index) {return 'lang' in _x && _x.lang === priorities[index];}
+
     for (let i = 0, ii = priorities.length; i < ii; ++i) {
-      found = this.availableSources.find(x => x && (x.lang === priorities[i]) );
+      found = this.availableSources.find(getSource, i);
       if (found) {
         break;
       }

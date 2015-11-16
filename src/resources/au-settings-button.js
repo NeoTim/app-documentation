@@ -63,18 +63,19 @@ export class AuSettingsButtonElement {
   }
 
   invokeAnimationLifecycle() {
-    this.overlay.attach()
+    this.overlay.attach();
     return this.setActive(true)
       .then(() => this.addListeners())
       .then(() => this.setActive(false))
       .then(() => this.overlay.detach())
-      .then(() => this.channel.publish('au-on-deactivate:settings'))
+      .then(() => this.channel.publish('au-on-deactivate:settings'));
   }
 
   setActive(value) {
     return onTransitionEnd(this.element, ()=> {
-      return this.active = value;
-    })
+      this.active = value;
+      return this.active;
+    });
   }
 
   addListeners() {

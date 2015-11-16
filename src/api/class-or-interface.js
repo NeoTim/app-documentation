@@ -16,7 +16,7 @@ export class ClassOrInterface {
           product.preferredVersion = productVersion.version;
           this.product = product;
 
-          if(params.classOrInterface === 'class') {
+          if (params.classOrInterface === 'class') {
             this.target = productVersion.findClass(params.name);
           } else {
             this.target = productVersion.findInterface(params.name);

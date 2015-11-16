@@ -6,9 +6,9 @@ export class Profile {
   current = undefined;
   options = ['developer', 'architect', 'manager'];
   display = [
-    {name:'developer', value: 'developer',  text: 'a developer'},
-    {name:'architect', value: 'architect',  text: 'an architect'},
-    {name:'manager', value: 'manager',      text: 'a manager or CTO'}
+    {name: 'developer', value: 'developer',  text: 'a developer'},
+    {name: 'architect', value: 'architect',  text: 'an architect'},
+    {name: 'manager', value: 'manager',      text: 'a manager or CTO'}
   ];
 
   constructor(server) {
@@ -23,7 +23,7 @@ export class Profile {
         this.options = args.options;
         this.current = args.current;
         return args.tutorials;
-      })
+      });
     }
     return this.server.getTutorialsForProfile(this.current);
   }
@@ -36,11 +36,11 @@ export class Profile {
     let tutorials = null;
     let child;
     return new Promise(resolve => {
-      lookup()
+      lookup();
       function lookup() {
         child = self.options.pop();
         if (!child) {
-         return resolve({options, tutorials, current})
+          return resolve({options, tutorials, current});
         }
         server.getTutorialsForProfile(child).then(tuts => {
           if (tuts && tuts.length)  {
@@ -49,8 +49,8 @@ export class Profile {
             options.push(child);
           }
           lookup(child);
-        })
+        });
       }
-    })
+    });
   }
 }

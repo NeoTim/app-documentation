@@ -1,4 +1,4 @@
-import {inlineView, customElement, bindable, inject, children} from 'aurelia-framework';
+import {customElement, inject} from 'aurelia-framework';
 
 
 @customElement('au-select-list')
@@ -14,6 +14,6 @@ export class SelectListElement {
   }
 
   getHeight() {
-    return this.element.clientHeight
+    return this.element.clientHeight;
   }
 }

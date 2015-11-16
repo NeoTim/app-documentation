@@ -31,8 +31,8 @@ export class Product {
     this.baseUrl = `https://rawgit.com/${this.userName}/${this.productName}`;
   }
 
-  select(){
-    if(Product.previousSelection) {
+  select() {
+    if (Product.previousSelection) {
       Product.previousSelection.isSelected = false;
     }
 
@@ -48,7 +48,7 @@ export class Product {
     version = version || this.preferredVersion;
     let found = this.versions.find(x => x.version === version);
 
-    if(found) {
+    if (found) {
       return Promise.resolve(found);
     }
 
@@ -67,10 +67,10 @@ export class Product {
   }
 
   configureLatestVersion() {
-    if(this.latestVersion === 'latest') {
+    if (this.latestVersion === 'latest') {
       this.latestVersion = this.availableVersions[0].version;
 
-      if(this.preferredVersion === 'latest') {
+      if (this.preferredVersion === 'latest') {
         this.preferredVersion = this.latestVersion;
       }
     }
@@ -109,13 +109,13 @@ export class ProductVersion {
   getArticle(slug, culture) {
     let found;
 
-    if(this.local) {
+    if (this.local) {
       found = new Article({ title: 'Local Article', href: slug }, this, this.server, true);
     } else {
       found = this.articles.find(x => x.slug === slug);
     }
 
-    if(!found) {
+    if (!found) {
       return Promise.reject();
     }
 
@@ -130,7 +130,7 @@ class ArticleTranslationViewStrategy {
   }
 
   loadViewFactory(viewEngine, compileInstruction, loadContext) {
-    if(this.entry) {
+    if (this.entry) {
       return Promise.resolve(this.entry.factory);
     }
 
@@ -154,11 +154,11 @@ export class Article {
   }
 
   getTranslation(culture, local) {
-    if(culture in this.translations) {
+    if (culture in this.translations) {
       return Promise.resolve(this.translations[culture]);
     }
 
-    if(baseTranslation in this.translations) {
+    if (baseTranslation in this.translations) {
       return this._loadTranslation(culture);
     }
 
@@ -171,16 +171,16 @@ export class Article {
     this.translations[culture] = translation;
 
     return this.server.loadArticleTranslation(translation)
-      .then(translation => {
-        if(translation.unavailable) {
-          translation.subsume(this.translations[baseTranslation]);
-          translation.view = new ArticleTranslationViewStrategy(translation);
+      .then(_translation => {
+        if (_translation.unavailable) {
+          _translation.subsume(this.translations[baseTranslation]);
+          _translation.view = new ArticleTranslationViewStrategy(_translation);
         } else {
-          translation.prepare(this.translations[baseTranslation]);
-          translation.view = new ArticleTranslationViewStrategy(translation);
+          _translation.prepare(this.translations[baseTranslation]);
+          _translation.view = new ArticleTranslationViewStrategy(_translation);
         }
 
-        return translation;
+        return _translation;
       });
   }
 }
@@ -191,14 +191,14 @@ export class ArticleTranslation {
   constructor(article, culture, local) {
     this.culture = culture;
 
-    if(local) {
+    if (local) {
       this.local = true;
       this.url = `doc/article/${baseTranslation}/${article.href}.html`;
     } else {
       this.url = article.primaryUrl;
     }
 
-    if(culture !== baseTranslation) {
+    if (culture !== baseTranslation) {
       this.url = this.url.replace(baseTranslation, culture);
     }
   }
@@ -214,7 +214,7 @@ export class ArticleTranslation {
     let template = FEATURE.ensureHTMLTemplateElement(DOM.createElement('template'));
     let current = originalContent.firstChild;
 
-    while(current) {
+    while (current) {
       template.content.appendChild(current.cloneNode(true));
       current = current.nextSibling;
     }
@@ -224,22 +224,23 @@ export class ArticleTranslation {
 
   prepare(primaryTranslation) {
     let parser = new DOMParser();
-    let doc = parser.parseFromString(this.content, "text/html");
+    let doc = parser.parseFromString(this.content, 'text/html');
     let docChild = doc.firstChild;
 
     while (docChild) {
-      if(docChild.tagName === 'HTML') {
+      if (docChild.tagName === 'HTML') {
         let htmlChild = docChild.firstChild;
 
         while (htmlChild) {
-          if(htmlChild.nodeType === 1) {
+          if (htmlChild.nodeType === 1) {
             switch (htmlChild.tagName) {
-              case 'HEAD':
-                this._handleHEAD(htmlChild);
-                break;
-              case 'BODY':
-                this._handleBODY(htmlChild, primaryTranslation);
-                break;
+            case 'HEAD':
+              this._handleHEAD(htmlChild);
+              break;
+            case 'BODY':
+              this._handleBODY(htmlChild, primaryTranslation);
+              break;
+            default:
             }
           }
 
@@ -252,27 +253,29 @@ export class ArticleTranslation {
   }
 
   _handleHEAD(node) {
-    var currentChild = node.firstChild;
+    let currentChild = node.firstChild;
 
     while (currentChild) {
       if (currentChild.nodeType === 1) {
         switch (currentChild.tagName) {
-          case 'TITLE':
-            this.title = currentChild.innerHTML;
+        case 'TITLE':
+          this.title = currentChild.innerHTML;
+          break;
+        case 'META':
+          switch (currentChild.getAttribute('name')) {
+          case 'description':
+            this.description = currentChild.getAttribute('content');
             break;
-          case 'META':
-            switch(currentChild.getAttribute('name')) {
-              case 'description':
-                this.description = currentChild.getAttribute('content');
-                break;
-              case 'keywords':
-                this.keywords = currentChild.getAttribute('content').split(',').map(x => x.trim());
-                break;
-              case 'author':
-                this.author = currentChild.getAttribute('content');
-                break;
-            }
+          case 'keywords':
+            this.keywords = currentChild.getAttribute('content').split(',').map(x => x.trim());
             break;
+          case 'author':
+            this.author = currentChild.getAttribute('content');
+            break;
+          default:
+          }
+          break;
+        default:
         }
       }
 
@@ -312,7 +315,7 @@ export class ArticleTranslation {
 
             let current = primarySection.firstChild;
 
-            while(current) {
+            while (current) {
               translationSection.appendChild(current.cloneNode(true));
               current = current.nextSibling;
             }
@@ -326,14 +329,14 @@ export class ArticleTranslation {
     } else {
       this.sections = sections;
 
-      for(let uid in sections) {
+      for (let uid in sections) {
         sections[uid] = sections[uid].cloneNode(true);
       }
 
       let originalTemplate = FEATURE.ensureHTMLTemplateElement(DOM.createElement('template'));
       let current = template.content.firstChild;
 
-      while(current) {
+      while (current) {
         originalTemplate.content.appendChild(current.cloneNode(true));
         current = current.nextSibling;
       }
@@ -354,10 +357,10 @@ export class ArticleTranslation {
     let primaryParts = primaryVersion.split('.').map(x => parseInt(x.trim(), 10));
     let translationParts = translationVersion.split('.').map(x => parseInt(x.trim(), 10));
 
-    if (primaryParts[0] == translationParts[0]) {
-      if (primaryParts[1] == translationParts[1]) {
+    if (primaryParts[0] === translationParts[0]) {
+      if (primaryParts[1] === translationParts[1]) {
         if (primaryParts.length > 1 && translationParts.length > 2) {
-          if (primaryParts[2] == translationParts[2]) {
+          if (primaryParts[2] === translationParts[2]) {
             return 3;
           }
         }
@@ -388,15 +391,15 @@ export class Tutorial {
   }
 
   matchesProfile(profileName) {
-    if(this.profiles) {
+    if (this.profiles) {
       return !!this.profiles.find(x => x.name === profileName);
     }
 
     return false;
   }
 
-  select(){
-    if(Tutorial.previousSelection) {
+  select() {
+    if (Tutorial.previousSelection) {
       Tutorial.previousSelection.isSelected = false;
     }
 

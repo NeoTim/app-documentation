@@ -1,14 +1,11 @@
-import {noView, customElement, bindable, inject, singleton} from 'aurelia-framework';
+import {inject} from 'aurelia-framework';
 import {AUChannel} from '../services/channel';
 import {DOM} from 'aurelia-pal';
-import {isTouch} from 'aurelia-interface-platforms';
-import {onAnimationEnd, onElementEvent, onDocumentEvent, clickEvent, resolvePromise} from './util';
+import {onAnimationEnd} from './util';
 
 const ACTIVE_CLASSNAME = 'is-active';
 const ANIMATION_CLASSNAME = 'au-animation';
 const DEFAULT_CLASSNAME = 'au-overlay';
-
-
 
 export class OverlayElement {
   element = DOM.createElement('overlay');

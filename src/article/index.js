@@ -1,7 +1,7 @@
-import {bindable, inject} from 'aurelia-framework';
+import {inject} from 'aurelia-framework';
 import {Server} from 'backend/server';
-import {Profile} from 'services/profile'
-import {AUChannel} from 'services/channel'
+import {Profile} from 'services/profile';
+import {AUChannel} from 'services/channel';
 
 @inject(Server, Profile, AUChannel)
 export class Index {
@@ -9,7 +9,7 @@ export class Index {
   constructor(server, profile, channel) {
     this.profile = profile;
     this.server = server;
-    this.channel = channel
+    this.channel = channel;
   }
 
   configureRouter(config, router) {

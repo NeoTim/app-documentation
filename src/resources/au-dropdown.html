@@ -9,7 +9,7 @@
   <dropdown-container>
     <div dropdown-item repeat.for="item of options" click.trigger="$parent.value = item">
       ${item}
-      <au-icon show.bind="$parent.value === item">checkmark</au-icon>
+      <au-icon show.bind="$parent.value === item" icon="checkmark"></au-icon>
     </div>
   </dropdown-container>
 </template>

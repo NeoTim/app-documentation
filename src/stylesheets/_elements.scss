@@ -194,7 +194,7 @@ au-icon i:before {
 au-icon,
 au-icon.au-icon i,
 au-icon.au-icon i:before {
-  font-family: $aucons-font-family;
+  font-family: $aucons-font-family !important;
 }
 
 au-icon.au-icon {// ----------------------------------------  au-icon

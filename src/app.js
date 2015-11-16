@@ -21,7 +21,9 @@ export class App {
     config.map([
       {
         route: '',
-        settings: { isArticle:true },
+        settings: {
+          isArticle: true
+        },
         viewPorts: {
           default: {moduleId: 'article/index', title: 'Article'},
           menu: {moduleId: 'article/menu', title: 'Article'}
@@ -29,7 +31,9 @@ export class App {
       },
       {
         route: ':userName/:productName/:version/doc/article',
-        settings: { isArticle:true },
+        settings: {
+          isArticle: true
+        },
         viewPorts: {
           default: {moduleId: 'article/index', title: 'Article'},
           menu: {moduleId: 'article/menu', title: 'Article'}
@@ -38,7 +42,9 @@ export class App {
       {
         route: 'doc/article',
         name: 'local',
-        settings: { isArticle:true },
+        settings: {
+          isArticle: true
+        },
         viewPorts: {
           default: {moduleId: 'article/index', title: 'Local Article'},
           menu: {moduleId: 'article/menu', title: 'Article'}
@@ -46,7 +52,9 @@ export class App {
       },
       {
         route: 'api',
-        settings: {isApi:true},
+        settings: {
+          isApi: true
+        },
         viewPorts: {
           default: {moduleId: 'api/index', title: 'API'},
           menu: {moduleId: 'api/menu', title: 'API'}
@@ -54,7 +62,9 @@ export class App {
       },
       {
         route: ':userName/:productName/:version/doc/api',
-        settings: {isApi:true},
+        settings: {
+          isApi: true
+        },
         viewPorts: {
           default: {moduleId: 'api/index', title: 'API'},
           menu: {moduleId: 'api/menu', title: 'API'}
@@ -73,7 +83,3 @@ export class App {
     this.aside.open();
   }
 }
-
-
-
-

@@ -26,7 +26,7 @@ export class LocalAPI {
     let currentKey = `${key}.current`;
     let eventKey   = `${key}-changed`;
 
-    let currentValue = this.cache.getItem(currentKey)
+    let currentValue = this.cache.getItem(currentKey);
     if (!currentValue) {
       currentValue =  instance.options[0];
       this.cache.setItem(currentKey, currentValue);
@@ -39,14 +39,14 @@ export class LocalAPI {
 
       onChange(cb) {
         this._handlers.push(cb);
-        return createDisposable(cb, this._handlers)
+        return createDisposable(cb, this._handlers);
       },
 
       _changed(newValue) {
-        cache.setItem(`${key}.current`, newValue);
-        channel.publish(`${key}-changed`, instance);
+        cache.setItem( currentKey, newValue);
+        channel.publish( eventKey, instance);
       }
-    }
+    };
 
     Object.assign(instance, instruction);
 
@@ -59,15 +59,17 @@ export class LocalAPI {
     });
 
     channel.subscribe(`set-${key}`, (newValue)=> {
-      instance.current = newValue
+      instance.current = newValue;
     });
 
     this[setKey] = (newValue)=> {
       instance.current = newValue;
-    }
-    this[getKey] = ()=> {instance
+    };
+
+    this[getKey] = ()=> {
       return instance;
-    }
+    };
+
     this[key] = instance;
   }
 }

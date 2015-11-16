@@ -1,4 +1,4 @@
-import {bindable, inject} from 'aurelia-framework';
+import {inject} from 'aurelia-framework';
 import {Server} from 'backend/server';
 import {LocalAPI} from 'services/local';
 import {AUChannel} from 'services/channel';
@@ -13,16 +13,16 @@ export class ArticleMenu {
     this.channel = channel;
     this.profile = api.getProfile();
     this.profile.getTutorials().then(tutorials => {
-      this.tutorials = tutorials
+      this.tutorials = tutorials;
     });
   }
 
   activate() {
-      console.log(this)
     this.changedHandler = this.channel.subscribe('profile-changed', (profile)=> {
       profile.getTutorials().then( tutorials => {
-        this.tutorials = tutorials
+        this.tutorials = tutorials;
       });
+
 
       this.profile = profile;
     });
@@ -39,6 +39,6 @@ const Vowels = ['a', 'e', 'i', 'o', 'u'];
 export class VowelValueConverter {
   toView(text) {
     let first = text[0];
-    return (Vowels.indexOf(first) < 0) ? ('a ' + text ) : ('an ' + text)
+    return (Vowels.indexOf(first) < 0) ? ('a ' + text ) : ('an ' + text);
   }
 }

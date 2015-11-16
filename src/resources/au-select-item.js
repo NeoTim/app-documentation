@@ -2,14 +2,14 @@ import {customElement, bindable, inject, bindingMode} from 'aurelia-framework';
 import {isTouch} from 'aurelia-interface-platforms';
 import {DOM} from 'aurelia-pal';
 
-const clickEvent = isTouch ? 'touchstart': 'click';
+const clickEvent = isTouch ? 'touchstart' : 'click';
 
 @customElement('au-select-item')
 @inject(Element)
 @bindable({
-  name:'value',
-  attribute:'value',
-  changeHandler:'valueChanged',
+  name: 'value',
+  attribute: 'value',
+  changeHandler: 'valueChanged',
   defaultBindingMode: bindingMode.twoWay
 })
 export class SelectItemElement {

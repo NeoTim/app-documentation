@@ -15,20 +15,19 @@ export class SourceCode {
   }
 
   bind(context) {
-    if(this.src){
+    if (this.src) {
       this.path = join(context.url, '../../../' + this.src);
-      if(context.local) {
+      if (context.local) {
         this.path = './' + this.path;
       }
     }
   }
 
   loadText() {
-    if(this.path) {
+    if (this.path) {
       return this.loader.loadText(this.path).then(x => this.raw = x);
-    } else {
-      return Promise.resolve(this.raw);
     }
+    return Promise.resolve(this.raw);
   }
 
   createApp(host) {

@@ -2,15 +2,15 @@ import {customElement, bindable, inject, bindingMode} from 'aurelia-framework';
 import {isTouch} from 'aurelia-interface-platforms';
 import {DOM} from 'aurelia-pal';
 
-const clickEvent = isTouch ? 'touchstart': 'click';
+const clickEvent = isTouch ? 'touchstart' : 'click';
 
 @customElement('au-dropdown')
 @inject(Element)
 @bindable({
-  name:'value',
-  attribute:'value',
-  changeHandler:'valueChanged',
-  defaultBindingMode: bindingMode.twoWay,
+  name: 'value',
+  attribute: 'value',
+  changeHandler: 'valueChanged',
+  defaultBindingMode: bindingMode.twoWay
 })
 export class DropdownElement {
   @bindable options = null;
@@ -42,7 +42,7 @@ export class DropdownElement {
   onClick(event) {
     if (!this.element.contains(event.target)) {
       this.active = false;
-      this.removeListeners()
+      this.removeListeners();
     }
   }
 }

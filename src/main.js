@@ -1,3 +1,4 @@
+
 export function configure(aurelia) {
   aurelia.use
     .standardConfiguration()
@@ -8,7 +9,7 @@ export function configure(aurelia) {
       config.setClassList(document.documentElement);
     })
     .feature('article/language')
-    .globalResources('resources/au-icon', 'resources/au-preview')
+    .globalResources('resources/au-icon', 'resources/au-preview');
 
   aurelia.start().then(a => a.setRoot());
 }
