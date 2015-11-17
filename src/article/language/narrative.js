@@ -37,6 +37,13 @@ export class Narrative {
 let reader = new commonmark.Parser();
 let writer = new commonmark.HtmlRenderer();
 
+function checkDomain(url) {
+  if (url.indexOf('//') === 0 ) {
+    url = location.protocol + url;
+  }
+  return url.toLowerCase().replace(/([a-z])?:\/\//,'$1').split('/')[0];
+}
+
 function isExternalLink(url) {
   return ( ( url.indexOf(':') > -1 || url.indexOf('//') > -1 ) && checkDomain(location.href) !== checkDomain(url) );
 }
