@@ -2,6 +2,6 @@
 export class Culture {
   options = ['en-US', 'pt-BR'];
   current = undefined;
-  key = 'culture'
+  key = 'culture';
   constructor(api) {}
 }

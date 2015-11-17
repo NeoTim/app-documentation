@@ -202,7 +202,7 @@ export class Server {
         : major + '.' + minor + '.' + patch;
       let display = pre
         ? major + '.' + minor + '.' + patch + '-' + preParts[0] + '.' + preParts[1]
-        : major + '.' + minor + '.x'
+        : major + '.' + minor + '.x';
 
       return {
         major: parseInt(major, 10),
@@ -211,9 +211,10 @@ export class Server {
         pre: pre,
         version: version,
         display: display
-      }
-    }).filter(x => x.major > 0)
-      .filter(x => {
+      };
+    })
+    .filter(x => x.major > 0)
+    .filter(x => {
       return !lookup[x.display] && (lookup[x.display] = true);
     });
   }

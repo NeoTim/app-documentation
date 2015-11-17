@@ -20,8 +20,8 @@ export class AUChannel {
   createInstruction(context, name, bindablekey) {
     context.channelInstruction = {context, name, isValue, validate};
     return context.channelInstruction;
-    //////////////////
 
+    //////////////////
     function isValue(value) {
       if (!value) value = bindablekey || context[bindablekey];
       value = value || true;

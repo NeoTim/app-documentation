@@ -835,3 +835,10 @@
 %has-scroll-container {
   @include has-scroll-containers();
 }
+
+
+@mixin browser($name) {
+  html.browser-#{$name} {
+    @content;
+  }
+}

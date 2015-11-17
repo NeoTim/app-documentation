@@ -20,7 +20,7 @@ export class App {
     config.title = 'Aurelia Docs';
     config.map([
       {
-        route: '',
+        route: [''],
         settings: {
           isArticle: true
         },

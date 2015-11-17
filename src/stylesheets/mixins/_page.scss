@@ -124,7 +124,7 @@ section.au-card {
       }
     }
     [description] {
-      font-weight: 300;
+      font-weight: 400;
       opacity: 0.5;
       font-size: 1em;
       line-height: 1.2;
@@ -164,6 +164,114 @@ section.au-card {
         padding: 0;
       }
     }
+  }
+}
+
+section.au-card.title-card {
+  header {
+    background-color: transparent;
+    h1  {
+      @extend %page-title;
+      padding: 0;
+    }
+    span.card-control {
+      @extend %flexbox;
+      @include flex-items(center);
+      @include justify-content(center);
+      min-width: 100%;
+      position: relative;
+      padding: 0 $gutter-xs $gutter-xs;
+
+    }
+  }
+
+  @include media-md {
+    header {
+      span.card-control {
+        min-height: 100%;
+        right: 0; top: 0;
+        position: absolute;
+        min-width: 0;
+        padding: 0 $gutter-xs;
+      }
+    }
+  }
+
+}
+@include browser(safari) {
+  section.au-card.title-card {
+    header {
+      @include flex-direction(column);
+
+      span.card-control {
+        position: relative;
+        min-width: 100%;
+      }
+    }
+  }
+}
+
+section.au-card.variable-card {
+  blockquote {
+    padding-bottom: 24px;
+    h2  {
+      @extend %source-code;
+      position: relative;
+      color: $accent-color;
+      font-weight: bold;
+      line-height: 2.5;
+      font-size: 1.1em;
+
+      &:after {
+        @include border-bottom($divider-color);
+      }
+    }
+
+    [description] {
+      line-height: 1.5;
+    }
+  }
+}
+
+section.au-card.function-card {
+  blockquote {
+    padding-bottom: 24px;
+
+    h2  {
+      @extend %source-code;
+      position: relative;
+      color: $accent-color;
+      font-weight: bold;
+      line-height: 1;
+      font-size: 1.1em;
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+
+      span[args]:not(:last-child) {
+        &:after {
+          content:", ";
+          display: inline-block;
+          margin-right: 8px;
+        }
+      }
+
+      &:after {
+        @include border-bottom($divider-color);
+      }
+    }
+
+    [description] {
+      line-height: 1.5;
+    }
+  }
+
+  article {
+    padding-bottom: 24px;
+  }
+
+  ul li {
+    font-size: 14px;
+    margin-bottom: 8px;
   }
 }
 

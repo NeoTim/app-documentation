@@ -102,30 +102,29 @@
 
     <template if.bind="selectedProductVersion.variables.length">
       <h1 gutter>Variables</h1>
-      <section class="au-card">
-
-        <template repeat.for="variable of selectedProductVersion.variables">
+      <template repeat.for="variable of selectedProductVersion.variables">
+        <section class="au-card variable-card">
           <blockquote id="variable-${variable.name}">
-            <h1 bold color=accent>${variable.name}: <span color=secondary>${variable.type.name}</span></h1>
+            <h2>${variable.name}: <span>${variable.type.name}</span></h2>
             <div description>${variable.comment.shortText || 'no description available'}</div>
           </blockquote>
-        </template>
-      </section>
+        </section>
+      </template>
     </template>
 
     <template if.bind="selectedProductVersion.functions.length">
       <h1 gutter>Functions</h1>
-      <section class="au-card">
-        <template repeat.for="function of selectedProductVersion.functions">
+      <template repeat.for="function of selectedProductVersion.functions">
+        <section class="au-card function-card">
 
           <blockquote id="function-${function.signature.name}">
-            <h1 bold color=accent>${function.signature.name}(<span trans="6" color="primary" repeat.for="param of function.signature.parameters">${param.name}: ${param.type.name || 'any'}<span if.bind="!$last">, </span></span>): <span color=secondary>${function.signature.type.name ||'any'}</span></h1>
+            <h2>${function.signature.name}(<span args repeat.for="param of function.signature.parameters">${param.name}: ${param.type.name || 'any'}</span>): ${function.signature.type.name ||'any'}</span></h2>
             <div description>${function.signature.comment.shortText || 'no description available'}</div>
           </blockquote>
 
-          <article gutter="2x" if.bind="function.signature.parameters.length > 0">
+          <article if.bind="function.signature.parameters.length > 0">
             <br>
-            <h3 comment>Parameters: </h3>
+            <h3 bold>Parameters: </h3>
             <ul class="stack-list" gutter>
               <li repeat.for="param of function.signature.parameters">
                 <strong>${param.name}: ${param.type.name || 'any'}</strong>
@@ -134,8 +133,8 @@
             </ul>
           </article>
 
-        </template>
-      </section>
+        </section>
+      </template>
     </template>
 
   </au-view>

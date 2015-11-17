@@ -4,7 +4,6 @@ export function configure(aurelia) {
     .standardConfiguration()
     .developmentLogging()
     .plugin('aurelia-animator-css')
-    // .plugin('joelcoxokc/aurelia-interface-grid')
     .plugin('aurelia-interface-platforms', config => {
       config.setClassList(document.documentElement);
     })
