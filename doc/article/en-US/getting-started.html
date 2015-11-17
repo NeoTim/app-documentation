@@ -1,0 +1,64 @@
+<html>
+  <head>
+    <title>Getting Started</title>
+    <meta name="description" content="Welcome to Aurelia! This tutorial will take you through creating a simple application using Aurelia and briefly explain its main concepts. We assume you are familiar with JavaScript, HTML, and CSS.">
+    <meta name="keywords" content="Getting Started, ES2015, ES2016">
+    <meta name="author" content="Rob Eisenberg">
+  </head>
+
+  <body>
+    <narrative uid="1" version="1.0">
+      ## Getting Set Up
+
+      Before we start writing some code, you're going to want to grab one of our pre-configured, getting-started packages. We've got two versions available to you: one uses ECMAScript 2016 (JavaScript vNext) and the other one uses TypeScript. Choose one now by clicking one of the buttons below.
+
+      //insert download buttons here
+
+      Based on your selection, you'll want to configure this documentation to show the appropriate language for all samples. Look in the upper-right corner of this page. You will see a language selector. Be sure to select the language that matches the package that you downloaded.
+
+      Now that you've downloaded a starter package, you need to unzip it on your hard drive. Doing so will provide you with the default folder structure, scripts and styles needed to complete this tutorial and continue your learning and experimentation afterward. With the folder structure in place, next we'll need to start a web server to serve up your index.html page, so we can view it in a browser. How you go about doing that depends on which server-side technology you want to use. Below are instructions for a couple of common scenarios:
+
+      * **Visual Studio** - Open Visual Studio 2015. Using the main menu, select File > Open > Web site... Choose the starter kit folder. Once the folder opens, right click on index.html and select "View in Browser". This will fire up IISExpress and serve index.html.
+      * **NodeJS** - To start up a simple web server in the app folder, first globally install the http-server command with `npm install http-server -g`. (In some environments you many need to use `sudo`). Once that is installed, change directory to the starter kit folder. You can now spin up the server from within the folder with the following command `http-server -o`.
+      * **Firefox** - If you don't want to worry about setting up a web server, Firefox is flexible enough to serve the app directly from your hard drive. Simply open the `index.html` file with Firefox.
+
+      Once you've got your web server set up, navigate to the `index.html` page using your favorite browser. If everyting is working correctly, you should see the message "Welcome to Aurelia!" displayed.
+
+      ## The Index.html Page
+
+      If you've followed along this far, you now have everything set up to help you learn Aurelia. Let's start by taking a look at the `index.html` file. This file provides a good template for new Aurelia-based apps.
+    </narrative>
+
+    <example title="index.html">
+      <source-code lang="HTML">
+        <!doctype html>
+        <html>
+          <head>
+            <title>Aurelia</title>
+            <link rel="stylesheet" href="styles/styles.css">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+          </head>
+          <body aurelia-app>
+            <script src="jspm_packages/system.js"></script>
+            <script src="config.js"></script>
+            <script>
+              System.import('aurelia-bootstrapper');
+            </script>
+          </body>
+        </html>
+      </source-code>
+    </example>
+
+    <narrative uid="2" version="1.0">
+      Yes, that's it. This is the only HTML page in our application. The head of the document is pretty straight forward: just a style sheet link and some metadata. It's the body that's interesting.
+
+      Let's start with the script tags. First we have _system.js_, our standards-based module loader. It's what loads the Aurelia library as well as your own code. Next we have _config.js_. This contains configuration for the loader. It's generated automatically whenever you install packages with our tools. We've gone ahead and pre-installed everything for you in this tutorial, so you don't need to worry about that yet.
+
+      Once we have our module loader and its configuration, we load the `aurelia-bootstrapper` module with a call to `System.import`.
+
+      When the bootstrapper loads it inspects the HTML document for _aurelia-app_ attributes. In this case it will find that the body has an `aurelia-app` attribute. This tells the bootstrapper to load our _app_ view-model and its view, conventionally located in _app.js_ and _app.html_ and then compose them as an Aurelia application in the DOM.
+
+      Wait a minute....we don't have an _app_ view-model or view. Ummm...WHAT NOW!?
+    </narrative>
+  </body>
+</html>
