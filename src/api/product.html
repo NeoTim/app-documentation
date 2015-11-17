@@ -3,7 +3,7 @@
 
   <au-view class="content product">
 
-    <section class="au-card title-card">
+    <au-card title-card>
       <header>
         <h1>${product.productName}</h1>
         <span class="card-control">
@@ -15,8 +15,9 @@
       </header>
 
       <article>
-        <h3 description if.bind="selectedProductVersion.description">${selectedProductVersion.description}</h3>
-
+        <blockquote border-bottom>
+          <h3 description if.bind="selectedProductVersion.description">${selectedProductVersion.description}</h3>
+        </blockquote>
         <ul class="inline-list" if.bind="selectedProductVersion.keywords">
           <li list-heading>Keywords</li>
           <template repeat.for="keyword of selectedProductVersion.keywords">
@@ -31,13 +32,13 @@
           <a class="au-button" href.bind="selectedProductVersion.repositoryUrl" target="_blank">Repository</a>
         </div>
       </article>
-    </section>
+    </au-card>
 
-    <section class="au-card">
+    <au-card>
 
       <template if.bind="isDeps">
-        <blockquote>
-          <h1>Dependencies</h1>
+        <blockquote border-bottom>
+          <h2>Dependencies</h2>
         </blockquote>
         <article>
           <ul class="stack-list" no-bullet gutter underline source-code>
@@ -48,8 +49,8 @@
         </article>
       </template>
 
-      <blockquote>
-        <h1>Exports</h1>
+      <blockquote border-bottom>
+        <h2>Exports</h2>
       </blockquote>
 
       <article>
@@ -98,27 +99,26 @@
           </ul>
         </template>
       </article>
-    </section>
+    </au-card>
 
     <template if.bind="selectedProductVersion.variables.length">
       <h1 gutter>Variables</h1>
       <template repeat.for="variable of selectedProductVersion.variables">
-        <section class="au-card variable-card">
+        <au-card variable-card>
           <blockquote id="variable-${variable.name}">
-            <h2>${variable.name}: <span>${variable.type.name}</span></h2>
+            <h2 border-bottom>${variable.name}: <span>${variable.type.name}</span></h2>
             <div description>${variable.comment.shortText || 'no description available'}</div>
           </blockquote>
-        </section>
+        </au-card>
       </template>
     </template>
 
     <template if.bind="selectedProductVersion.functions.length">
       <h1 gutter>Functions</h1>
       <template repeat.for="function of selectedProductVersion.functions">
-        <section class="au-card function-card">
-
+        <au-card function-card>
           <blockquote id="function-${function.signature.name}">
-            <h2>${function.signature.name}(<span args repeat.for="param of function.signature.parameters">${param.name}: ${param.type.name || 'any'}</span>): ${function.signature.type.name ||'any'}</span></h2>
+            <h2 border-bottom>${function.signature.name}(<span args repeat.for="param of function.signature.parameters">${param.name}: ${param.type.name || 'any'}</span>): ${function.signature.type.name ||'any'}</span></h2>
             <div description>${function.signature.comment.shortText || 'no description available'}</div>
           </blockquote>
 
@@ -132,8 +132,7 @@
               </li>
             </ul>
           </article>
-
-        </section>
+        </au-card>
       </template>
     </template>
 

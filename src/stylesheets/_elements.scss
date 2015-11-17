@@ -259,6 +259,12 @@ demo {
 }
 
 
+[border-bottom] {
+  border-bottom: 1px solid $divider-color;
+  margin-bottom:8px;
+  padding-bottom: 8px;
+}
+
 
 
 @include max-media-xs {
@@ -269,7 +275,6 @@ demo {
 
 @include media-md {// --------------------------------------  @MEDIA MEDIUM
   ul.inline-list {
-    margin: $half-gutter-md 0 !important;
   }
 
   [gutter] {

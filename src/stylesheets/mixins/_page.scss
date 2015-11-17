@@ -2,9 +2,9 @@
   color: $primary-color;
   position: relative;
   text-align: center;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 2rem;
-  line-height: 1;
+  line-height: 1.5;
   margin: 16px 0;
 }
 
@@ -47,157 +47,154 @@ section.au-card {
   }
 }
 
-section.au-card {
+au-card {
   @extend %flexbox;
   @include flex(1 0 auto);
   @include flex-column;
-  background: transparent;
+  background-color: white;
   position: relative;
   border: $card-border;
   overflow: hidden;
   max-height: 100%;
-
   margin-bottom: $gutter-xs;
+  border-radius: $card-radius;
 
-  > header {
-    @extend %flexbox;
+  > * {
+    background-color: white;
+  }
+
+  [description] {
+    font-weight: 400;
+    font-size: 1em;
+    line-height: 1.2;
+  }
+
+  div[description], span[description] {
+    opacity: 0.5;
+  }
+
+  [author] {
+    font-size: 18px;
+    font-weight: normal;
+    color: $accent-color;
+    text-align: center;
+  }
+
+  h1,h2,h3,h4,h5,h6 {
+    margin:0;
+    @include gutter(margin, bottom);
+  }
+
+  > blockquote,
+  > article > blockquote {
+    position: relative;
+    background-color: white;
+    @include gutter($type:padding, $sides: top bottom);
+    @include gutter($type:margin, $sides: left right);
+    margin-top:0;
+    margin-bottom:0;
+
+    > h2, h3 {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 0;
+      padding-bottom: 8px;
+      @include flex(1 0 auto);
+    }
+  }
+
+  article {
+    &:first-child {
+      @include gutter($sides: top bottom left right);
+    }
+    &:not(:first-child) {
+      @include gutter($sides: bottom left right);
+    }
+
+    > blockquote {
+      margin: 0 0 8px 0;
+      @include gutter($type:padding, $sides:bottom);
+    }
+  }
+
+  ul.inline-list  {
+    padding:0;
+  }
+
+  li {
+    margin-bottom: 8px;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+au-card[title-card] {
+  header {
     @include flex-wrap(wrap);
+    background-color: #f7f7f7;
     min-height: $card-header-height;
     position: relative;
 
     &:after {
       @include border-bottom;
     }
-
-    h1 {
-      @extend %section-title;
-      @include flex(1 0 auto);
-      padding-left: $half-gutter-xs;
-    }
-
-    h2,h3,h4,h5 {
-      @extend %flexbox;
-      @include flex(1 0 auto);
-      @include justify-content(center);
-      line-height: inherit;
-      margin: em(16) 0;
-      color: $accent-color;
-    }
-    h1 + h2,
-    h1 + h3,
-    h1 + h4,
-    h1 + h5,
-    h1 + h6 {
-      margin-top:0;
-    }
-
-    span.card-control {
-      @extend %flexbox;
-      @include flex-items(center);
-      @include justify-content(center);
-      min-width: 100%;
-      position: relative;
-      padding: 0 $gutter-xs $gutter-xs;
-      @include media-md {
-        min-height: 100%;
-      }
-    }
   }
 
-  > blockquote {
-    @extend %flexbox;
-    @include flex-column;
-    background-color: $card-background;
-    padding: $gutter-xs $gutter-xs 0;
-    position: relative;
-    overflow-x: auto;
-    max-width: 100%;
-
-    h1  {
-      @extend %card-heading;
-      @include flex(1);
-      display: block;
-      padding: 0 0;
-      position: relative;
-      &:after {
-        @include border-bottom;
-      }
-    }
-    [description] {
-      font-weight: 400;
-      opacity: 0.5;
-      font-size: 1em;
-      line-height: 1.2;
-    }
-  }
-
-  article {
+  h1 {
+    @extend %page-title;
     @include flex(1 0 auto);
-    background-color: $card-background;
-    padding-top: 8px;
-    padding-bottom: $gutter-md;
-
-    > h3[description] {
-      line-height: 1.5;
-      position: relative;
-      margin:0;
-      &:after {
-        @include border-bottom($divider-color);
-      }
-    }
-
-
-    &:not([gutter]) {
-      padding-left: $gutter-md;
-      padding-right: $gutter-md;
-    }
-    > *:not(:last-child) {
-      margin-bottom: $half-gutter-md;
-    }
+    padding-left: $half-gutter-xs;
   }
 
-  &.title-card {
-    > header {
-      background-color: transparent;
-      h1  {
-        @extend %page-title;
-        padding: 0;
+  span.card-control {
+    @extend %flexbox;
+    @include flex-items(center);
+    @include justify-content(center);
+    position: relative;
+    padding: 0 $gutter-xs $gutter-xs;
+    @include media-md {
+      top:0;
+      right:0;
+      min-height: 100%;
+      padding-bottom: 0;
+      position: absolute;
+    }
+  }
+}
+
+au-card[variable-card] {
+  blockquote {
+    h2  {
+      color: $accent-color;
+      font-weight: bold;
+      line-height: 1;
+      font-size: 16px;
+      @include media-md {font-size: 20px}
+    }
+  }
+}
+
+au-card[function-card] {
+  blockquote {
+    h2 {
+      color: $accent-color;
+      font-weight: bold;
+      line-height: 1;
+      font-size: 16px;
+      @include media-md {font-size: 20px}
+      span[args]:not(:last-child) {
+        &:after {
+          content:", ";
+          display: inline-block;
+          margin-right: 8px;
+        }
       }
     }
   }
 }
 
-section.au-card.title-card {
-  header {
-    background-color: transparent;
-    h1  {
-      @extend %page-title;
-      padding: 0;
-    }
-    span.card-control {
-      @extend %flexbox;
-      @include flex-items(center);
-      @include justify-content(center);
-      min-width: 100%;
-      position: relative;
-      padding: 0 $gutter-xs $gutter-xs;
-
-    }
-  }
-
-  @include media-md {
-    header {
-      span.card-control {
-        min-height: 100%;
-        right: 0; top: 0;
-        position: absolute;
-        min-width: 0;
-        padding: 0 $gutter-xs;
-      }
-    }
-  }
-
-}
 @include browser(safari) {
   section.au-card.title-card {
     header {
@@ -208,70 +205,6 @@ section.au-card.title-card {
         min-width: 100%;
       }
     }
-  }
-}
-
-section.au-card.variable-card {
-  blockquote {
-    padding-bottom: 24px;
-    h2  {
-      @extend %source-code;
-      position: relative;
-      color: $accent-color;
-      font-weight: bold;
-      line-height: 2.5;
-      font-size: 1.1em;
-
-      &:after {
-        @include border-bottom($divider-color);
-      }
-    }
-
-    [description] {
-      line-height: 1.5;
-    }
-  }
-}
-
-section.au-card.function-card {
-  blockquote {
-    padding-bottom: 24px;
-
-    h2  {
-      @extend %source-code;
-      position: relative;
-      color: $accent-color;
-      font-weight: bold;
-      line-height: 1;
-      font-size: 1.1em;
-      padding-bottom: 8px;
-      margin-bottom: 8px;
-
-      span[args]:not(:last-child) {
-        &:after {
-          content:", ";
-          display: inline-block;
-          margin-right: 8px;
-        }
-      }
-
-      &:after {
-        @include border-bottom($divider-color);
-      }
-    }
-
-    [description] {
-      line-height: 1.5;
-    }
-  }
-
-  article {
-    padding-bottom: 24px;
-  }
-
-  ul li {
-    font-size: 14px;
-    margin-bottom: 8px;
   }
 }
 

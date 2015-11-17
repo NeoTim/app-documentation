@@ -842,3 +842,15 @@
     @content;
   }
 }
+
+
+@mixin gutter($type:padding, $sides:left right) {
+  @each $side in $sides {
+    #{$type}-#{$side}: $gutter-xs-px;
+  }
+  @include media-md {
+    @each $side in $sides {
+      #{$type}-#{$side}: $gutter-md-px;
+    }
+  }
+}
