@@ -190,59 +190,32 @@ export class Server {
   }
 
   _getVersions(all) {
-    let mmpRegex = /(\d+)/g;
-    let versions = all.map(x => {
-      let [major, minor, patch] = x.match(mmpRegex);
-      return {major, minor, patch};
+    let lookup = {};
+
+    return all.map(x => {
+      let divisions = x.split('-');
+      let [major, minor, patch] = divisions[0].split('.');
+      let pre = divisions[1] || '';
+      let preParts = pre.split('.');
+      let version = pre
+        ? major + '.' + minor + '.' + patch + '-' + pre
+        : major + '.' + minor + '.' + patch;
+      let display = pre
+        ? major + '.' + minor + '.' + patch + '-' + preParts[0] + '.' + preParts[1]
+        : major + '.' + minor + '.x'
+
+      return {
+        major: parseInt(major, 10),
+        minor: parseInt(minor, 10),
+        patch: patch,
+        pre: pre,
+        version: version,
+        display: display
+      }
+    }).filter(x => x.major > 0)
+      .filter(x => {
+      return !lookup[x.display] && (lookup[x.display] = true);
     });
-
-    let majors = {};
-
-    versions.forEach(x => {
-      let major = majors[x.major];
-      if (!major) {
-        majors[x.major] = major = {};
-      }
-
-      let minor = major[x.minor];
-      if (!minor) {
-        major[x.minor] = minor = [];
-      }
-      let patch = minor.find(y => y === x.patch);
-      if (!patch) {
-        minor.push(parseInt( x.patch, 10));
-      }
-    });
-
-    let available = [];
-
-    for (let major in majors) {
-      let minors = majors[major];
-
-      for (let minor in minors) {
-        let patches = minors[minor].sort();
-        let patch = patches[patches.length - 1];
-        available.push({
-          major: parseInt(major, 10),
-          minor: parseInt(minor, 10),
-          patch: patch,
-          version: major + '.' + minor + '.' + patch,
-          display: major + '.' + minor + '.x'
-        });
-      }
-    }
-
-    available.sort((a, b) => {
-      if (a.major > b.major) return -1;
-      if (a.major < b.major) return 1;
-
-      if (a.minor > b.minor) return -1;
-      if (a.minor < b.minor) return 1;
-
-      return 0;
-    });
-
-    return available;
   }
 }
 
