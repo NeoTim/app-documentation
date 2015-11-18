@@ -45,6 +45,7 @@ export class Example {
       'ES 2015',
       'ES 2015/2016',
       'TypeScript',
+      'ES 2015/ES 2016/TypeScript',
       'HTML'
     ];
 

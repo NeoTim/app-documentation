@@ -315,5 +315,936 @@
         }
       </source-code>
     </example>
+
+    <narrative uid="6" version="1.0">
+      ## Templating Basics
+    </narrative>
+
+    <example title="A Simple Template">
+      <source-code lang="HTML">
+        <template>
+          <div>Hello World!</div>
+        </template>
+      </source-code>
+    </example>
+
+    <example title="Requiring Resources">
+      <source-code lang="HTML">
+        <template>
+          <require from='nav-bar'></require>
+
+          <nav-bar router.bind="router"></nav-bar>
+
+          <div class="page-host">
+            <router-view></router-view>
+          </div>
+        </template>
+      </source-code>
+    </example>
+
+    <example title="Illegal Table Code">
+      <source-code lang="HTML">
+        <template>
+          <table>
+            <template repeat.for="customer of customers">
+              <tr>
+                <td>${customer.fullName}</td>
+              </tr>
+            </template>
+          </table>
+        </template>
+      </source-code>
+    </example>
+
+    <example title="Correct Table Code">
+      <source-code lang="HTML">
+        <template>
+          <table>
+            <tr repeat.for="customer of customers">
+              <td>${customer.fullName}</td>
+            </tr>
+          </table>
+        </template>
+      </source-code>
+    </example>
+
+    <example title="Illegal Select Code">
+      <source-code lang="HTML">
+        <template>
+          <select>
+            <template repeat.for="customer of customers">
+              <option>...</option>
+            </select>
+          </table>
+        </template>
+      </source-code>
+    </example>
+
+    <example title="Correct Select Code">
+      <source-code lang="HTML">
+        <template>
+          <select>
+            <option repeat.for="customer of customers">...</option>
+          </table>
+        </template>
+      </source-code>
+    </example>
+
+    <narrative uid="7" version="1.0">
+      ## Databinding
+
+      ### bind, one-way, two-way & one-time
+
+      Use on any HTML attribute.
+
+      * `.bind` - Users the default binding. One-way binding for eveything but form controls, which use two-way binding.
+      * `.one-way` - Flows data one direction: from the view-model to the view.
+      * `.two-way` - Flows data both ways: from view-model to view and from view to view-model.
+      * `.one-time` - Renders data once, but does not synchronize changes after the initial render.
+    </narrative>
+
+    <example title="Data Binding Examples">
+      <source-code lang="HTML">
+        <template>
+          <input type="text" value.bind="firstName">
+          <input type="text" value.two-way="lastName">
+
+          <a href.one-way="profileUrl">View Profile</a>
+        </template>
+      </source-code>
+    </example>
+
+    <narrative uid="8" version="1.0">
+      ### delegate, trigger
+
+      Use on any native or custom DOM event. (Do not include the "on" prefix in the event name.)
+
+      * `.trigger` - Attaches an even handler directly to the element. When the even fires, the expression will be invoked.
+      * `.delegate` - Attaches a single event handler to the document (or nearest shadow DOM boundary) which handles all events of the specified type, properly dispatching them back to their original targers for invocation of the associated expression.
+
+      > **Note:** The `$event` property can be passed as an argument to a delegate/trigger function call if you need to access the event object.
+
+    </narrative>
+
+    <example title="Event Binding Examples">
+      <source-code lang="HTML">
+        <template>
+          <button click.trigger="save()">Save</button>
+          <button click.delegate="save($event)">Save</button>
+        </template>
+      </source-code>
+    </example>
+
+    <narrative uid="9" version="1.0">
+      ### call
+
+      Passes a function reference.
+    </narrative>
+
+    <example title="Call Example">
+      <source-code lang="HTML">
+        <template>
+          <button my-attribute.call="sayHello()">Say Hello</button>
+        </template>
+      </source-code>
+    </example>
+
+    <narrative uid="10" version="1.0">
+      ### ref
+
+      Creates a reference to an HTML element, a component or a component's parts.
+
+      * `attribute-name.ref="someIdentifier"`- Create a reference to a custom attribute's view-model.
+      * `element-name.ref="someIdentifier"`- Create a reference to a custom element's view-model.
+      * `ref="someIdentifier"` - Create a reference to the HTMLElement in the DOM.
+    </narrative>
+
+    <example title="Ref Example">
+      <source-code lang="HTML">
+        <template>
+          <input type="text" ref="name"> ${name.value}
+        </template>
+      </source-code>
+    </example>
+
+    <narrative uid="11" version="1.0">
+      ### String Interpolation
+
+      Used in an element's content. Can be used inside attributes, particularly useful in the `class` and `css` attributes.
+    </narrative>
+
+    <example title="String Interpolation  Example">
+      <source-code lang="HTML">
+        <template>
+          <span>${fullName}</span>
+          <div class="dot ${color} ${isHappy ? 'green' : 'red'}"></div>
+        </template>
+      </source-code>
+    </example>
+
+    <narrative uid="12" version="1.0">
+      ### Binding to Select Elements
+
+      A typical select element is rendered using a combination of `value.bind` and `repeat`. You can also bind to arrays of objects and synchronize based on an id (or similar) property.
+    </narrative>
+
+    <example title="Basic Select">
+      <source-code lang="HTML">
+        <template>
+          <select value.bind="favoriteColor">
+            <option>Select A Color</option>
+            <option repeat.for="color of colors" value.bind="color">${color}</option>
+          </select>
+        </template>
+      </source-code>
+    </example>
+
+    <example title="Select with Object Array">
+      <source-code lang="HTML">
+        <template>
+          <select value.bind="employeeOfTheMonth">
+            <option>Select An Employee</option>
+            <option repeat.for="employee of employees" model.bind="employee">${employee.fullName}</option>
+          </select>
+        </template>
+      </source-code>
+    </example>
+
+    <example title="Select with Object Id Sync">
+      <source-code lang="HTML">
+        <template>
+          <select value.bind="employeeOfTheMonthId">
+            <option>Select An Employee</option>
+            <option repeat.for="employee of employees" model.bind="employee.id">${employee.fullName}</option>
+          </select>
+        </template>
+      </source-code>
+    </example>
+
+    <example title="Basic Multi-Select">
+      <source-code lang="HTML">
+        <template>
+          <select value.bind="favoriteColors" multiple>
+            <option repeat.for="color of colors" value.bind="color">${color}</option>
+          </select>
+        </template>
+      </source-code>
+    </example>
+
+    <example title="Multi-Select with Object Array">
+      <source-code lang="HTML">
+        <template>
+          <select value.bind="favoriteEmployees" multiple>
+            <option repeat.for="employee of employees" model.bind="employee">${employee.fullName}</option>
+          </select>
+        </template>
+      </source-code>
+    </example>
+
+    <narrative uid="13" version="1.0">
+      ### Binding Radios
+    </narrative>
+
+    <example title="Basic Radios">
+      <source-code lang="HTML">
+        <template>
+          <label repeat.for="color of colors">
+            <input type="radio" name="clrs" value.bind="color" checked.bind="$parent.favoriteColor" />
+            ${color}
+          </label>
+        </template>
+      </source-code>
+    </example>
+
+    <example title="Radios with Object Arrays">
+      <source-code lang="HTML">
+        <template>
+          <label repeat.for="employee of employees">
+            <input type="radio" name="emps" model.bind="employee" checked.bind="$parent.employeeOfTheMonth" />
+            ${employee.fullName}
+          </label>
+        </template>
+      </source-code>
+    </example>
+
+    <example title="Radios with a Boolean">
+      <source-code lang="HTML">
+        <template>
+          <label><input type="radio" name="tacos" model.bind="null" checked.bind="likesTacos" />Unanswered</label>
+          <label><input type="radio" name="tacos" model.bind="true" checked.bind="likesTacos" />Yes</label>
+          <label><input type="radio" name="tacos" model.bind="false" checked.bind="likesTacos" />No</label>
+        </template>
+      </source-code>
+    </example>
+
+    <narrative uid="14" version="1.0">
+      ### Binding Checkboxes
+
+      > NOTE:  You cannot use a click.delegate on checkboxes if you want to attach a method to it. You need to use change.delegate.
+    </narrative>
+
+    <example title="Checkboxes with an Array">
+      <source-code lang="HTML">
+        <template>
+          <label repeat.for="color of colors">
+            <input type="checkbox" value.bind="color" checked.bind="$parent.favoriteColors" />
+            ${color}
+          </label>
+        </template>
+      </source-code>
+    </example>
+
+    <example title="Checkboxes with an Array of Objects">
+      <source-code lang="HTML">
+        <template>
+          <label repeat.for="employee of employees">
+            <input type="checkbox" model.bind="employee" checked.bind="$parent.favoriteEmployees" />
+            ${employee.fullName}
+          </label>
+        </template>
+      </source-code>
+    </example>
+
+    <example title="Checkboxes with Booleans">
+      <source-code lang="HTML">
+        <template>
+          <li><label><input type="checkbox" checked.bind="wantsFudge" />Fudge</label></li>
+          <li><label><input type="checkbox" checked.bind="wantsSprinkles" />Sprinkles</label></li>
+          <li><label><input type="checkbox" checked.bind="wantsCherry" />Cherry</label></li>
+        </template>
+      </source-code>
+    </example>
+
+    <narrative uid="15" version="1.0">
+      ### Binding innerHTML and textContext
+
+      Always use HTML sanitization. We provide a simple converter that can be used. You're encouraged to use a more complete html sanitizer such as [sanitize-html](https://www.npmjs.com/package/sanitize-html).
+
+      > NOTE:  Binding using the `innerhtml` attribute simply sets the element's `innerHTML` property.  The markup does not pass through Aurelia's templating system.  Binding expressions and require elements will not be evaluated.
+    </narrative>
+
+    <example title="Binding innerHTML">
+      <source-code lang="HTML">
+        <template>
+          <div innerhtml.bind="htmlProperty | sanitizeHTML"></div>
+          <div innerhtml="${htmlProperty | sanitizeHTML}"></div>
+        </template>
+      </source-code>
+    </example>
+
+    <example title="Binding textContent">
+      <source-code lang="HTML">
+        <template>
+          <div textcontent.bind="stringProperty"></div>
+          <div textcontent="${stringProperty}"></div>
+        </template>
+      </source-code>
+    </example>
+
+    <example title="Two-Way Editable textContent">
+      <source-code lang="HTML">
+        <template>
+          <div textcontent.bind="stringProperty" contenteditable="true"></div>
+        </template>
+      </source-code>
+    </example>
   </body>
+
+  <narrative uid="16" version="1.0">
+    ### Binding Style
+
+    You can bind a css string or object to an element's `style` attribute. Use the `style` attribute's alias, `css` when doing string interpolation to ensure your application is compatible with Internet Explorer.
+  </narrative>
+
+  <example title="Style Binding Data">
+    <source-code lang="ES 2015/2016">
+      export class StyleData {
+        constructor() {
+          this.styleString = 'color: red; background-color: blue';
+
+          this.styleObject = {
+            color: 'red',
+            'background-color': 'blue'
+          };
+        }
+      }
+    </source-code>
+    <source-code lang="TypeScript">
+      export class StyleData {
+        styleString: string;
+        styleObject: any;
+
+        constructor() {
+          this.styleString = 'color: red; background-color: blue';
+
+          this.styleObject = {
+            color: 'red',
+            'background-color': 'blue'
+          };
+        }
+      }
+    </source-code>
+  </example>
+
+  <example title="Style Binding View">
+    <source-code lang="HTML">
+      <template>
+        <div style.bind="styleString"></div>
+        <div style.bind="styleObject"></div>
+      </template>
+    </source-code>
+  </example>
+
+  <example title="Illegal Style Interpolation">
+    <source-code lang="HTML">
+      <template>
+        <div style="width: ${width}px; height: ${height}px;"></div>
+      </template>
+    </source-code>
+  </example>
+
+  <example title="Legal Style Interpolation">
+    <source-code lang="HTML">
+      <template>
+        <div css="width: ${width}px; height: ${height}px;"></div>
+      </template>
+    </source-code>
+  </example>
+
+  <narrative uid="17" version="1.0">
+    ### Declaring Computed Property Dependencies
+  </narrative>
+
+  <example title="Computed Properties">
+    <source-code lang="ES 2015">
+      import {declarePropertyDependencies} from 'aurelia-framework';
+
+      export class Person {
+        firstName = 'John';
+        lastName = 'Doe';
+
+        get fullName(){
+          return `${this.firstName} ${this.lastName}`;
+        }
+      }
+
+      declarePropertyDependencies(Person, 'fullName', ['firstName', 'lastName']);
+    </source-code>
+    <source-code lang="ES 2016">
+      import {computedFrom} from 'aurelia-framework';
+
+      export class Person {
+        firstName = 'John';
+        lastName = 'Doe';
+
+        @computedFrom('firstName', 'lastName')
+        get fullName(){
+          return `${this.firstName} ${this.lastName}`;
+        }
+      }
+    </source-code>
+    <source-code lang="TypeScript">
+      import {computedFrom} from 'aurelia-framework';
+
+      export class Person {
+        firstName: string = 'John';
+        lastName: string = 'Doe';
+
+        @computedFrom('firstName', 'lastName')
+        get fullName(): string {
+          return `${this.firstName} ${this.lastName}`;
+        }
+      }
+    </source-code>
+  </example>
+
+  <narrative uid="18" version="1.0">
+    ## Templating View Resources
+  </narrative>
+
+  <example title="Conditionally displays an HTML element.">
+    <source-code lang="HTML">
+      <template>
+        <div show.bind="isSaving" class="spinner"></div>
+      </template>
+    </source-code>
+  </example>
+
+  <example title="Conditionally add/remove an HTML element.">
+    <source-code lang="HTML">
+      <template>
+        <div if.bind="isSaving" class="spinner"></div>
+      </template>
+    </source-code>
+  </example>
+
+  <example title="Conditionally add/remove a group of elements.">
+    <source-code lang="HTML">
+      <template>
+        <input value.bind="firstName">
+
+        <template if.bind="hasErrors">
+            <i class="icon error"></i>
+            ${errorMessage}
+        </template>
+      </template>
+    </source-code>
+  </example>
+
+  <example title="Render an array with a template.">
+    <source-code lang="HTML">
+      <template>
+        <ul>
+          <li repeat.for="customer of customers">${customer.fullName}</li>
+        </ul>
+      </template>
+    </source-code>
+  </example>
+
+  <example title="Render an map with a template.">
+    <source-code lang="HTML">
+      <template>
+        <ul>
+          <li repeat.for="[id, customer] of customers">${id} ${customer.fullName}</li>
+        </ul>
+      </template>
+    </source-code>
+  </example>
+
+  <example title="Render an template N times.">
+    <source-code lang="HTML">
+      <template>
+        <ul>
+          <li repeat.for="i of rating">*</li>
+        </ul>
+      </template>
+    </source-code>
+  </example>
+
+  <narrative uid="19" version="1.0">
+    > **Note:**: Like the `if` attribute, you can also use a `template` tag to group a collection of elements that don't have a parent element and place the `repeat` on the `template` element.
+
+    Contextual items availabe inside a repeat template:
+
+    * `$index` - The index of the item in the array.
+    * `$first` - True if the item is the first item in the array.
+    * `$last` - True if the item is the last item in the array.
+    * `$even` - True if the item has an even numbered index.
+    * `$odd` - True if the item has an odd numbered index.
+  </narrative>
+
+  <example title="Dynamically render UI into the DOM based on data.">
+    <source-code lang="HTML">
+      <template repeat.for="item of items">
+        <compose model.bind="item" view-model="widgets/${item.type}"></compose>
+      </template>
+    </source-code>
+  </example>
+
+  <example title="Composing a view only, inheriting the parent binding context.">
+    <source-code lang="HTML">
+      <template repeat.for="item of items">
+        <compose view="my-view.html"></compose>
+      </template>
+    </source-code>
+  </example>
+
+  <example title="Compose an existing object instance with a view.">
+    <source-code lang="HTML">
+      <template>
+        <div repeat.for="item of items">
+          <compose view="my-view.html" view-model.bind="item">
+        </div>
+      </template>
+    </source-code>
+  </example>
+
+  <narrative uid="20" version="1.0">
+    ## Routing
+  </narrative>
+
+  <example title="Basic Route Configuration">
+    <source-code lang="ES 2015/2016">
+      export class App {
+        configureRouter(config, router) {
+          this.router = router;
+          config.title = 'Aurelia';
+          config.map([
+            { route: ['', 'home'],       name: 'home',       moduleId: 'home/index' },
+            { route: 'users',            name: 'users',      moduleId: 'users/index',   nav: true },
+            { route: 'users/:id/detail', name: 'userDetail', moduleId: 'users/detail' },
+            { route: 'files*path',       name: 'files',      moduleId: 'files/index',   href:'#files',   nav: true }
+          ]);
+        }
+      }
+    </source-code>
+    <source-code lang="TypeScript">
+      import {RouterConfiguration, Router} from 'aurelia-router';
+
+      export class App {
+        configureRouter(config: RouterConfiguration, router: Router): void {
+          this.router = router;
+          config.title = 'Aurelia';
+          config.map([
+            { route: ['', 'home'],       name: 'home',       moduleId: 'home/index' },
+            { route: 'users',            name: 'users',      moduleId: 'users/index',   nav: true },
+            { route: 'users/:id/detail', name: 'userDetail', moduleId: 'users/detail' },
+            { route: 'files*path',       name: 'files',      moduleId: 'files/index',   href:'#files',   nav: true }
+          ]);
+        }
+      }
+    </source-code>
+  </example>
+
+  <narrative uid="22" version="1.0">
+    ### Route Pattern Options
+
+    * static routes
+        - ie 'home' - Matches the string exactly.
+    * parameterized routes
+        - ie  'users/:id/detail' - Matches the string and then parses an `id` parameter. Your view-model's `activate` callback will be called with an object that has an `id` property set to the value that was extracted from the url.
+    * wildcard routes
+        - ie 'files*path' - Matches the string and then anything that follows it. Your view-model's `activate` callback will be called with an object that has a `path` property set to the wildcard's value.
+
+
+    ### The Screen Activation Lifecycle
+
+    * `canActivate(params, routeConfig, navigationInstruction)` - Implement this hook if you want to control whether or not your view-model _can be navigated to_. Return a boolean value, a promise for a boolean value, or a navigation command.
+    * `activate(params, routeConfig, navigationInstruction)` - Implement this hook if you want to perform custom logic just before your view-model is displayed. You can optionally return a promise to tell the router to wait to bind and attach the view until after you finish your work.
+    * `canDeactivate()` - Implement this hook if you want to control whether or not the router _can navigate away_ from your view-model when moving to a new route. Return a boolean value, a promise for a boolean value, or a navigation command.
+    * `deactivate()` - Implement this hook if you want to perform custom logic when your view-model is being navigated away from. You can optionally return a promise to tell the router to wait until after your finish your work.
+
+    > **Note:** A _Navigation Command_ is any object with a `navigate(router)` method. When one is encountered, the navigation will be cancelled and control will be passed to the navigation command. One navigation command is provided out of the box: `Redirect`.
+
+    The `params` object will have a property for each parameter of the route that was parsed, as well as a property for each query string value. `routeConfig` will be the original route configuration object that you set up. `routeConfig` will also have a new `navModel` property, which can be used to change the document title for data loaded by your view-model. For example:
+  </narrative>
+
+  <example title="Route Params and NavModel">
+    <source-code lang="ES 2016">
+      import {autoinject} from 'aurelia-framework';
+      import {UserService} from './user-service';
+
+      @inject(UserService)
+      export class UserEditScreen {
+        constructor(userService) {
+          this.userService = userService;
+        }
+
+        activate(params, routeConfig) {
+          return this.userService.getUser(params.id)
+            .then(user => {
+              routeConfig.navModel.setTitle(user.name);
+            });
+        }
+      }
+    </source-code>
+    <source-code lang="ES 2015">
+      import {UserService} from './user-service';
+
+      export class UserEditScreen {
+        static inject() { return [UserService]; }
+
+        constructor(userService) {
+          this.userService = userService;
+        }
+
+        activate(params, routeConfig) {
+          return this.userService.getUser(params.id)
+            .then(user => {
+              routeConfig.navModel.setTitle(user.name);
+            });
+        }
+      }
+    </source-code>
+    <source-code lang="TypeScript">
+      import {autoinject} from 'aurelia-framework';
+      import {RouteConfig} from 'aurelia-router';
+      import {UserService} from './user-service';
+
+      @autoinject
+      export class UserEditScreen {
+        constructor(userService: UserService) {
+          this.userService = userService;
+        }
+
+        activate(params: any, routeConfig: RouteConfig): Promise<any> {
+          return this.userService.getUser(params.id)
+            .then(user => {
+              routeConfig.navModel.setTitle(user.name);
+            });
+        }
+      }
+    </source-code>
+  </example>
+
+  <example title="Conventional Routing">
+    <source-code lang="ES 2015/2016">
+      export class App {
+        configureRouter(config){
+          config.mapUnknownRoutes(instruction => {
+            //check instruction.fragment
+            //return moduleId
+          });
+        }
+      }
+    </source-code>
+    <source-code lang="TypeScript">
+      import {RouterConfiguration} from 'aurelia-router';
+
+      export class App {
+        configureRouter(config: RouterConfiguration): void {
+          config.mapUnknownRoutes(instruction => {
+            //check instruction.fragment
+            //return moduleId
+          });
+        }
+      }
+    </source-code>
+  </example>
+
+  <example title="Customizing the Navigation Pipeline">
+    <source-code lang="ES 2015/2016">
+      import {Redirect} from 'aurelia-router';
+
+      export class App {
+        configureRouter(config) {
+          config.title = 'Aurelia';
+          config.addPipelineStep('authorize', AuthorizeStep);
+          config.map([
+            { route: ['welcome'],    name: 'welcome',       moduleId: 'welcome',      nav: true, title:'Welcome' },
+            { route: 'flickr',       name: 'flickr',        moduleId: 'flickr',       nav: true, auth: true },
+            { route: 'child-router', name: 'childRouter',   moduleId: 'child-router', nav: true, title:'Child Router' },
+            { route: '', redirect: 'welcome' }
+          ]);
+        }
+      }
+
+      class AuthorizeStep {
+        run(navigationInstruction, next) {
+          if (navigationInstruction.getAllInstructions().some(i => i.config.auth)) {
+            var isLoggedIn = /* insert magic here */false;
+            if (!isLoggedIn) {
+              return next.cancel(new Redirect('login'));
+            }
+          }
+
+          return next();
+        }
+      }
+    </source-code>
+    <source-code lang="TypeScript">
+      import {Redirect, NavigationInstruction, RouterConfiguration} from 'aurelia-router';
+
+      export class App {
+        configureRouter(config: RouterConfiguration): void {
+          config.title = 'Aurelia';
+          config.addPipelineStep('authorize', AuthorizeStep);
+          config.map([
+            { route: ['welcome'],    name: 'welcome',       moduleId: 'welcome',      nav: true, title:'Welcome' },
+            { route: 'flickr',       name: 'flickr',        moduleId: 'flickr',       nav: true, auth: true },
+            { route: 'child-router', name: 'childRouter',   moduleId: 'child-router', nav: true, title:'Child Router' },
+            { route: '', redirect: 'welcome' }
+          ]);
+        }
+      }
+
+      class AuthorizeStep {
+        run(navigationInstruction: NavigationInstruction, next: Function): Promise<any> {
+          if (navigationInstruction.getAllInstructions().some(i => i.config.auth)) {
+            var isLoggedIn = /* insert magic here */false;
+            if (!isLoggedIn) {
+              return next.cancel(new Redirect('login'));
+            }
+          }
+
+          return next();
+        }
+      }
+    </source-code>
+  </example>
+
+  <narrative uid="23" version="1.0">
+    ### Configuring PushState
+
+    Add [a base tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base) to the head of your html document. If you're using JSPM, you will also need to configure it with a `baseURL` corresponding to your base tag's `href`.
+
+    > **Note**: Don't forget to configure your server appropriately.
+  </narrative>
+
+  <example title="PushState">
+    <source-code lang="ES 2015/2016">
+      export class App {
+        configureRouter(config) {
+          config.title = 'Aurelia';
+          config.options.pushState = true;
+          config.map([
+            { route: ['welcome'],    name: 'welcome',     moduleId: 'welcome',      nav: true, title:'Welcome' },
+            { route: 'flickr',       name: 'flickr',      moduleId: 'flickr',       nav: true, auth: true },
+            { route: 'child-router', name: 'childRouter', moduleId: 'child-router', nav: true, title:'Child Router' },
+            { route: '',             redirect: 'welcome' }
+          ]);
+        }
+      }
+    </source-code>
+    <source-code lang="TypeScript">
+      import {Redirect, NavigationInstruction, RouterConfiguration} from 'aurelia-router';
+
+      export class App {
+        configureRouter(config: RouterConfiguration): void {
+          config.title = 'Aurelia';
+          config.options.pushState = true;
+          config.map([
+            { route: ['welcome'],    name: 'welcome',     moduleId: 'welcome',      nav: true, title:'Welcome' },
+            { route: 'flickr',       name: 'flickr',      moduleId: 'flickr',       nav: true, auth: true },
+            { route: 'child-router', name: 'childRouter', moduleId: 'child-router', nav: true, title:'Child Router' },
+            { route: '',             redirect: 'welcome' }
+          ]);
+        }
+      }
+    </source-code>
+  </example>
+
+  <narrative uid="24" version="1.0">
+    ### Reusing an existing VM
+
+    Since the VM's life-cycle is called only once you may have problems recognizing that the user switched the route from `Product A` to `Product B` (see below).  To work around this issue implement the method `determineActivationStrategy` in your VM and return hints for the router about what you'd like to happen.
+
+    > **Note:** Additionally, you can add an `activationStrategy` property to your route config if the strategy is always the same and you don't want that to be in your view-model code. Available values are `replace` and `invokeLifecycle`.
+  </narrative>
+
+  <example title="Router VM Activation Control">
+    <source-code lang="ES 2015/2016">
+      //app.js
+
+      export class App {
+        configureRouter(config) {
+          config.title = 'Aurelia';
+          config.map([
+            { route: 'product/a',    moduleId: 'product',     nav: true },
+            { route: 'product/b',    moduleId: 'product',     nav: true },
+          ]);
+        }
+      }
+
+      //product.js
+
+      import {activationStrategy} from 'aurelia-router';
+
+      export class Product {
+        determineActivationStrategy(){
+          return activationStrategy.replace;
+        }
+      }
+    </source-code>
+    <source-code lang="TypeScript">
+      import {RouterConfiguration} from 'aurelia-router';
+
+      //app.js
+
+      export class App {
+        configureRouter(config: RouterConfiguration): void {
+          config.title = 'Aurelia';
+          config.map([
+            { route: 'product/a',    moduleId: 'product',     nav: true },
+            { route: 'product/b',    moduleId: 'product',     nav: true },
+          ]);
+        }
+      }
+
+      //product.js
+
+      import {activationStrategy} from 'aurelia-router';
+
+      export class Product {
+        determineActivationStrategy(): string {
+          return activationStrategy.replace;
+        }
+      }
+    </source-code>
+  </example>
+
+  <narrative uid="25" version="1.0">
+    ### Rendering multiple ViewPorts
+
+    > **Note:** If you don't name a `router-view`, it will be available under the name `'default'`.
+  </narrative>
+
+  <example title="Multi-ViewPort View">
+    <source-code lang="HTML">
+      <template>
+        <div class="page-host">
+          <router-view name="left"></router-view>
+        </div>
+        <div class="page-host">
+          <router-view name="right"></router-view>
+        </div>
+      </template>
+    </source-code>
+  </example>
+
+  <example title="Multi-ViewPort View-Model">
+    <source-code lang="ES 2015/2016">
+      export class App {
+        configureRouter(config){
+          config.map([{
+            route: 'edit',
+              viewPorts: {
+                left: {
+                  moduleId: 'editor'
+                },
+                right: {
+                  moduleId: 'preview'
+                }
+              }
+            }]);
+        }
+      }
+    </source-code>
+    <source-code lang="TypeScript">
+      import {RouterConfiguration} from 'aurelia-router';
+
+      export class App {
+        configureRouter(config: RouterConfiguration): void {
+          config.map([{
+            route: 'edit',
+              viewPorts: {
+                left: {
+                  moduleId: 'editor'
+                },
+                right: {
+                  moduleId: 'preview'
+                }
+              }
+            }]);
+        }
+      }
+    </source-code>
+  </example>
+
+  <narrative uid="26" version="1.0">
+    ### Generating Route URLs
+
+    > **Note:** If you don't name a `router-view`, it will be available under the name `'default'`.
+  </narrative>
+
+  <example title="Generate Route URLs in Code">
+    <source-code lang="ES 2015/ES 2016/TypeScript">
+      router.generate('routeName', { id: 123 });
+    </source-code>
+  </example>
+
+  <example title="Navigating to a Generated Route">
+    <source-code lang="ES 2015/ES 2016/TypeScript">
+      router.navigateToRoute('routeName', { id: 123 })
+    </source-code>
+  </example>
+
+  <example title="Rendering an Anchor for a Route">
+    <source-code lang="HTML">
+      <template>
+        <a route-href="route: routeName; params.bind: { id: user.id }">${user.name}</a>
+      </template>
+    </source-code>
+  </example>
+
 </html>
