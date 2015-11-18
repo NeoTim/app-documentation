@@ -106,7 +106,7 @@
       <template repeat.for="variable of selectedProductVersion.variables">
         <au-card variable-card>
           <blockquote id="variable-${variable.name}">
-            <h2 border-bottom>${variable.name}: <span>${variable.type.name}</span></h2>
+            <h2 border-bottom>${variable.name}: <span value-type>${variable.type.name}</span></h2>
             <div description>${variable.comment.shortText || 'no description available'}</div>
           </blockquote>
         </au-card>
@@ -118,7 +118,7 @@
       <template repeat.for="function of selectedProductVersion.functions">
         <au-card function-card>
           <blockquote id="function-${function.signature.name}">
-            <h2 border-bottom>${function.signature.name}(<span args repeat.for="param of function.signature.parameters">${param.name}: ${param.type.name || 'any'}</span>): ${function.signature.type.name ||'any'}</span></h2>
+            <h2 border-bottom>${function.signature.name}(<i><span args repeat.for="param of function.signature.parameters">${param.name}: ${param.type.name || 'any'}</span></i>): <span value-type>${function.signature.type.name ||'any'}</span></h2>
             <div description>${function.signature.comment.shortText || 'no description available'}</div>
           </blockquote>
 

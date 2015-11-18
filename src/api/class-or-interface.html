@@ -12,8 +12,8 @@
           <h3 description>${target.comment.shortText || 'no description available'}</h3>
         </blockquote>
         <div if.bind="constructorSignature" class="text-sm">
-          <strong>
-            ${constructorSignature.name}(<span repeat.for="param of constructorSignature.parameters">${param.name}: ${param.type.name}<span if.bind="!$last">, </span></span>)
+          <strong color="accent">
+            ${constructorSignature.name}(<i><span args repeat.for="param of constructorSignature.parameters">${param.name}: ${param.type.name}</span></i>)
           </strong>
         </div>
       </article>
@@ -25,7 +25,7 @@
       <blockquote>
         <h2 border-bottom>
           <span if.bind="prop.flags && prop.flags.isStatic" class="au-tag">static</span>
-          <span>${prop.name}: ${prop.type.name}</span>
+          <span>${prop.name}: <span value-type>${prop.type.name}</span></span>
         </h2>
         <div description>${prop.comment.shortText || 'no description available'}</div>
       </blockquote>
@@ -38,7 +38,7 @@
         <h2 border-bottom>
           <span if.bind="method.flags && method.flags.isStatic" class="au-tag">static</span>
           <span>
-            ${method.signature.name}(<span args repeat.for="param of method.signature.parameters">${param.name}:${param.type.name || 'any'}</span>): ${value.signature.type.name || 'any'}
+            ${method.signature.name}(<i><span args repeat.for="param of method.signature.parameters">${param.name}:${param.type.name || 'any'}</span></i>): <span value-type>${value.signature.type.name || 'any'}</span>
           </span>
         </h2>
         <div description>${method.signature.comment.shortText || 'no description available'}</div>
