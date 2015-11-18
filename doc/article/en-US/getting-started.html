@@ -169,7 +169,7 @@
     </narrative>
 
     <example title="app.js">
-      <source-code lang="ES 2016">
+      <source-code lang="ES 2015/2016">
         export class App {
           configureRouter(config, router) {
             config.title = 'Aurelia';
@@ -185,6 +185,8 @@
         import {RouterConfiguration, Router} from 'aurelia-router';
 
         export class App {
+          router: Router;
+
           configureRouter(config: RouterConfiguration, router: Router) {
             config.title = 'Aurelia';
             config.map([
@@ -272,7 +274,7 @@
     </narrative>
 
     <example title="app.js (updated)">
-      <source-code lang="ES 2016">
+      <source-code lang="ES 2015/2016">
         export class App {
           configureRouter(config, router){
             config.title = 'Aurelia';
@@ -289,6 +291,8 @@
         import {RouterConfiguration, Router} from 'aurelia-router';
 
         export class App {
+          router: Router;
+
           configureRouter(config: RouterConfiguration, router: Router) {
             config.title = 'Aurelia';
             config.map([
@@ -411,21 +415,21 @@
       <source-code lang="HTML">
         <template>
           <section>
-              <h2>${heading}</h2>
-              <div class="row au-stagger">
-                <div class="col-sm-6 col-md-3 card-container" repeat.for="user of users">
-                    <div class="card">
-                        <canvas class="header-bg" width="250" height="70"></canvas>
-                        <div class="avatar">
-                            <img src.bind="user.avatar_url" crossorigin />
-                        </div>
-                        <div class="content">
-                            <p class="name">${user.login}</p>
-                            <p><a target="_blank" class="btn btn-default" href.bind="user.html_url">Contact</a></p>
-                        </div>
-                    </div>
+            <h2>${heading}</h2>
+            <div class="row au-stagger">
+              <div class="col-sm-6 col-md-3 card-container" repeat.for="user of users">
+                <div class="card">
+                  <canvas class="header-bg" width="250" height="70"></canvas>
+                  <div class="avatar">
+                    <img src.bind="user.avatar_url" crossorigin />
+                  </div>
+                  <div class="content">
+                    <p class="name">${user.login}</p>
+                    <p><a target="_blank" class="btn btn-default" href.bind="user.html_url">Contact</a></p>
+                  </div>
                 </div>
               </div>
+            </div>
           </section>
         </template>
       </source-code>
@@ -442,6 +446,286 @@
       2. Add a view-model.
       3. Add a view with the same name (but with an .html extension).
       4. Celebrate.
+    </narrative>
+
+    <narrative uid="13" version="1">
+      ## Bonus: Creating a Custom Element
+
+      Look at you, you overachiever! I see you're interested in learning some extra awesome on this fine day. In that case, let's create a custom HTML element. I think a good candidate for this is our navbar. That's a lot of HTML in our _app.html_ file. Why not extract a custom `<nav-bar>` element to make things a bit more declarative? Here's what we want to be able to write in the end:
+    </narrative>
+
+    <example title="app.html">
+      <source-code lang="HTML">
+        <template>
+          <require from="bootstrap/css/bootstrap.css"></require>
+          <require from="font-awesome/css/font-awesome.css"></require>
+          <require from='nav-bar'></require>
+
+          <nav-bar router.bind="router"></nav-bar>
+
+          <div class="page-host">
+            <router-view></router-view>
+          </div>
+        </template>
+      </source-code>
+    </example>
+
+    <narrative uid="14" version="1">
+      This code requires a `nav-bar` element from "nav-bar" and once it's available in the view, we can use it like any other element, including databinding to its custom properties (like _router_). So, how do we get to this end product?
+
+      Guess what? Our simple view-model/view conventions still apply for custom elements. Let's create a _nav-bar.js_ and a _nav-bar.html_. Here's the code for the view-model first:
+    </narrative>
+
+    <example title="nav-bar.js">
+      <source-code lang="ES 2015">
+        import {bindable, decorators} from 'aurelia-framework';
+
+        export let NavBar = decorators(bindable('router')).on(class {
+          constructor() {
+            this.router = null;
+          }
+        });
+      </source-code>
+      <source-code lang="ES 2016">
+        import {bindable} from 'aurelia-framework';
+
+        export class NavBar {
+          @bindable router = null;
+        }
+      </source-code>
+      <source-code lang="TypeScript">
+        import {bindable} from 'aurelia-framework';
+        import {Router} from 'aurelia-router';
+
+        export class NavBar {
+          @bindable router: Router = null;
+        }
+      </source-code>
+    </example>
+
+    <narrative uid="15" version="1">
+      To create a custom element, you create and export a class. Since this class is going to be used in HTML as an element, we need to tell the framework what properties on the class should appear as attributes on the element. To do that, we use the _bindable_ decorator. Like _inject_, _bindable_ is a way to provide information about your class to the Aurelia framework. Aurelia is smart and can infer many things, but when it can't or when you want to do something different than the conventions, you supply some additional information through decorators. The `bindable` decorator tells the framework that we want our class's `router` property to be surfaced as an attribute in the HTML. Once it's surfaced as an attribute, we can bind to it in the view.
+    </narrative>
+
+    <example title="nav-bar.html">
+      <source-code lang="HTML">
+        <template>
+          <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle Navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">
+                <i class="fa fa-home"></i>
+                <span>${router.title}</span>
+              </a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
+                  <a href.bind="row.href">${row.title}</a>
+                </li>
+              </ul>
+
+              <ul class="nav navbar-nav navbar-right">
+                <li class="loader" if.bind="router.isNavigating">
+                  <i class="fa fa-spinner fa-spin fa-2x"></i>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </template>
+      </source-code>
+    </example>
+
+    <narrative uid="16" version="1">
+      This looks almost identical to the navbar HTML in our original _app.html_ file. We've basically extracted that and put it into this template. Instead of binding to _app.js_ though, it's now binding to _nav-bar.js_.
+
+      This is a very simple custom element with no real behavior, but it is complete and usable as shown above.
+
+      Wait! I know what you are thinking. This custom element is so simple...it seems a bit silly to require a JavaScript class just to define the single `router` property. Couldn't we get rid of that somehow? Well, the answer is YES. For very simple elements which have no behavior but simply provide a view that can be bound to a set of properties, we can omit the JavaScript file altogether. Let's see how that works.
+
+      First, delete the _nav-bar.js_ file. Next, we need to make one change to the _nav-bar.html_ file. On the template element, we can declare the bindable properties of our element like this:
+    </narrative>
+
+    <example title="nav-bar.html">
+      <source-code lang="HTML">
+        <template bindable="router">
+          ...
+        </template>
+      </source-code>
+    </example>
+
+    <narrative uid="17" version="1">
+      We can have more than one property by separating them by commas. Finally, we need to update our _app.html_ file so that the `require` element points to our html component. Here's what it should look like:
+    </narrative>
+
+    <example title="app.html">
+      <source-code lang="HTML">
+        <template>
+          <require from="bootstrap/css/bootstrap.css"></require>
+          <require from="font-awesome/css/font-awesome.css"></require>
+          <require from='nav-bar.html'></require>
+
+          <nav-bar router.bind="router"></nav-bar>
+
+          <div class="page-host">
+            <router-view></router-view>
+          </div>
+        </template>
+      </source-code>
+    </example>
+
+    <narrative uid="18" version="1">
+      > **Note:** Anything required into a view with the `require` element is local to the view. As a result, you don't have to worry about name conflicts. You can also load app-wide elements and other behaviors for convenience so you don't have to require common resources in every view.
+
+      You may wonder how Aurelia determines the name of the custom element. By convention, it will use the export name of the class, lowered and hyphenated. In our html-only scenario, it will use the file name.
+
+      In addition to creating custom elements, you can also create custom attributes which add new behavior to existing elements. On occasion you may even need an attribute to dynamically control templates by adding and removing DOM from the view, like the `repeat` and `if` we used above. You can do all that and much more with Aurelia's powerful and extensible templating engine. Here's a secret...none of Aurelia's so-called "built in" behaviors are actually built in. They are in their own library and are "installed" into Aurelia as a plugin. We provide our built-ins using the same core that you have to build your own apps and plugins.
+    </narrative>
+
+    <narrative uid="19" version="1">
+      ## Bonus: Leveraging Child Routers
+
+      Can't get enough can you? Well, I've got a treat for you. Let's add a third page to our app...with its own router! We call this a child router. Child routers have their own route configuration and navigate relative to the parent router. Prepare thyself for insanity....
+
+      First, let's update our _app.js_ with the new configuration. Here's what it should look like:
+    </narrative>
+
+    <example title="app.js (updated...again)">
+      <source-code lang="ES 2015/2016">
+        export class App {
+          configureRouter(config, router) {
+            config.title = 'Aurelia';
+            config.map([
+              { route: ['','welcome'],  name: 'welcome',      moduleId: 'welcome',      nav: true, title:'Welcome' },
+              { route: 'users',         name: 'users',        moduleId: 'users',        nav: true, title:'Github Users' },
+              { route: 'child-router',  name: 'child-router', moduleId: 'child-router', nav: true, title:'Child Router' }
+            ]);
+
+            this.router = router;
+          }
+        }
+      </source-code>
+      <source-code lang="TypeScript">
+        import {RouterConfiguration, Router} from 'aurelia-router';
+
+        export class App {
+          router: Router;
+
+          configureRouter(config: RouterConfiguration, router: Router) {
+            config.title = 'Aurelia';
+            config.map([
+              { route: ['','welcome'],  name: 'welcome',      moduleId: 'welcome',      nav: true, title:'Welcome' },
+              { route: 'users',         name: 'users',        moduleId: 'users',        nav: true, title:'Github Users' },
+              { route: 'child-router',  name: 'child-router', moduleId: 'child-router', nav: true, title:'Child Router' }
+            ]);
+
+            this.router = router;
+          }
+        }
+      </source-code>
+    </example>
+
+    <narrative uid="20" version="1">
+      Nothing new there. The interesting part is what's inside _child-router.js_...
+    </narrative>
+
+    <example title="child-router.js">
+      <source-code lang="ES 2016">
+        export class ChildRouter {
+          heading = 'Child Router';
+
+          configureRouter(config, router){
+            config.map([
+              { route: ['','welcome'],  name: 'welcome',       moduleId: 'welcome',       nav: true, title:'Welcome' },
+              { route: 'users',         name: 'users',         moduleId: 'users',         nav: true, title:'Github Users' },
+              { route: 'child-router',  name: 'child-router',  moduleId: 'child-router',  nav: true, title:'Child Router' }
+            ]);
+
+            this.router = router;
+          }
+        }
+      </source-code>
+      <source-code lang="ES 2015">
+        export class ChildRouter {
+          constructor() {
+            this.heading = 'Child Router';
+          }
+
+          configureRouter(config, router) {
+            config.map([
+              { route: ['','welcome'],  name: 'welcome',       moduleId: 'welcome',       nav: true, title:'Welcome' },
+              { route: 'users',         name: 'users',         moduleId: 'users',         nav: true, title:'Github Users' },
+              { route: 'child-router',  name: 'child-router',  moduleId: 'child-router',  nav: true, title:'Child Router' }
+            ]);
+
+            this.router = router;
+          }
+        }
+      </source-code>
+      <source-code lang="TypeScript">
+        import {RouterConfiguration, Router} from 'aurelia-router';
+
+        export class ChildRouter {
+          heading: string = 'Child Router';
+          router: Router;
+
+          configureRouter(config: RouterConfiguration, router: Router) {
+            config.map([
+              { route: ['','welcome'],  name: 'welcome',       moduleId: 'welcome',       nav: true, title:'Welcome' },
+              { route: 'users',         name: 'users',         moduleId: 'users',         nav: true, title:'Github Users' },
+              { route: 'child-router',  name: 'child-router',  moduleId: 'child-router',  nav: true, title:'Child Router' }
+            ]);
+
+            this.router = router;
+          }
+        }
+      </source-code>
+    </example>
+
+    <narrative uid="20" version="1">
+      What!? It's practically the same configuration as `App`? What? Why? Well...you should probably never do this in real life...but it's pretty cool what this does. This, my friends, is a recursive router, and we're doing it because we can.
+
+      For completeness, here's the view:
+    </narrative>
+
+    <example title="child-router.html">
+      <source-code lang="HTML">
+        <template>
+          <section>
+            <h2>${heading}</h2>
+            <div>
+              <div class="col-md-2">
+                <ul class="well nav nav-pills nav-stacked">
+                  <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
+                    <a href.bind="row.href">${row.title}</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-10" style="padding: 0">
+                <router-view></router-view>
+              </div>
+            </div>
+          </section>
+        </template>
+      </source-code>
+    </example>
+
+    <narrative uid="21" version="1">
+      Run the app and see the magic....and pray the universe doesn't explode.
+    </narrative>
+
+    <narrative uid="22" version="1">
+      ## Conclusion
+
+      With its strong focus on developer experience, Aurelia can enable you to not only create amazing applications, but also enjoy the process. We've designed it with simple conventions in mind so you don't need to waste time with tons of configuration or write boilerplate code just to satisfy a stubborn or restrictive framework. You'll never hit a roadblock with Aurelia either. It's been carefully designed to be pluggable and customizable.
+
+      Thanks for taking the time to read through our guide. We hope you'll explore the docs and build something awesome. We look forward to seeing what you will make.
     </narrative>
   </body>
 </html>
