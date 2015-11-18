@@ -449,6 +449,9 @@ au-preview {
 demo,
 example,
 narrative {
+  &:not(:first-child) {
+    margin-top: 24px;
+  }
   @include reset-style();
   @include reset-headings();
 }
