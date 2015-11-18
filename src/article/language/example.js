@@ -29,6 +29,9 @@ export class Example {
   bind() {
     this.languageSubscription = this.api.channel.subscribe('language-changed', () => this.selectSourceForLanguage());
     this.selectSourceForLanguage();
+
+    let pre = this.element.getElementsByTagName('pre')[0];
+    pre.insertBefore(this.tag, pre.firstChild);
   }
 
   unbind() {

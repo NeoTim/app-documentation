@@ -1,5 +1,6 @@
 import {bindable, processContent, noView, inject} from 'aurelia-framework';
 import {fixIndent} from './util';
+import {DOM} from 'aurelia-pal';
 import commonmark from 'commonmark';
 
 @processContent(false)
@@ -10,6 +11,9 @@ export class Narrative {
   @bindable version;
   @bindable uid;
   @bindable versionMatches;
+  @bindable title;
+
+  titleElement = DOM.createElement('h2');
 
   constructor(element) {
     this.element = element;
@@ -21,6 +25,13 @@ export class Narrative {
     markdown = fixBlockQuotes(markdown);
     this.element.innerHTML = getHtml(markdown);
     updateAnchorTargets(this.element);
+  }
+
+  attached() {
+    if (this.title) {
+      this.titleElement.innerHTML = this.title;
+      this.element.insertBefore(this.titleElement, this.element.firstChild);
+    }
   }
 }
 
