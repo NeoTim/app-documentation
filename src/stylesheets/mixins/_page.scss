@@ -107,6 +107,7 @@ au-card {
     &:first-child {
       @include gutter($sides: top bottom left right);
     }
+
     &:not(:first-child) {
       @include gutter($sides: bottom left right);
     }
