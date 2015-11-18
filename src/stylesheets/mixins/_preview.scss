@@ -486,7 +486,7 @@ example {
   }
 
   .token.property,
-  .token.tag,
+  .token.attr-value,
   .token.boolean,
   .token.number,
   .token.constant,
@@ -514,7 +514,7 @@ example {
   }
 
   .token.atrule,
-  .token.attr-value,
+  .token.tag,
   .token.keyword {
     color: $token-keyword;
   }
