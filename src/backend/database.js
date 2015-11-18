@@ -23,7 +23,48 @@ export let database = {
     {
       userName: 'aurelia',
       productName: 'framework',
-      tutorials: []
+      tutorials: [
+        {
+          "title": "What is Aurelia?",
+          "href": "doc/article/en-US/what-is-aurelia.html",
+          profiles: [ {name: 'architect', order: 1} ]
+        },
+        {
+          "title": "Getting Started",
+          "href": "doc/article/en-US/getting-started.html",
+          profiles: [ {name: 'architect', order: 1} ]
+        },
+        {
+          "title": "A Production Setup",
+          "href": "doc/article/en-US/a-production-setup.html",
+          profiles: [ {name: 'architect', order: 1} ]
+        },
+        {
+          "title": "Creating Components",
+          "href": "doc/article/en-US/creating-components.html",
+          profiles: [ {name: 'architect', order: 1} ]
+        },
+        {
+          "title": "Cheat Sheet",
+          "href": "doc/article/en-US/cheat-sheet.html",
+          profiles: [ {name: 'architect', order: 1} ]
+        },
+        {
+          "title": "Getting Help",
+          "href": "doc/article/en-US/getting-help.html",
+          profiles: [ {name: 'architect', order: 1} ]
+        },
+        {
+          "title": "Technical Benefits",
+          "href": "doc/article/en-US/technical-benefits.html",
+          profiles: [ {name: 'architect', order: 1} ]
+        },
+        {
+          "title": "Business Advantages",
+          "href": "doc/article/en-US/business-advantages.html",
+          profiles: [ {name: 'architect', order: 1} ]
+        }
+      ]
     },
     {
       userName: 'aurelia',
@@ -68,13 +109,7 @@ export let database = {
     {
       userName: 'aurelia',
       productName: 'pal',
-      tutorials: [
-        {
-          title: 'The Platform Abstraction Layer',
-          href: 'doc/article/en-US/the-platform-abstraction-layer.html',
-          profiles: [ {name: 'architect', order: 1} ]
-        }
-      ]
+      tutorials: []
     },
     {
       userName: 'aurelia',
