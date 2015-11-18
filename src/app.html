@@ -16,7 +16,7 @@
       </nav-item>
 
       <nav-item logo>
-        <a href="#/" logo><img src="images/aurelia-logo.png"></a>
+        <a href="http://aurelia.io" logo><img src="images/aurelia-logo.png"></a>
         <a href="#/" title>Docs</a>
       </nav-item>
 
@@ -33,7 +33,7 @@
         <au-dropdown options.bind="language.options" value.bind="language.current"></au-dropdown>
       </nav-item right>
 
-      <nav-item search>
+      <nav-item search style="display: none">
         <a class="au-icon-button" href="#/doc/article/test"><i class="fa fa-search"></i></a>
         <!-- <a class="au-icon-button" href="#"><i class="fa fa-search"></i></a> -->
       </nav-item>
@@ -69,5 +69,3 @@
     </au-select-list>
   </au-settings-button>
 </template>
-
-
