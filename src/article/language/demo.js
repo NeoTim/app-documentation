@@ -1,14 +1,15 @@
-import {bindable, inject} from 'aurelia-framework';
+import {bindable, inject, child} from 'aurelia-framework';
 
 @inject(Element)
 export class Demo {
   @bindable title;
+  @child('source-code') sourceCode;
 
   constructor(element) {
     this.element = element;
   }
 
-  attached() {
-    this.element.getElementsByTagName('source-code')[0].au.controller.viewModel.createApp(this.host);
+  bind() {
+    this.sourceCode.createApp(this.host);
   }
 }
