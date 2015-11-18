@@ -223,44 +223,44 @@ export class ArticleTranslation {
   }
 
   prepare(primaryTranslation) {
-    let modifiedHTML = '';
+    let content = '';
     let needsEncoding = false;
 
     HTMLParser(this.content, {
       start(tag, attrs, unary) {
-				modifiedHTML += "<" + tag;
+				content += "<" + tag;
 
-				for (var i = 0; i < attrs.length; i++)
-					modifiedHTML += " " + attrs[i].name + '="' + attrs[i].escaped + '"';
-				modifiedHTML += ">";
+				for (var i = 0; i < attrs.length; i++) {
+					content += " " + attrs[i].name + '="' + attrs[i].escaped + '"';
+        }
+
+				content += ">";
 
         if(tag === 'source-code' || tag === 'narrative') {
           needsEncoding = true;
-          modifiedHTML += '<script type="aurelia/' + tag + '">';
         }
 			},
 			end(tag) {
         if(tag === 'source-code' || tag === 'narrative') {
           needsEncoding = false;
-          modifiedHTML += '</script>';
         }
 
-				modifiedHTML += "</" + tag + ">";
+				content += "</" + tag + ">";
 			},
 			chars(text) {
         if(needsEncoding) {
           text = escape(text);
         }
 
-				modifiedHTML += text;
+				content += text;
 			},
 			comment(text) {
-				modifiedHTML += "<!--" + text + "-->";
+				content += "<!--" + text + "-->";
 			}
     });
 
     let parser = new DOMParser();
-    let doc = parser.parseFromString(modifiedHTML, 'text/html');
+    let doc = parser.parseFromString(content, 'text/html');
     let docChild = doc.firstChild;
 
     while (docChild) {

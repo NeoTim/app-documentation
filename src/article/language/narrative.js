@@ -13,8 +13,7 @@ export class Narrative {
 
   constructor(element) {
     this.element = element;
-    let script = element.getElementsByTagName('script')[0];
-    this.setContent(unescape(script.innerHTML));
+    this.setContent(unescape(element.innerHTML));
   }
 
   setContent(markdown) {
