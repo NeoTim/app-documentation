@@ -1,7 +1,7 @@
 <html>
   <head>
     <title>Cheat Sheet</title>
-    <meta name="description" content="Forgot the syntax for bindings? Need to know how to create a custom attribute? This article contains answers to questions like those as well as a bunch of quick examples for common tasks.">
+    <meta name="description" content="Forgot the syntax for bindings? Need to know how to create a custom attribute? This article contains answers to questions like those as well as a bunch of quick snippets for common tasks.">
     <meta name="keywords" content="Help, Cheat Sheet">
     <meta name="author" content="Rob Eisenberg">
   </head>
@@ -1139,7 +1139,7 @@
     <source-code lang="TypeScript">
       import {RouterConfiguration} from 'aurelia-router';
 
-      //app.js
+      //app.ts
 
       export class App {
         configureRouter(config: RouterConfiguration): void {
@@ -1151,7 +1151,7 @@
         }
       }
 
-      //product.js
+      //product.ts
 
       import {activationStrategy} from 'aurelia-router';
 
@@ -1247,4 +1247,639 @@
     </source-code>
   </example>
 
+  <narrative uid="26" version="1.0">
+    ## Custom Attributes
+  </narrative>
+
+  <example title="Simple Attribute Declaration">
+    <source-code lang="ES 2016">
+      import {inject, customAttribute, DOM} from 'aurelia-framework';
+
+      @customAttribute('my-attribute')
+      @inject(DOM.Element)
+      export class Show {
+        constructor(element) {
+          this.element = element;
+        }
+
+        valueChanged(newValue, oldValue) {
+          ...
+        }
+      }
+    </source-code>
+    <source-code lang="ES 2015">
+      import {customAttribute, inject, decorators} from 'aurelia-framework';
+
+      export let MyAttribute = decorators(
+        customAttribute('my-attribute'),
+        inject(DOM.Element)
+      ).on(class {
+        constructor(element) {
+          this.element = element;
+        }
+
+        valueChanged(newValue, oldValue) {
+          ...
+        }
+      });
+    </source-code>
+    <source-code lang="TypeScript">
+      import {inject, customAttribute, DOM} from 'aurelia-framework';
+
+      @customAttribute('my-attribute')
+      @inject(DOM.Element)
+      export class Show {
+        constructor(private element: Element) { }
+
+        valueChanged(newValue, oldValue) {
+          ...
+        }
+      }
+    </source-code>
+  </example>
+
+  <example title="Simple Attribute Use">
+    <source-code lang="HTML">
+      <template>
+        <div my-attribute="literal value"></div>
+        <div my-attribute.bind="an.expression"></div>
+      </template>
+    </source-code>
+  </example>
+
+  <example title="Options Attribute Declaration">
+    <source-code lang="ES 2016">
+      import {customAttribute, bindable} from 'aurelia-framework';
+
+      @customAttribute('my-attribute')
+      export class MyAttribute {
+        @bindable foo;
+        @bindable bar;
+
+        fooChanged(newValue, oldValue) { ... }
+
+        barChanged(newValue, oldValue) { ... }
+      }
+    </source-code>
+    <source-code lang="ES 2015">
+      import {customAttribute, bindable, decorators} from 'aurelia-framework';
+
+      export let MyAttribute = decorators(
+        customAttribute('my-attribute'),
+        bindable('foo'),
+        bindable('bar')
+      ).on(class {
+        fooChanged(newValue, oldValue) { ... }
+
+        barChanged(newValue, oldValue) { ... }
+      });
+    </source-code>
+    <source-code lang="TypeScript">
+      import {customAttribute, bindable} from 'aurelia-framework';
+
+      @customAttribute('my-attribute')
+      export class MyAttribute {
+        @bindable foo: any;
+        @bindable bar: any;
+
+        fooChanged(newValue: any, oldValue: any): void { ... }
+
+        barChanged(newValue: any, oldValue: any): void  { ... }
+      }
+    </source-code>
+  </example>
+
+  <example title="Options Attribute Use">
+    <source-code lang="HTML">
+      <template>
+        <div my-attribute="foo: literal value; bar.bind: an.expression"></div>
+      </template>
+    </source-code>
+  </example>
+
+  <example title="Dynamic Option Attribute Declaration">
+    <source-code lang="ES 2016">
+      import {customAttribute, dynamicOptions} from 'aurelia-framework';
+
+      @customAttribute('my-attribute')
+      @dynamicOptions
+      export class MyAttribute {
+        propertyChanged(propertyName, newValue, oldValue) { ... }
+      }
+    </source-code>
+    <source-code lang="ES 2015">
+      import {customAttribute, dynamicOptions, decorators} from 'aurelia-framework';
+
+      export let MyAttribute = decorators(
+        customAttribute('my-attribute'),
+        dynamicOptions()
+      ).on(class {
+        propertyChanged(propertyName, newValue, oldValue) { ... }
+      });
+    </source-code>
+    <source-code lang="TypeScript">
+      import {customAttribute, dynamicOptions} from 'aurelia-framework';
+
+      @customAttribute('my-attribute')
+      @dynamicOptions
+      export class MyAttribute {
+        propertyChanged(propertyName: string, newValue: any, oldValue: any) { ... }
+      }
+    </source-code>
+  </example>
+
+  <example title="Dynamic Option Attribute Use">
+    <source-code lang="HTML">
+      <template>
+        <div my-attribute="foo: literal value; bar.bind: an.expression"></div>
+      </template>
+    </source-code>
+  </example>
+
+  <example title="Bindable Signature (Showing Defaults)">
+    <source-code lang="ES 2015/ES 2016/TypeScript">
+      bindable({
+        name:'myProperty',
+        attribute:'my-property',
+        changeHandler:'myPropertyChanged',
+        defaultBindingMode: bindingMode.oneWay,
+        defaultValue: undefined
+      })
+    </source-code>
+  </example>
+
+  <example title="Template Controller Attribute Declaration">
+    <source-code lang="ES 2016">
+      import {BoundViewFactory, ViewSlot, customAttribute, templateController, inject} from 'aurelia-framework';
+
+      @customAttribute('naive-if')
+      @templateController
+      @inject(BoundViewFactory, ViewSlot)
+      export class NaiveIf {
+        constructor(viewFactory, viewSlot) {
+          this.viewFactory = viewFactory;
+          this.viewSlot = viewSlot;
+        }
+
+        valueChanged(newValue) {
+          if (newValue) {
+            let view = this.viewFactory.create();
+            this.viewSlot.add(view);
+          } else {
+            this.viewSlot.removeAll();
+          }
+        }
+      }
+    </source-code>
+    <source-code lang="ES 2015">
+      import {BoundViewFactory, ViewSlot, customAttribute, templateController, inject} from 'aurelia-framework';
+
+      export let MyAttribute = decorators(
+        customAttribute('naive-if')
+        templateController()
+        inject(BoundViewFactory, ViewSlot)
+      ).on(class {
+        constructor(viewFactory, viewSlot) {
+          this.viewFactory = viewFactory;
+          this.viewSlot = viewSlot;
+        }
+
+        valueChanged(newValue) {
+          if (newValue) {
+            let view = this.viewFactory.create();
+            this.viewSlot.add(view);
+          } else {
+            this.viewSlot.removeAll();
+          }
+        }
+      });
+    </source-code>
+    <source-code lang="TypeScript">
+      import {BoundViewFactory, ViewSlot, customAttribute, templateController, autoinject} from 'aurelia-framework';
+
+      @customAttribute('naive-if')
+      @templateController
+      @autoinject
+      export class NaiveIf {
+        constructor(viewFactory: BoundViewFactory, viewSlot: ViewSlot) {
+          this.viewFactory = viewFactory;
+          this.viewSlot = viewSlot;
+        }
+
+        valueChanged(newValue: any): void {
+          if (newValue) {
+            let view = this.viewFactory.create();
+            this.viewSlot.add(view);
+          } else {
+            this.viewSlot.removeAll();
+          }
+        }
+      }
+    </source-code>
+  </example>
+
+  <example title="Template Controller Attribute Use">
+    <source-code lang="HTML">
+      <template>
+        <div naive-if.bind="an.expression"></div>
+
+        <template naive-if.bind="an.expression">
+          <div></div>
+          <div></div>
+        </template>
+      </template>
+    </source-code>
+  </example>
+
+  <narrative uid="27" version="1.0">
+    ## Custom Elements
+  </narrative>
+
+  <example title="Custom Element View-Model Declaration">
+    <source-code lang="ES 2016">
+      import {customElement, bindable} from 'aurelia-framework';
+
+      @customElement('say-hello')
+      export class SayHello {
+        @bindable to;
+
+        speak(){
+          alert(`Hello ${this.to}!`);
+        }
+      }
+    </source-code>
+    <source-code lang="ES 2015">
+      import {customElement, bindable} from 'aurelia-framework';
+
+      export let SayHello = decorators(
+        customElement('say-hello'),
+        bindable('to')
+      ).on(class {
+        speak(){
+          alert(`Hello ${this.to}!`);
+        }
+      });
+    </source-code>
+    <source-code lang="TypeScript">
+      import {customElement, bindable} from 'aurelia-framework';
+
+      @customElement('say-hello')
+      export class SayHello {
+        @bindable to: string;
+
+        speak(): void {
+          alert(`Hello ${this.to}!`);
+        }
+      }
+    </source-code>
+  </example>
+
+  <example title="Custom Element View Declaration">
+    <source-code lang="HTML">
+      <template>
+         <button click.trigger="speak()">Say Hello To ${to}</button>
+      </template>
+    </source-code>
+  </example>
+
+  <example title="Custom Element Use">
+    <source-code lang="HTML">
+      <template>
+        <require from="say-hello"></require>
+
+        <input type="text" ref="name">
+        <say-hello to.bind="name.value"></say-hello>
+      </template>
+    </source-code>
+  </example>
+
+  <narrative uid="28" version="1.0">
+    ### Custom Element Options
+
+    * `@children(selector)` - Decorates a property to create an array on your class that has its items automatically synchronized based on a query selector against the element's immediate child content.
+    * `@child(selector)` - Decorates a property to create a reference to a single immediate child content element.
+    *  `@processContent(false|Function)` - Tells the compiler that the element's content requires special processing. If you provide `false` to the decorator, the the compiler will not process the content of your custom element. It is expected that you will do custom processing yourself. But, you can also supply a custom function that lets you process the content during the view's compilation. That function can then return true/false to indicate whether or not the compiler should also process the content. The function takes the following form `function(compiler, resources, node, instruction):boolean`
+    *  `@useView(path)` - Specifies a different view to use.
+    *  `@noView()` - Indicates that this custom element does not have a view and that the author intends for the element to handle its own rendering internally.
+    * `@inlineView(markup, dependencies?)` - Allows the developer to provide a string that will be compiled into the view.
+    * `@containerless()` - Causes the element's view to be rendered without the custom element container wrapping it. This cannot be used in conjunction with `@sync` or `@useShadowDOM`. It also cannot be uses with surrogate behaviors.
+    * `@useShadowDOM()` - Causes the view to be rendered in the ShadowDOM. When an element is rendered to ShadowDOM, a special `DOMBoundary` instance can optionally be injected into the constructor. This represents the shadow root.
+
+    ### SVG Elements
+
+    SVG (scalable vector graphic) tags can support Aurelia's custom element `<template>` tags by  nesting the templated code inside a second `<svg>` tag. For example if you had a base `<svg>` element and wanted to add a templated `<rect ../>` inside it, you would first put your custom tag inside the main `<svg>` tag. Also, make sure the custom element class uses the `@containerless()` decorator.
+  </narrative>
+
+  <example title="SVG Custom Element View-Model Declaratation">
+    <source-code lang="ES 2016">
+      import {containerless} from 'aurelia-framework';
+
+      @containerless()
+      export class MyCustomRect {
+      	...
+      }
+    </source-code>
+    <source-code lang="ES 2015">
+      import {containerless} from 'aurelia-framework';
+
+      export let MyCustomRect = decorators(
+        containerless()
+      ).on(class {
+        ...
+      });
+    </source-code>
+    <source-code lang="TypeScript">
+      import {containerless} from 'aurelia-framework';
+
+      @containerless()
+      export class MyCustomRect {
+      	...
+      }
+    </source-code>
+  </example>
+
+  <example title="SVG Custom Element View">
+    <source-code lang="HTML">
+      <template>
+      	<svg>
+      		<rect width="10" height="10" fill="red" x="50" y="50"/>
+      	</svg>
+      </template>
+    </source-code>
+  </example>
+
+  <example title="SVG Custom Element Use">
+    <source-code lang="HTML">
+      <template>
+      	<require from="my-custom-rect"></require>
+
+      	<svg width="100" height="100" >
+      		<my-custom-rect></my-custom-rect>
+      	</svg>
+      </template>
+    </source-code>
+  </example>
+
+  <narrative uid="29" version="1.0">
+    ### Template Parts
+  </narrative>
+
+  <example title="Custom Element View with Replaceable Parts">
+    <source-code lang="HTML">
+      <template>
+        <ul>
+          <li class="foo" repeat.for="item of items">
+            <template replaceable part="item-template">
+              Original: ${item}
+            </template>
+          </li>
+        <ul>
+      </template>
+    </source-code>
+  </example>
+
+  <example title="Custom Element Use with Replacement">
+    <source-code lang="HTML">
+      <template>
+        <require from="my-element"></require>
+
+        <my-element>
+          <template replace-part="item-template">
+            Replacement: ${item}
+          </template>
+        </my-element>
+      </template>
+    </source-code>
+  </example>
+
+  <example title="Surrogate Behavior Use">
+    <source-code lang="HTML">
+      <template role="progress-bar" aria-valuenow.bind="progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="bar">
+          <div class="progress" css="width:${progress}%"></div>
+        </div>
+      </template>
+    </source-code>
+  </example>
+
+  <narrative uid="30" version="1.0">
+    ## The Event Aggregator
+  </narrative>
+
+  <example title="Publishing on a Channel">
+    <source-code lang="ES 2016">
+      import {inject} from 'aurelia-framework';
+      import {EventAggregator} from 'aurelia-event-aggregator';
+
+      @inject(EventAggregator)
+      export class APublisher {
+        constructor(eventAggregator) {
+          this.eventAggregator = eventAggregator;
+        }
+
+        publish(){
+          var payload = {};
+          this.eventAggregator.publish('channel name here', payload);
+        }
+      }
+    </source-code>
+    <source-code lang="ES 2015">
+      import {EventAggregator} from 'aurelia-event-aggregator';
+
+      export class APublisher{
+        static inject() { return [EventAggregator]; }
+
+        constructor(eventAggregator){
+          this.eventAggregator = eventAggregator;
+        }
+
+        publish(){
+          var payload = {};
+          this.eventAggregator.publish('channel name here', payload);
+        }
+      }
+    </source-code>
+    <source-code lang="TypeScript">
+      import {autoinject} from 'aurelia-framework';
+      import {EventAggregator} from 'aurelia-event-aggregator';
+
+      @autoinject
+      export class APublisher {
+        constructor(private eventAggregator: EventAggregator) { }
+
+        publish(): void {
+          var payload = {};
+          this.eventAggregator.publish('channel name here', payload);
+        }
+      }
+    </source-code>
+  </example>
+
+  <example title="Subscribing to a Channel">
+    <source-code lang="ES 2016">
+      import {inject} from 'aurelia-framework';
+      import {EventAggregator} from 'aurelia-event-aggregator';
+
+      @inject(EventAggregator)
+      export class ASubscriber {
+        constructor(eventAggregator) {
+          this.eventAggregator = eventAggregator;
+        }
+
+        subscribe() {
+          this.eventAggregator.subscribe('channel name here', payload => {
+              ...
+          });
+        }
+      }
+    </source-code>
+    <source-code lang="ES 2015">
+      import {EventAggregator} from 'aurelia-event-aggregator';
+
+      export class ASubscriber {
+        static inject() { return [EventAggregator]; }
+
+        constructor(eventAggregator) {
+          this.eventAggregator = eventAggregator;
+        }
+
+        subscribe() {
+          this.eventAggregator.subscribe('channel name here', payload => {
+              ...
+          });
+        }
+      }
+    </source-code>
+    <source-code lang="TypeScript">
+      import {autoinject} from 'aurelia-framework';
+      import {EventAggregator} from 'aurelia-event-aggregator';
+
+      @autoinject
+      export class ASubscriber {
+        constructor(private eventAggregator: EventAggregator) { }
+
+        subscribe(): void {
+          this.eventAggregator.subscribe('channel name here', payload => {
+              ...
+          });
+        }
+      }
+    </source-code>
+  </example>
+
+  <example title="Publishing a Message">
+    <source-code lang="ES 2016">
+      //some-massage.js
+      export class SomeMessage{ }
+
+      //a-publisher.js
+      import {inject} from 'aurelia-framework';
+      import {EventAggregator} from 'aurelia-event-aggregator';
+      import {SomeMessage} from './some-message';
+
+      @inject(EventAggregator)
+      export class APublisher {
+        constructor(eventAggregator) {
+          this.eventAggregator = eventAggregator;
+        }
+
+        publish() {
+          this.eventAggregator.publish(new SomeMessage());
+        }
+      }
+    </source-code>
+    <source-code lang="ES 2015">
+      //some-massage.js
+      export class SomeMessage{ }
+
+      //a-publisher.js
+      import {EventAggregator} from 'aurelia-event-aggregator';
+      import {SomeMessage} from './some-message';
+
+      export class APublisher {
+        static inject() { return [EventAggregator] };
+
+        constructor(eventAggregator) {
+          this.eventAggregator = eventAggregator;
+        }
+
+        publish() {
+          this.eventAggregator.publish(new SomeMessage());
+        }
+      }
+    </source-code>
+    <source-code lang="TypeScript">
+      //some-massage.ts
+      export class SomeMessage{ }
+
+      //a-publisher.ts
+      import {autoinject} from 'aurelia-framework';
+      import {EventAggregator} from 'aurelia-event-aggregator';
+      import {SomeMessage} from './some-message';
+
+      @autoinject
+      export class APublisher {
+        constructor(private eventAggregator: EventAggregator) { }
+
+        publish(): void {
+          this.eventAggregator.publish(new SomeMessage());
+        }
+      }
+    </source-code>
+  </example>
+
+  <example title="Subscribing to a Message Type">
+    <source-code lang="ES 2016">
+      import {inject} from 'aurelia-framework';
+      import {EventAggregator} from 'aurelia-event-aggregator';
+      import {SomeMessage} from './some-message';
+
+      @inject(EventAggregator)
+      export class ASubscriber {
+        constructor(eventAggregator) {
+          this.eventAggregator = eventAggregator;
+        }
+
+        subscribe(){
+          this.eventAggregator.subscribe(SomeMessage, message => {
+              ...
+          });
+        }
+      }
+    </source-code>
+    <source-code lang="ES 2015">
+      import {EventAggregator} from 'aurelia-event-aggregator';
+      import {SomeMessage} from './some-message';
+
+      export class ASubscriber {
+        static inject() { return [EventAggregator]; }
+
+        constructor(eventAggregator) {
+          this.eventAggregator = eventAggregator;
+        }
+
+        subscribe(){
+          this.eventAggregator.subscribe(SomeMessage, message => {
+              ...
+          });
+        }
+      }
+    </source-code>
+    <source-code lang="TypeScript">
+      import {autoinject} from 'aurelia-framework';
+      import {EventAggregator} from 'aurelia-event-aggregator';
+      import {SomeMessage} from './some-message';
+
+      @autoinject
+      export class ASubscriber {
+        constructor(private eventAggregator: EventAggregator) { }
+
+        subscribe(): void {
+          this.eventAggregator.subscribe(SomeMessage, message => {
+              ...
+          });
+        }
+      }
+    </source-code>
+  </example>
 </html>
