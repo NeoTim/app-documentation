@@ -465,6 +465,9 @@ narrative {
   &:not(:first-child) {
     margin-top: 24px;
   }
+  code {
+    color: $accent-color;
+  }
 }
 
 au-preview article {
