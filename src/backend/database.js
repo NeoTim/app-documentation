@@ -27,42 +27,62 @@ export let database = {
         {
           "title": "What is Aurelia?",
           "href": "doc/article/en-US/what-is-aurelia.html",
-          profiles: [ {name: 'architect', order: 1} ]
+          profiles: [
+            {name: 'developer', order: 1},
+            {name: 'new-developer', order: 1},
+            {name: 'architect', order: 1},
+            {name: 'manager', order: 1}
+          ]
         },
         {
           "title": "Getting Started",
           "href": "doc/article/en-US/getting-started.html",
-          profiles: [ {name: 'architect', order: 1} ]
+          profiles: [
+            {name: 'developer', order: 2},
+            {name: 'new-developer', order: 2}
+          ]
         },
         {
           "title": "A Production Setup",
           "href": "doc/article/en-US/a-production-setup.html",
-          profiles: [ {name: 'architect', order: 1} ]
+          profiles: [ {name: 'developer', order: 3} ]
         },
         {
           "title": "Creating Components",
           "href": "doc/article/en-US/creating-components.html",
-          profiles: [ {name: 'architect', order: 1} ]
+          profiles: [ {name: 'developer', order: 4} ]
         },
         {
           "title": "Cheat Sheet",
           "href": "doc/article/en-US/cheat-sheet.html",
-          profiles: [ {name: 'architect', order: 1} ]
+          profiles: [
+            {name: 'developer', order: 5},
+            {name: 'new-developer', order: 3}
+           ]
         },
         {
           "title": "Getting Help",
           "href": "doc/article/en-US/getting-help.html",
-          profiles: [ {name: 'architect', order: 1} ]
+          profiles: [
+            {name: 'developer', order: 6},
+            {name: 'new-developer', order: 4}
+          ]
         },
         {
           "title": "Technical Benefits",
           "href": "doc/article/en-US/technical-benefits.html",
-          profiles: [ {name: 'architect', order: 1} ]
+          profiles: [
+            {name: 'architect', order: 2},
+            {name: 'manager', order: 2 }
+          ]
         },
         {
           "title": "Business Advantages",
           "href": "doc/article/en-US/business-advantages.html",
-          profiles: [ {name: 'architect', order: 1} ]
+          profiles: [
+            {name: 'architect', order: 2},
+            {name: 'manager', order: 2 }
+          ]
         }
       ]
     },
