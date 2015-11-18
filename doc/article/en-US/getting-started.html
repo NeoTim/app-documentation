@@ -599,7 +599,7 @@
     <example title="app.js (updated...again)">
       <source-code lang="ES 2015/2016">
         export class App {
-          configureRouter(config, router){
+          configureRouter(config, router) {
             config.title = 'Aurelia';
             config.map([
               { route: ['','welcome'],  name: 'welcome',      moduleId: 'welcome',      nav: true, title:'Welcome' },
@@ -651,14 +651,13 @@
           }
         }
       </source-code>
-      <source-code lang="TypeScript">
-        import {RouterConfiguration, Router} from 'aurelia-router';
-
+      <source-code lang="ES 2015">
         export class ChildRouter {
-          heading: string = 'Child Router';
-          router: Router;
+          constructor() {
+            this.heading = 'Child Router';
+          }
 
-          configureRouter(config: RouterConfiguration, router: Router){
+          configureRouter(config, router) {
             config.map([
               { route: ['','welcome'],  name: 'welcome',       moduleId: 'welcome',       nav: true, title:'Welcome' },
               { route: 'users',         name: 'users',         moduleId: 'users',         nav: true, title:'Github Users' },
@@ -669,13 +668,14 @@
           }
         }
       </source-code>
-      <source-code lang="ES 2015">
-        export class ChildRouter {
-          constructor() {
-            this.heading = 'Child Router';
-          }
+      <source-code lang="TypeScript">
+        import {RouterConfiguration, Router} from 'aurelia-router';
 
-          configureRouter(config, router){
+        export class ChildRouter {
+          heading: string = 'Child Router';
+          router: Router;
+
+          configureRouter(config: RouterConfiguration, router: Router) {
             config.map([
               { route: ['','welcome'],  name: 'welcome',       moduleId: 'welcome',       nav: true, title:'Welcome' },
               { route: 'users',         name: 'users',         moduleId: 'users',         nav: true, title:'Github Users' },

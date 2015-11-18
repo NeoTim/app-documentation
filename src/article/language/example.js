@@ -5,14 +5,13 @@ import {LocalAPI} from 'services/local';
 let map = Array.prototype.map;
 
 function htmlEscape(str) {
-    return String(str)
-            .replace(/&/g, '&amp;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }
-
 
 @inject(Element, LocalAPI)
 export class Example {
@@ -41,6 +40,7 @@ export class Example {
       this.language.current,
       'ES 2016',
       'ES 2015',
+      'ES 2015/2016',
       'TypeScript',
       'HTML'
     ];
