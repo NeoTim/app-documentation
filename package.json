@@ -22,6 +22,7 @@
     "install-sass": "npm install gulp-sass node-sass node-bourbon node-neat gulp-strip-css-comments gulp-autoprefixer gulp-minify-css gulp-concat"
   },
   "devDependencies": {
+    "aurelia-bundler": "^0.1.9",
     "aurelia-tools": "^0.1.12",
     "babel-eslint": "^4.1.1",
     "browser-sync": "^1.8.1",
