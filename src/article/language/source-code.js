@@ -27,6 +27,7 @@ export class SourceCode {
     if (this.path) {
       return this.loader.loadText(this.path).then(x => this.raw = x);
     }
+    
     return Promise.resolve(this.raw);
   }
 
@@ -38,7 +39,10 @@ export class SourceCode {
 }
 
 function extractRawSource(compiler, resources, element, instruction) {
-  instruction.raw = element.innerHTML;
+  let script = element.getElementsByTagName('script')[0];
+  if(script) {
+    instruction.raw = unescape(script.innerHTML);
+  }
   element.innerHTML = '';
   return false;
 }

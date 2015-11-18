@@ -10,20 +10,11 @@ export class Narrative {
   @bindable version;
   @bindable uid;
   @bindable versionMatches;
-  @bindable value;
 
   constructor(element) {
     this.element = element;
-
-    if (element.innerHTML) {
-      this.setContent(element.innerHTML);
-    }
-  }
-
-  valueChanged(newValue) {
-    if (newValue) {
-      this.setContent(newValue);
-    }
+    let script = element.getElementsByTagName('script')[0];
+    this.setContent(unescape(script.innerHTML));
   }
 
   setContent(markdown) {

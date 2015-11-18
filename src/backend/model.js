@@ -2,7 +2,7 @@ import {join} from 'aurelia-path';
 import {DOM, FEATURE} from 'aurelia-pal';
 import {viewStrategy} from 'aurelia-framework';
 import {TemplateRegistryEntry} from 'aurelia-loader';
-
+import {HTMLParser} from './html-parser';
 
 let baseTranslation = 'en-US';
 
@@ -223,8 +223,44 @@ export class ArticleTranslation {
   }
 
   prepare(primaryTranslation) {
+    let modifiedHTML = '';
+    let needsEncoding = false;
+
+    HTMLParser(this.content, {
+      start(tag, attrs, unary) {
+				modifiedHTML += "<" + tag;
+
+				for (var i = 0; i < attrs.length; i++)
+					modifiedHTML += " " + attrs[i].name + '="' + attrs[i].escaped + '"';
+				modifiedHTML += ">";
+
+        if(tag === 'source-code' || tag === 'narrative') {
+          needsEncoding = true;
+          modifiedHTML += '<script type="aurelia/' + tag + '">';
+        }
+			},
+			end(tag) {
+        if(tag === 'source-code' || tag === 'narrative') {
+          needsEncoding = false;
+          modifiedHTML += '</script>';
+        }
+
+				modifiedHTML += "</" + tag + ">";
+			},
+			chars(text) {
+        if(needsEncoding) {
+          text = escape(text);
+        }
+
+				modifiedHTML += text;
+			},
+			comment(text) {
+				modifiedHTML += "<!--" + text + "-->";
+			}
+    });
+
     let parser = new DOMParser();
-    let doc = parser.parseFromString(this.content, 'text/html');
+    let doc = parser.parseFromString(modifiedHTML, 'text/html');
     let docChild = doc.firstChild;
 
     while (docChild) {

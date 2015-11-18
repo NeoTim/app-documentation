@@ -4,6 +4,16 @@ import {LocalAPI} from 'services/local';
 
 let map = Array.prototype.map;
 
+function htmlEscape(str) {
+    return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+}
+
+
 @inject(Element, LocalAPI)
 export class Example {
   @bindable selectedSource;
@@ -48,7 +58,7 @@ export class Example {
   select(source) {
     this.selectedSource = source;
     source.loadText().then(content => {
-      this.code.innerHTML = fixIndent(content);
+      this.code.innerHTML = fixIndent(htmlEscape(content));
       applySyntaxHighlighting(source.lang, this.code);
     });
   }
