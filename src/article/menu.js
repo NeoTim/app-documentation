@@ -37,7 +37,9 @@ export class ArticleMenu {
 const Vowels = ['a', 'e', 'i', 'o', 'u'];
 export class VowelValueConverter {
   toView(text) {
-    let first = text[0];
+    if (typeof text === 'object') {
+      return text.displayName;
+    }
     return (Vowels.indexOf(first) < 0) ? ('a ' + text ) : ('an ' + text);
   }
 }

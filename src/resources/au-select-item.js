@@ -17,6 +17,9 @@ export class SelectItemElement {
   @bindable active = null;
   @bindable value = null;
 
+  _options = [];
+  display = null;
+
   constructor(element) {
     this.element = element;
     this.element.tabIndex = '0';
@@ -25,10 +28,12 @@ export class SelectItemElement {
 
   bind() {
     this.parentElement = this.element.parentElement;
+    this.optionsChanged(this.options);
   }
 
   valueChanged(value, oldValue) {
     this.change && this.change(value, oldValue);
+    this.setDisplay(value);
   }
 
   activeChanged(value) {
@@ -41,6 +46,17 @@ export class SelectItemElement {
     if (this.parentElement) {
       this.parentElement.classList[value ? 'add' : 'remove']('active-item');
     }
+  }
+
+  optionsChanged(options) {
+    this._options = options.map((o)=> {
+      if (typeof o === 'string') {
+        return {text: o, value: o};
+      } else {
+        return o;
+      }
+    });
+    this.setDisplay(this.value);
   }
 
   addListeners() {
@@ -61,5 +77,17 @@ export class SelectItemElement {
       this.active = false;
       this.removeListeners();
     }
+  }
+
+  setDisplay(value) {
+    this.display = this._options.find(o => {
+      if (typeof o === 'string' && o === value) {
+        return true;
+      } else if (o.value === value) {
+        return true;
+      }
+      return false;
+    });
+    console.log(this.display);
   }
 }
