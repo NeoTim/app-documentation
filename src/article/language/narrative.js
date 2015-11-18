@@ -3,8 +3,7 @@ import {fixIndent} from './util';
 import {DOM} from 'aurelia-pal';
 import commonmark from 'commonmark';
 
-@processContent(false)
-@noView()
+@processContent(handleMarkdown)
 @inject(Element)
 export class Narrative {
   @bindable format = 'markdown';
@@ -17,14 +16,6 @@ export class Narrative {
 
   constructor(element) {
     this.element = element;
-    this.setContent(unescape(element.innerHTML));
-  }
-
-  setContent(markdown) {
-    markdown = fixIndent(markdown);
-    markdown = fixBlockQuotes(markdown);
-    this.element.innerHTML = getHtml(markdown);
-    updateAnchorTargets(this.element);
   }
 
   attached() {
@@ -37,6 +28,15 @@ export class Narrative {
 
 let reader = new commonmark.Parser();
 let writer = new commonmark.HtmlRenderer();
+
+function handleMarkdown(compiler, resources, element, instruction) {
+  let markdown = unescape(element.innerHTML);
+  markdown = fixIndent(markdown);
+  markdown = fixBlockQuotes(markdown);
+  element.innerHTML = getHtml(markdown);
+  updateAnchorTargets(element);
+  return true;
+}
 
 function checkDomain(url) {
   if (url.indexOf('//') === 0 ) {

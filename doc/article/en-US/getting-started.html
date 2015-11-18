@@ -154,7 +154,7 @@
     <narrative uid="5" version="1.0">
       The first thing to notice is that all views are contained within a `template` tag, part of the W3C spec for Web Components. This particular view is a basic input form. Look at the input controls. Did you notice `value.bind="firstName"`? That databinds the input's _value_ to the _firstName_ property in our view-model. Any time the view-model's property changes, the input will be updated with the new value. Any time you change the value in the input control, Aurelia will push the new value into your view-model. It's that easy.
 
-      There are a couple more interesting things in this example. In the last form group you can see this syntax in the HTML content: `${fullName}`. That's a string interpolation. It's a one-way binding from the view-model into the view that is automatically converted to a string and interpolated into the document. Finally, have a look at the form element itself. You should notice this: `submit.trigger="submit()"`. That's an event binding. Whenever the form's _submit_ event is fired the _submit_ method on the view-model will be invoked.
+      There are a couple more interesting things in this example. In the last form group you can see this syntax in the HTML content: `\${fullName}`. That's a string interpolation. It's a one-way binding from the view-model into the view that is automatically converted to a string and interpolated into the document. Finally, have a look at the form element itself. You should notice this: `submit.trigger="submit()"`. That's an event binding. Whenever the form's _submit_ event is fired the _submit_ method on the view-model will be invoked.
 
       Let's refresh our browser to see the updated app in action. Pretty cool, yes!?
 
