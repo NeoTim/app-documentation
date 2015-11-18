@@ -4,7 +4,7 @@
       "includes": [
         "[*]",
         "*.html!text",
-        "*.css!text"
+        "*.css!text",
         "aurelia-framework",
         "aurelia-bootstrapper",
         "aurelia-fetch-client",

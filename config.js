@@ -34,6 +34,7 @@ System.config({
     "css": "github:systemjs/plugin-css@0.1.19",
     "font-awesome": "npm:font-awesome@4.4.0",
     "nprogress": "github:rstacruz/nprogress@0.2.0",
+    "text": "github:systemjs/plugin-text@0.0.3",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
     },
