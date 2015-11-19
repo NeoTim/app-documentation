@@ -1,4 +1,5 @@
-import {bindable, inject, children} from 'aurelia-framework';
+import {bindable, children} from 'aurelia-templating';
+import {inject} from 'aurelia-dependency-injection';
 import {fixIndent} from './util';
 import {LocalAPI} from 'services/local';
 

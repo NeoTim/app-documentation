@@ -1,7 +1,7 @@
 import {database} from './database';
 import {HttpClient} from 'aurelia-http-client';
 import {Cache} from 'services/cache';
-import {inject} from 'aurelia-framework';
+import {inject} from 'aurelia-dependency-injection';
 import {
   Product,
   ProductVersion,

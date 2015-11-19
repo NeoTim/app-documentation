@@ -8,18 +8,21 @@ System.config({
     ]
   },
   paths: {
-    "*": "dist/*.js",
+    "*": "dist/*",
     "github:*": "jspm_packages/github/*",
     "npm:*": "jspm_packages/npm/*",
-    "services/*": "dist/services/*.js",
+    "services/*": "dist/services/*",
     "models/*": "dist/models/*.js",
-    "resources/*": "dist/resources/*.js",
-    "api/*": "dist/api/*.js"
+    "resources/*": "dist/resources/*",
+    "api/*": "dist/api/*"
   },
 
   map: {
     "aurelia-animator-css": "npm:aurelia-animator-css@1.0.0-beta.1",
+    "aurelia-binding": "npm:aurelia-binding@1.0.0-beta.1.0.1",
     "aurelia-bootstrapper": "npm:aurelia-bootstrapper@1.0.0-beta.1",
+    "aurelia-dependency-injection": "npm:aurelia-dependency-injection@1.0.0-beta.1",
+    "aurelia-event-aggregator": "npm:aurelia-event-aggregator@1.0.0-beta.1",
     "aurelia-framework": "npm:aurelia-framework@1.0.0-beta.1",
     "aurelia-http-client": "npm:aurelia-http-client@1.0.0-beta.1",
     "aurelia-interface-grid": "github:joelcoxokc/aurelia-interface-grid@master",
@@ -27,6 +30,8 @@ System.config({
     "aurelia-loader": "npm:aurelia-loader@1.0.0-beta.1",
     "aurelia-pal": "npm:aurelia-pal@1.0.0-beta.1",
     "aurelia-path": "npm:aurelia-path@1.0.0-beta.1",
+    "aurelia-router": "npm:aurelia-router@1.0.0-beta.1",
+    "aurelia-templating": "npm:aurelia-templating@1.0.0-beta.1",
     "babel": "npm:babel-core@5.8.34",
     "babel-runtime": "npm:babel-runtime@5.8.34",
     "commonmark": "npm:commonmark@0.22.0",

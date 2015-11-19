@@ -1,4 +1,5 @@
-import {noView, customAttribute, customElement, bindable, inject} from 'aurelia-framework';
+import {noView, customAttribute, customElement, bindable} from 'aurelia-templating';
+import {inject} from 'aurelia-dependency-injection';
 import {AUChannel} from 'services/channel';
 
 
@@ -68,4 +69,3 @@ export class AuMenuItemAttribute {
     if (value) this.channel.publish('au-menu:set-active', this.element);
   }
 }
-

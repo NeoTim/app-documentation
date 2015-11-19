@@ -1,4 +1,5 @@
-import {inject, ObserverLocator} from 'aurelia-framework';
+import {inject} from 'aurelia-dependency-injection';
+import {ObserverLocator} from 'aurelia-binding';
 import {Cache} from './cache';
 import {AUChannel} from './channel';
 import {Profile} from './profile';

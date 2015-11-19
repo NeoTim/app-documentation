@@ -1,4 +1,5 @@
-import {noView, customElement, bindable, inject} from 'aurelia-framework';
+import {noView, customElement, bindable} from 'aurelia-templating';
+import {inject} from 'aurelia-dependency-injection';
 import {DOM} from 'aurelia-pal';
 import {AUChannel} from 'services/channel';
 import {OverlayController} from 'resources/au-overlay';

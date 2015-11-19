@@ -1,4 +1,5 @@
-import {customElement, bindable, inject} from 'aurelia-framework';
+import {customElement, bindable} from 'aurelia-templating';
+import {inject} from 'aurelia-dependency-injection';
 import {OverlayController} from 'resources/au-overlay';
 import {AUChannel} from 'services/channel';
 import {onTransitionEnd, onDocumentEvent, clickEvent} from './util';

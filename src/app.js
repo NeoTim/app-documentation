@@ -1,7 +1,7 @@
 import {LocalAPI} from 'services/local';
 import {AUChannel} from 'services/channel';
 import {OverlayController} from 'resources/au-overlay';
-import {inject} from 'aurelia-framework';
+import {inject} from 'aurelia-dependency-injection';
 
 @inject(Element, AUChannel, OverlayController, LocalAPI)
 export class App {

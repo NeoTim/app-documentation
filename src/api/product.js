@@ -1,4 +1,5 @@
-import {bindable, inject} from 'aurelia-framework';
+import {bindable} from 'aurelia-templating';
+import {inject} from 'aurelia-dependency-injection';
 import {Router} from 'aurelia-router';
 import {Server} from 'backend/server';
 import {DOM} from 'aurelia-pal';

@@ -1,4 +1,5 @@
-import {customElement, bindable, inject, Container} from 'aurelia-framework';
+import {customElement, bindable} from 'aurelia-templating';
+import {inject, Container} from 'aurelia-dependency-injection';
 
 export class TableOfContents {
   naratives = [];

@@ -1,4 +1,4 @@
-import {inject} from 'aurelia-framework';
+import {inject} from 'aurelia-dependency-injection';
 import {Server} from 'backend/server';
 import {LocalAPI} from 'services/local';
 import {AUChannel} from 'services/channel';

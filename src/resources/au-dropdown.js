@@ -1,4 +1,6 @@
-import {customElement, bindable, inject, bindingMode} from 'aurelia-framework';
+import {customElement, bindable} from 'aurelia-templating';
+import {bindingMode} from 'aurelia-binding';
+import {inject} from 'aurelia-dependency-injection';
 import {isTouch} from 'aurelia-interface-platforms';
 import {DOM} from 'aurelia-pal';
 

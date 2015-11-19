@@ -1,4 +1,5 @@
-import {bindable, processContent, noView, inject} from 'aurelia-framework';
+import {bindable, processContent, noView} from 'aurelia-templating';
+import {inject} from 'aurelia-dependency-injection';
 import {fixIndent} from './util';
 import {DOM} from 'aurelia-pal';
 import commonmark from 'commonmark';

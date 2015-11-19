@@ -1,6 +1,6 @@
 import {join} from 'aurelia-path';
 import {DOM, FEATURE} from 'aurelia-pal';
-import {viewStrategy} from 'aurelia-framework';
+import {viewStrategy} from 'aurelia-templating';
 import {TemplateRegistryEntry} from 'aurelia-loader';
 import {HTMLParser} from './html-parser';
 

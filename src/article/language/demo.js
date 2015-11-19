@@ -1,4 +1,5 @@
-import {bindable, inject, child} from 'aurelia-framework';
+import {bindable, child} from 'aurelia-templating';
+import {inject} from 'aurelia-dependency-injection';
 
 @inject(Element)
 export class Demo {

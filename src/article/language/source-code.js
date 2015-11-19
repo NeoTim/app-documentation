@@ -1,4 +1,6 @@
-import {inject, bindable, processContent, noView, TargetInstruction, Aurelia, Container} from 'aurelia-framework';
+import {inject, Container} from 'aurelia-dependency-injection';
+import {bindable, processContent, noView, TargetInstruction} from 'aurelia-templating';
+import {Aurelia} from 'aurelia-framework';
 import {join} from 'aurelia-path';
 import {Loader} from 'aurelia-loader';
 

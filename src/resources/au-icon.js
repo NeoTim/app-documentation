@@ -1,4 +1,5 @@
-import {inlineView, processContent, customElement, inject, bindable} from 'aurelia-framework';
+import {inlineView, processContent, customElement, bindable} from 'aurelia-templating';
+import {inject} from 'aurelia-dependency-injection';
 
 const aiRegex = /ai\-/gi;
 

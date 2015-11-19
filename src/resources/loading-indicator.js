@@ -1,5 +1,5 @@
 import nprogress from 'nprogress';
-import {bindable, noView} from 'aurelia-framework';
+import {bindable, noView} from 'aurelia-templating';
 
 nprogress.configure({ showSpinner: false });
 
