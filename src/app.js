@@ -18,6 +18,7 @@ export class App {
 
   configureRouter(config, router) {
     config.title = 'Aurelia Docs';
+    config.addPipelineStep('postcomplete', ScrollToTop);
     config.map([
       {
         route: [''],
@@ -81,5 +82,13 @@ export class App {
   openAside($event) {
     this.title = this.router.currentInstruction.config.title;
     this.aside.open();
+  }
+}
+
+class ScrollToTop {
+  run(instruction, next) {
+    let element = document.querySelector('.page-host');
+    element.scrollTop = 0;
+    return next();
   }
 }
