@@ -815,7 +815,6 @@
 @mixin scroll-extension() {
   @extend %flexbox;
   @include flex-column;
-  @include hide-scrollbar;
   @include translate3d(0,0,0);
   position: relative;
   overflow: auto;

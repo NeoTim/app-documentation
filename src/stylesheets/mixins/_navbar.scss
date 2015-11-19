@@ -140,6 +140,7 @@
     padding-left: $gutter-xs-px;
     font-size: 2em;
     color: $accent-color;
+    max-width: 72px;
   }
 
   nav-item[logo] {
@@ -165,11 +166,15 @@
 
   nav-item[logo] {
     @include flex(1 0 auto);
-    @include justify-content(center);
+    @include justify-content(flex-start);
+    a[logo] {
+      width: auto;
+    }
     a[title] {
       font-size: 20px;
       color: $primary-accent-color;
-      line-height: 4.3;
+      line-height: 4;
+      @include flex(0 1 auto);
     }
   }
 
