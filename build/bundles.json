@@ -1,5 +1,19 @@
 {
   "bundles": {
+    "app-build": {
+      "includes": [
+        "*/**/*",
+        "*/**/*.html!text",
+        "*/**/*.css!text"
+      ],
+      "excludes": [
+        "core-js"
+      ],
+      "options": {
+        "inject": true,
+        "minify": true
+      }
+    },
     "aurelia": {
       "includes": [
         "aurelia-framework",

@@ -12,10 +12,11 @@ System.config({
     "github:*": "jspm_packages/github/*",
     "npm:*": "jspm_packages/npm/*",
     "services/*": "dist/services/*",
-    "models/*": "dist/models/*.js",
+    "models/*": "dist/models/*",
     "resources/*": "dist/resources/*",
     "api/*": "dist/api/*"
   },
+  buildCSS: false,
 
   map: {
     "aurelia-animator-css": "npm:aurelia-animator-css@1.0.0-beta.1",
