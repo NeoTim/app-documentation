@@ -3,7 +3,6 @@ import {isAndroid} from 'aurelia-interface-platforms';
 export function configure(aurelia) {
   aurelia.use
     .standardConfiguration()
-    .developmentLogging()
     .plugin('aurelia-animator-css')
     .plugin('aurelia-interface-platforms', config => {
       config.setClassList(document.documentElement);
@@ -13,6 +12,7 @@ export function configure(aurelia) {
       }
     })
     .feature('article/language')
+    .feature('services')
     .globalResources('resources/au-icon', 'resources/au-preview');
 
   aurelia.start().then(a => a.setRoot());
