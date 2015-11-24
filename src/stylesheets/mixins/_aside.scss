@@ -122,20 +122,110 @@
     display: none;
   }
 
-  > button.aside-toggle-button {
+  button.aside-settings {
     @include flexbox;
-    @include transform(translateX(14px));
+    @include justify-content(center);
+    @include align-items(center);
+    @include default-transition;
+    padding:0;
     border: none;
-    position: absolute;
+    position: relative;
     background-color: white;
     box-shadow: inset 6px 2px 4px rgba(0,0,0,0.1), 1px 1px 2px rgba(0,0,0,0.2);
-    bottom: 0;
-    right: 0;
     width: 16px;
-    height: 45px;
-    au-icon.au-icon i {
+    z-index: 2;
+    outline: none;
+
+
+    au-icon.au-icon {
       @include default-transition;
-      @include transform(rotate(0deg));
+      height: auto;
+      width: auto;
+    }
+
+    &.activate-mouse-button {
+      @include transform(translate3d(0, 0, 0));
+      height: 25px;
+
+      au-icon.au-icon {
+
+        &[power] {
+          font-size: 12px;
+          height: inherit;
+          width: auto;
+          opacity: 0.6;
+        }
+
+        &.icon-top,
+        &.icon-bottom {
+          display: none;
+          box-shadow: inset -6px 2px 4px rgba(255,255,255,0.8);
+          position: absolute;
+          right: 0;
+        }
+
+        &.icon-bottom {
+          bottom: -20px;
+          @include triangle(15px 20px, $accent-color, up-left);
+        }
+
+        &.icon-top {
+          top: -20px;
+          @include triangle(15px 20px, $accent-color, down-left);
+        }
+
+      }
+    }
+
+    &.aside-toggle-button {
+      @include transform(translate3d(0, 0, 0));
+      height: 45px;
+      au-icon.au-icon i {
+        @include default-transition;
+        @include transform(rotate(0deg));
+      }
+    }
+  }
+
+  div.mouse-enter-area {
+    @include flexbox;
+    @include flex-direction(column);
+    @include justify-content(flex-end);
+    @include transform(translate3d(24px, 0, 0));
+    @include default-transition;
+    width: 24px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    transform-origin: bottom left;
+    &:hover {
+      @include transform(translate3d(24px, 0, 0) scale(1.4));
+    }
+
+  }
+
+  &.active-mouse-events {
+
+    button.aside-toggle-button {
+      display: none;
+    }
+
+    div.mouse-enter-area {
+      transform-origin:left center;
+      @include justify-content(center);
+    }
+
+    button.activate-mouse-button {
+      height: 60px;
+      au-icon.au-icon[power] {
+        color: $accent-color;
+      }
+      au-icon.au-icon.icon-bottom,
+      au-icon.au-icon.icon-top {
+        display: block;
+      }
     }
   }
 
@@ -160,7 +250,7 @@
     & ~ * au-aside-placeholder {
       @include flex(0 0 $aside-width-md);
     }
-    button.aside-toggle-button au-icon.au-icon i {
+    button.aside-settings.aside-toggle-button au-icon.au-icon i {
       @include transform(rotate(180deg));
     }
   }

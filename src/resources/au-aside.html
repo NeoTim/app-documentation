@@ -5,8 +5,15 @@
   <section ref="content">
     <content></content>
   </section>
-  <button class="aside-toggle-button">
-    <au-icon color=accent click.trigger="active = !active" icon="arrow-right-b"></au-icon>
-  </button>
+  <div class="mouse-enter-area">
+    <button class="aside-settings aside-toggle-button">
+      <au-icon toggle color=accent click.trigger="active = !active" icon="arrow-right-b"></au-icon>
+    </button>
+    <button class="aside-settings activate-mouse-button">
+      <au-icon class="icon-top" color=accent></au-icon>
+      <au-icon power icon="power" click.trigger="mouseEnterActive = !mouseEnterActive"></au-icon>
+      <au-icon class="icon-bottom" color=accent></au-icon>
+    </button>
+  </div>
   <div class="after"></div>
 </template>

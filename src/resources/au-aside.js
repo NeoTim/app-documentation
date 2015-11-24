@@ -14,6 +14,7 @@ const DEFAULT_CLASSNAME = 'au-aside';
 export class AuAsideElement {
 
   @bindable active = null;
+  @bindable mouseEnterActive = null;
 
   name = 'aside';
   bindableKey = 'active';
@@ -28,7 +29,10 @@ export class AuAsideElement {
     this.channel  = channel;
     this.screenSize = screenSize;
     this.overlay  = overlayController.createOverlay(this);
+
     this.onTransitionEnd = onTransitionEnd(this.element);
+    this.onMouseEnter = this.onMouseEnter.bind(this);
+    this.onMouseLeave = this.onMouseLeave.bind(this);
   }
 
   bind() {
@@ -110,6 +114,25 @@ export class AuAsideElement {
     return onDocumentEvent(clickEvent, (e, ready)=> {
       if (!this.element.contains(e.target)) return ready();
     }, true);
+  }
+
+  mouseEnterActiveChanged(value) {
+    this.element.classList[value ? 'add' : 'remove']('active-mouse-events');
+    if (value) {
+      this.element.addEventListener('mouseenter', this.onMouseEnter);
+      this.element.addEventListener('mouseleave', this.onMouseLeave);
+    } else {
+      this.element.removeEventListener('mouseenter', this.onMouseEnter);
+      this.element.removeEventListener('mouseleave', this.onMouseLeave);
+    }
+  }
+
+  onMouseEnter() {
+    this.active = true;
+  }
+
+  onMouseLeave() {
+    this.active = false;
   }
 }
 
