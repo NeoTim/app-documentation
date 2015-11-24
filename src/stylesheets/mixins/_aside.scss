@@ -166,14 +166,13 @@
 
         &.icon-bottom {
           bottom: -20px;
-          @include triangle(15px 20px, $accent-color, up-left);
+          @include triangle(16px 20px, $accent-color, up-left);
         }
 
         &.icon-top {
           top: -20px;
-          @include triangle(15px 20px, $accent-color, down-left);
+          @include triangle(16px 20px, $accent-color, down-left);
         }
-
       }
     }
 

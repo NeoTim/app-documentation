@@ -14,10 +14,12 @@ const DEFAULT_CLASSNAME = 'au-aside';
 export class AuAsideElement {
 
   @bindable active = null;
-  @bindable mouseEnterActive = null;
+  @bindable mouseActivation = null;
+
 
   name = 'aside';
   bindableKey = 'active';
+  mouseActivation = false;
   eventListeners = [];
   subscriptions = [];
 
@@ -55,25 +57,20 @@ export class AuAsideElement {
     // If larger than Medium, Check the cache for current sidebar state.
     // Set the current active state.
     if (this.screenSize.from('md')) {
-      let active = this.cache.getItem('au-sidebar.current');
+      let active = this.cache.getItem('au-sidebar.state.active');
+      let mouse  = this.cache.getItem('au-sidebar.state.mouseActivation');
       if (active !== undefined) {
         this.active = active;
+      }
+
+      if (mouse !== undefined) {
+        this.mouseActivation = mouse;
       }
     }
   }
 
   unbind() {
     this.subscriptions.forEach(event => event.dispose());
-  }
-
-  activeChanged(value) {
-    this.element.classList[value ? 'add' : 'remove'](ACTIVE_CLASSNAME);
-
-    // If the screen size is atleast greater than medium.
-    // Save the current sidebar state.
-    if (this.screenSize.from('md')) {
-      this.cache.setItem('au-sidebar.current', value);
-    }
   }
 
   open() {
@@ -116,14 +113,42 @@ export class AuAsideElement {
     }, true);
   }
 
-  mouseEnterActiveChanged(value) {
+  activeChanged(value) {
+    this.element.classList[value ? 'add' : 'remove'](ACTIVE_CLASSNAME);
+  }
+
+  mouseActivationChanged(value) {
     this.element.classList[value ? 'add' : 'remove']('active-mouse-events');
+
     if (value) {
       this.element.addEventListener('mouseenter', this.onMouseEnter);
       this.element.addEventListener('mouseleave', this.onMouseLeave);
     } else {
       this.element.removeEventListener('mouseenter', this.onMouseEnter);
       this.element.removeEventListener('mouseleave', this.onMouseLeave);
+    }
+  }
+
+  toggleActive() {
+    this.active = !this.active;
+    // If the screen size is atleast greater than medium.
+    // Save the current sidebar state.
+    if (this.screenSize.from('md')) {
+      this.cache.setItem('au-sidebar.state.active', this.active);
+    }
+  }
+
+  toggleMouseActivation() {
+    this.mouseActivation = !this.mouseActivation;
+
+    // If the screen size is atleast greater than medium.
+    // Save the current sidebar state.
+    if (this.screenSize.from('md')) {
+      this.cache.setItem('au-sidebar.state.mouseActivation', this.mouseActivation);
+      // Cache the current state as false, so we can depend on the mouse activation
+      if (this.mouseActivation) {
+        this.cache.setItem('au-sidebar.state.active', false);
+      }
     }
   }
 
