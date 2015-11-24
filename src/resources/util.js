@@ -53,3 +53,19 @@ export function onTransitionEnd(element, bubbles, trigger) {
 export function resolvePromise(promise, handler) {
   return handler ? promise.then(handler) : promise;
 }
+
+
+export function doubleTap(element, cb) {
+  let tapedTwice = false;
+  element.addEventListener('touchstart', _handler);
+
+  function _handler(event) {
+    if (!tapedTwice) {
+      tapedTwice = true;
+      setTimeout( function() { tapedTwice = false; }, 300 );
+      return false;
+    }
+    event.preventDefault();
+    cb(event);
+  }
+}

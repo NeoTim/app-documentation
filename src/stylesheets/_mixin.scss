@@ -817,12 +817,9 @@
   @include flex-column;
   @include translate3d(0,0,0);
   position: relative;
-  overflow: auto;
   height: auto;
   max-height: 100%;
   min-height: 100%;
-  -webkit-overflow-scrolling: touch;
-  -ms-overflow-style: none;
 
   & > * {@include translate3d(0,0,0)}
 }

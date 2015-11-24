@@ -109,6 +109,9 @@ body {// --------------------------------------------------- DOM-TREE--STRUCTURE
   }
 }
 
+
+
+
 @mixin Layout-xs {//-------------------------------------------- LAYOUT-XS
   @include Layout();
 
@@ -166,4 +169,44 @@ body {// --------------------------------------------------- DOM-TREE--STRUCTURE
 }
 
 
+
+body au-aside.au-aside section,
+body main.main-host router-view.main-view-port main.page-host {
+  overflow: auto;
+}
+
+
+.platform-android {
+  body au-aside.au-aside section,
+  body main.main-host router-view.main-view-port main.page-host {
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+}
+
+.platform-ios {
+  body au-aside.au-aside section,
+  body main.main-host router-view.main-view-port main.page-host {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none;
+  }
+}
+
+.browser-firefox {
+  body au-aside.au-aside section,
+  body main.main-host router-view.main-view-port main.page-host {
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+}
+
+.browser-ie {
+  body au-aside.au-aside section,
+  body main.main-host router-view.main-view-port main.page-host {
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+}
 

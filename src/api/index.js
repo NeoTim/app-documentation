@@ -24,4 +24,7 @@ export class Index {
   activate() {
     return this.server.getOfficialProducts().then(products => this.products = products);
   }
+
+  attached() {
+  }
 }

@@ -28,7 +28,7 @@ au-settings-button {
   }
 
   settings-container {
-    @extend %flexbox;
+    display: none;
     @include flex-column;
 
     min-width: 100%;
@@ -158,6 +158,7 @@ au-settings-button {
     overflow: hidden;
 
     settings-container {
+      @include flexbox;
       visibility: visible;
       opacity: 1;
     }

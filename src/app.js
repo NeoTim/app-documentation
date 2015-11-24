@@ -2,6 +2,8 @@ import {LocalAPI} from 'services/local';
 import {AUChannel} from 'services/channel';
 import {OverlayController} from 'resources/au-overlay';
 import {inject} from 'aurelia-dependency-injection';
+import {isTouch} from 'aurelia-interface-platforms';
+// import {doubleTap} from 'resources/util';
 
 @inject(Element, AUChannel, OverlayController, LocalAPI)
 export class App {
@@ -14,6 +16,11 @@ export class App {
     this.channel  = channel;
     this.element  = element;
     this.overlayController = overlayController;
+
+    channel.subscribe('au-scrollTo', value => {
+      let scrollContainer = document.querySelector('.page-host');
+      scrollContainer.scrollTop = value;
+    });
   }
 
   configureRouter(config, router) {
@@ -79,16 +86,27 @@ export class App {
     this.overlayContainer = this.overlayController.registerContainer(this, this.element);
   }
 
+  attached() {
+    if (isTouch) {
+      // doubleTap(this.header, (event)=> {
+      //   this.channel.publish('au-scrollTo', 0);
+      // });
+    }
+  }
+
   openAside($event) {
     this.title = this.router.currentInstruction.config.title;
     this.aside.open();
   }
 }
 
+@inject(AUChannel)
 class ScrollToTop {
+  constructor(channel) {
+    this.channel = channel;
+  }
   run(instruction, next) {
-    let element = document.querySelector('.page-host');
-    element.scrollTop = 0;
+    this.channel.publish('au-scrollTo', 0);
     return next();
   }
 }
