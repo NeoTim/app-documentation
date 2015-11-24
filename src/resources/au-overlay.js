@@ -2,10 +2,10 @@ import {inject} from 'aurelia-dependency-injection';
 import {AUChannel} from '../services/channel';
 import {DOM} from 'aurelia-pal';
 import {onAnimationEnd} from './util';
-
 const ACTIVE_CLASSNAME = 'is-active';
 const ANIMATION_CLASSNAME = 'au-animation';
 const DEFAULT_CLASSNAME = 'au-overlay';
+
 
 export class OverlayElement {
   element = DOM.createElement('overlay');
@@ -43,7 +43,7 @@ export class OverlayController {
   fragment = DOM.createDocumentFragment();
   active   = true;
 
-  constructor(channel) {
+  constructor(channel, screenSize) {
     this.channel = channel;
   }
 

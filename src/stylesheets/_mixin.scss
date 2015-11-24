@@ -666,7 +666,7 @@
 
 
 @mixin button-element-defaults {
-  display        : flex;
+  @extend %flexbox;
   outline        : 0;
   position       : relative;
   cursor         : pointer;

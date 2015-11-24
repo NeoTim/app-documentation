@@ -4,13 +4,13 @@ import {DOM} from 'aurelia-pal';
 import {AUChannel} from 'services/channel';
 import {OverlayController} from 'resources/au-overlay';
 import {onTransitionEnd, onDocumentEvent, clickEvent, resolvePromise} from './util';
-
-
+import {ScreenSize} from 'services/screen-size';
+import {Cache} from 'services/cache';
 const ACTIVE_CLASSNAME = 'is-active';
 const DEFAULT_CLASSNAME = 'au-aside';
 
 @customElement('au-aside')
-@inject(Element, AUChannel, OverlayController)
+@inject(Element, AUChannel, OverlayController, ScreenSize, Cache)
 export class AuAsideElement {
 
   @bindable active = null;
@@ -20,12 +20,13 @@ export class AuAsideElement {
   eventListeners = [];
   subscriptions = [];
 
-  constructor(element, channel, overlayController) {
+  constructor(element, channel, overlayController, screenSize, cache) {
     element.className += ' ' + DEFAULT_CLASSNAME;
     channel.createInstruction(this, this.name, this.bindableKey);
-
+    this.cache = cache;
     this.element  = element;
     this.channel  = channel;
+    this.screenSize = screenSize;
     this.overlay  = overlayController.createOverlay(this);
     this.onTransitionEnd = onTransitionEnd(this.element);
   }
@@ -33,7 +34,6 @@ export class AuAsideElement {
   bind() {
     let channel = this.channel;
     let subscriptions = this.subscriptions;
-
     subscriptions.push(
 
       channel.subscribe('au-deactivate:navigation', (payload) => {
@@ -46,6 +46,16 @@ export class AuAsideElement {
         resolvePromise(this.close(), x);
       })
     );
+
+    // Check the screen size to make sure we are atleast large than a medium screen.
+    // If larger than Medium, Check the cache for current sidebar state.
+    // Set the current active state.
+    if (this.screenSize.from('md')) {
+      let active = this.cache.getItem('au-sidebar.current');
+      if (active !== undefined) {
+        this.active = active;
+      }
+    }
   }
 
   unbind() {
@@ -54,6 +64,12 @@ export class AuAsideElement {
 
   activeChanged(value) {
     this.element.classList[value ? 'add' : 'remove'](ACTIVE_CLASSNAME);
+
+    // If the screen size is atleast greater than medium.
+    // Save the current sidebar state.
+    if (this.screenSize.from('md')) {
+      this.cache.setItem('au-sidebar.current', value);
+    }
   }
 
   open() {
@@ -72,8 +88,13 @@ export class AuAsideElement {
     }
   }
 
+  toggle() {
+    this[this.active ? 'close' : 'open']();
+  }
+
   invokeAnimationLifecycle() {
-    this.overlay.attach();
+    // If the screen is less than medium, the activate the overlay.
+    if (this.screenSize.fromTo('xs', 'md')) this.overlay.attach();
     return this.setActive(true)
       .then(() => this.addListeners())
       .then(() => this.setActive(false))

@@ -39,6 +39,12 @@ au-overlay{
   }
 }
 
+@include breakpoint(md) {
+  au-overlay {
+    display: none;
+  }
+}
+
 
 @keyframes scale-from-small-to-large {
   from {
