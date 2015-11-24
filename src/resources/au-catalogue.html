@@ -1,0 +1,14 @@
+<template>
+  <div ref="actionElement" class="catalogue-action-area">
+  </div>
+  <div ref="containerElement" class="catalogue-container">
+    <button ref="trigger" class="catalogue-trigger">
+      <au-icon icon="navicon"></au-icon>
+    </button>
+    <ul ref="listItems">
+      <li repeat.for="item of narratives" id="narrative-${item.uid}" data-id="${item.uid}">
+        ${item.title}
+      </li>
+    </ul>
+  </div>
+</template>

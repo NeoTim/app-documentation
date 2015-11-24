@@ -1,4 +1,4 @@
-import {bindable, processContent, noView} from 'aurelia-templating';
+import {bindable, processContent, noView, child} from 'aurelia-templating';
 import {inject} from 'aurelia-dependency-injection';
 import {fixIndent} from './util';
 import {DOM} from 'aurelia-pal';
@@ -12,6 +12,7 @@ export class Narrative {
   @bindable uid;
   @bindable versionMatches;
   @bindable title;
+  @child('h2') _titleElement = null;
 
   titleElement = DOM.createElement('h2');
 
@@ -24,6 +25,10 @@ export class Narrative {
       this.titleElement.innerHTML = this.title;
       this.element.insertBefore(this.titleElement, this.element.firstChild);
     }
+  }
+
+  _titleElementChanged(element) {
+    this._title = (element.innerText || element.innerHTML).trim();
   }
 }
 

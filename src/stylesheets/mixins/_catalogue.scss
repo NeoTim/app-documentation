@@ -1,0 +1,76 @@
+au-catalogue {
+  @extend %flexbox;
+  @include flex-column;
+  @include transform(translate3d(100%, 0, 0));
+  @include justify-content(center);
+  right: 0;
+  top: 0;
+  width: auto;
+  height: 100vh;
+  min-height: 100vh;
+  max-height: 100vh;
+  position: fixed;
+
+  div.catalogue-action-area {
+    @extend %flexbox;
+    @include flex-column;
+    @include justify-content(center);
+    @include transform(translate3d(-100%, 0, 0));
+    position: absolute;
+    width: 24px;
+    height: 100%;
+    left: 0;
+    top: 0;
+  }
+  div.catalogue-container {
+    @extend %flexbox;
+    @include default-transition;
+    background-color: $primary-color;
+    border-radius: 4px;
+    position: relative;
+    height: auto;
+    width: 100%;
+    padding-right: 30px;
+    @extend %shadow-6dp;
+    button.catalogue-trigger {
+      @extend %button-element;
+      @include justify-content(center);
+      @include align-items(center);
+      @include transform(translate3d(-28px, 0, 0));
+      @extend %shadow-2dp;
+      padding-left: 0;
+      background-color: $primary-color;
+      border: none;
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+      color: white;
+      height: 30px;
+      outline: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 30px;
+
+      au-icon.au-icon {
+        height: auto;
+        width: auto;
+        line-height: 1;
+      }
+    }
+
+    ul {
+      list-style: none;
+      li {
+        cursor: pointer;
+        line-height: 36px;
+        color: white;
+      }
+    }
+  }
+
+  &.is-active {
+    div.catalogue-container {
+      @include transform(translate3d(-95%, 0, 0));
+    }
+  }
+}

@@ -2,7 +2,6 @@ import {inject} from 'aurelia-dependency-injection';
 import {Router} from 'aurelia-router';
 import {Server} from 'backend/server';
 import {LocalAPI} from 'services/local';
-
 @inject(Server, Router, LocalAPI)
 export class ArticleView {
   tutorials = [];
@@ -46,7 +45,10 @@ export class ArticleView {
 
   loadArticle() {
     return this.productVersion.getArticle(this.articleSlug, this.culture.current)
-      .then(article => this.article = article);
+      .then(article => {
+        this.article = article
+        this.api.channel.publish('au-set-article', this.article);
+      });
   }
 
   detached() {
